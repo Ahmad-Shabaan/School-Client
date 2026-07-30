@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "https://bookwise.runasp.net/api/:path*" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
