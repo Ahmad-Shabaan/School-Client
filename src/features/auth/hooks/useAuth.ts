@@ -38,12 +38,10 @@ export function useAuth() {
       }),
     );
     queryClient.setQueryData(USER_QUERY_KEY, data);
-    console.log("true", data.forceChangePassword);
     if (data.forceChangePassword) {
-      console.log("here change");
       navigate("/change-password", { replace: true });
     } else {
-      // navigate(ROUTES[data.user.roles[0]].basePath, { replace: true });
+      navigate(ROUTES[data.user.roles[0]].basePath, { replace: true });
     }
   };
 

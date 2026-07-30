@@ -9,7 +9,6 @@ const ErrorMessage = ({
   className = "",
   errors = undefined,
 }: Msg) => {
-  console.log("errors....................", errors);
   return (
     <div
       role="alert"
@@ -29,9 +28,10 @@ const ErrorMessage = ({
               <strong>{field}</strong>
               <ul>
                 {errors.map((error) => (
-                  <li className="truncate" key={error}>{error}</li>
+                  <li className="truncate" key={error}>
+                    {error}
+                  </li>
                 ))}
-                <li className="truncate">Last name must not be empty you should re assign value to it immediately. then can create new user</li>
               </ul>
             </div>
           ))}

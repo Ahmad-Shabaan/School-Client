@@ -17,7 +17,6 @@ const RoleRoute = ({ roles, requireAll = false }: RoleRouteProps) => {
   const auth = useAppSelector((state) => state.auth);
   if (!auth.isAuthenticated || !auth.user || auth.user.roles.length == 0)
     return <Navigate to="/login" replace />;
-  console.log("hereeeeeeeeeee")
   if (auth.forceChangePassword)
     return <Navigate to="/change-password" replace />;
 

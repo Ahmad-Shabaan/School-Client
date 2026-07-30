@@ -24,7 +24,6 @@ const loginApi = async (creds: LoginCredentials): Promise<AuthData> => {
 };
 
 const getMe = async (skipAuthRefresh?: boolean): Promise<AuthData> => {
-  console.log("start");
   const response = await axiosClient.get<AuthResponse>("/users/me", {
     skipAuthRefresh: skipAuthRefresh ?? false,
   });
