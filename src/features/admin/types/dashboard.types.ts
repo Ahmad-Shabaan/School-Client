@@ -4,6 +4,8 @@ import type {
 } from "@/lib/utils/validation";
 import type { ApiErrorResponse, ApiResponse } from "@/shared/types/api.types";
 
+export type { ApiErrorResponse, ApiResponse };
+
 export interface UserDto {
   id: string;
   firstName: string;
