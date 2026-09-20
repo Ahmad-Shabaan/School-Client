@@ -2,7 +2,7 @@ import type {
   CreateUserFormValues,
   UpdateUserFormValues,
 } from "@/lib/utils/validation";
-import type { ApiErrorResponse } from "@/shared/types/api.types";
+import type { ApiErrorResponse, ApiResponse } from "@/shared/types/api.types";
 
 export interface UserDto {
   id: string;
@@ -32,14 +32,14 @@ export interface UpdateUserRequestDto {
   lastName: string;
 }
 
-export interface ApiResponse {
-  success: boolean;
-  message: string;
-  pageNumber: number;
-  pageSize: number;
-  totalCount: number;
-  totalPages: number;
-}
+// export interface ApiResponse {
+//   success: boolean;
+//   message: string;
+//   pageNumber: number;
+//   pageSize: number;
+//   totalCount: number;
+//   totalPages: number;
+// }
 
 export interface GetUsersResponse extends ApiResponse {
   data: UserDto[];

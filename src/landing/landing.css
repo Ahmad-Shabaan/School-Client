@@ -1,0 +1,199 @@
+@import url("https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap");
+
+/* ── Landing design tokens (original identity: teal · gold · paper · ink) ── */
+
+.landing-root {
+  --ink: #16302a;
+  --teal-dark: #123d34;
+  --teal: #1f6f5b;
+  --teal-soft: #dceae4;
+  --paper: #fbf8f1;
+  --card: #ffffff;
+  --gold: #a9822c;
+  --gold-deep: #c39a3f;
+  --gold-soft: #efe2c2;
+  --text: #2a3733;
+  --text-mute: #657570;
+  --line: #e3dfd2;
+
+  background: var(--paper);
+  color: var(--text);
+  font-family: "Tajawal", ui-sans-serif, system-ui, sans-serif;
+  line-height: 1.75;
+  text-rendering: optimizeLegibility;
+}
+
+/* ── Responsive foundation ───────────────────────────────────────────── */
+
+/* Consistent vertical rhythm for every full-bleed section */
+.landing-section {
+  padding-block: 4rem;
+}
+
+@media (min-width: 640px) {
+  .landing-section {
+    padding-block: 5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .landing-section {
+    padding-block: 6rem;
+  }
+}
+
+/* Common centered container (max 72rem, fluid gutters) */
+.landing-container {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .landing-container {
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .landing-container {
+    padding-inline: 2rem;
+  }
+}
+
+/* Fluid type — smooth scaling with no breakpoint jumps */
+.landing-title-hero {
+  font-size: clamp(2rem, 1.35rem + 2.6vw, 3.25rem);
+  line-height: 1.35;
+}
+
+.landing-title-section {
+  font-size: clamp(1.6rem, 1.42rem + 0.8vw, 2.15rem);
+  line-height: 1.35;
+}
+
+/* Standard gap between a section heading and its content */
+.landing-heading-gap {
+  margin-top: 3rem;
+}
+
+@media (min-width: 640px) {
+  .landing-heading-gap {
+    margin-top: 3.5rem;
+  }
+}
+
+.landing-root h1,
+.landing-root h2,
+.landing-root h3,
+.landing-root h4,
+.landing-root h5 {
+  font-family: "Tajawal", ui-sans-serif, system-ui, sans-serif;
+}
+
+.landing-root ::selection {
+  background: var(--gold);
+  color: #fff;
+}
+
+/* ── Brand mark ─────────────────────────────────────────────────────── */
+
+.mark-tile {
+  background: conic-gradient(from 45deg, var(--teal), var(--teal-dark));
+  color: var(--gold-soft);
+}
+
+/* ── Ink atmosphere (dark teal sections) ─────────────────────────────── */
+
+.hero-atmosphere {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(58rem 38rem at 15% 20%, rgba(169, 130, 44, 0.16), transparent 55%),
+    radial-gradient(52rem 40rem at 85% 75%, rgba(169, 130, 44, 0.14), transparent 55%);
+}
+
+.hero-pattern {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.14;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84' viewBox='0 0 84 84'%3E%3Cg fill='none' stroke='%23F3EFE2' stroke-width='1'%3E%3Cpath d='M42 4 L74 24 L74 60 L42 80 L10 60 L10 24 Z'/%3E%3Cpath d='M42 4 L42 80 M10 24 L74 60 M74 24 L10 60'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 84px 84px;
+}
+
+@media (max-width: 640px) {
+  .hero-pattern {
+    background-size: 56px 56px;
+  }
+}
+
+/* ── Slider ──────────────────────────────────────────────────────────── */
+
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s ease;
+}
+
+.slide.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.04);
+  transition: transform 7s ease-out;
+}
+
+.slide.active img {
+  transform: scale(1.01);
+}
+
+/* ── Sheikh avatar tile ──────────────────────────────────────────────── */
+
+.avatar-tile {
+  color: var(--teal-dark);
+  background: linear-gradient(160deg, var(--teal-soft), var(--gold-soft));
+  border: 1px solid rgba(31, 111, 91, 0.16);
+}
+
+/* ── Services floating menu ──────────────────────────────────────────── */
+
+.services-menu .services-panel {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px) scale(0.98);
+  transform-origin: top right;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    visibility 0.25s;
+}
+
+.services-menu:hover .services-panel,
+.services-menu:focus-within .services-panel,
+.services-menu[data-open="true"] .services-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+/* ── Reduced motion ──────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .slide,
+  .slide img {
+    transition: none;
+  }
+  .slide img {
+    transform: none;
+  }
+}

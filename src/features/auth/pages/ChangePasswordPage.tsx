@@ -56,7 +56,11 @@ const ChangePasswordPage = () => {
             {/* ── Server error ── */}
             {isChangingPasswordError && changePasswordError && (
               <ErrorMessage
-                msg={changePasswordError.error ? changePasswordError.error.message : changePasswordError.title}
+                msg={
+                  changePasswordError.error
+                    ? changePasswordError.error.message
+                    : changePasswordError.title
+                }
                 errors={changePasswordError?.errors}
               />
             )}
@@ -153,16 +157,13 @@ const ChangePasswordPage = () => {
             </FieldWrapper>
 
             {/* ── Submit ── */}
-            <button
-              type="submit"
-              className="btn-primary mt-1 tracking-normal font-semibold"
-            >
-              {isChangingPassword ? (
-                <LoadingButton label={"Processing.."} />
-              ) : (
-                "Update password"
-              )}
-            </button>
+            <LoadingButton
+              btnTxt="Update password"
+              loadingTxt={"Processing.."}
+              isLoading={isChangingPassword}
+              className="mt-1"
+              // className="btn-primary mt-1 tracking-normal font-semibold"
+            />
           </form>
 
           <button

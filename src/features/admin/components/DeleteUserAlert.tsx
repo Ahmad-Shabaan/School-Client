@@ -9,32 +9,53 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { useDeleteUser } from "../hooks/useDashboard";
 import { Spinner } from "@/components/ui/spinner";
-import { LucideTrash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 
 const DeleteUserAlert = ({ userId }: { userId: string }) => {
   const { handleDeleteUser, isLoading } = useDeleteUser();
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button
-          variant="ghost"
-          className="w-8 h-8 rounded-full bg-error/20 hover:bg-error/30"
-        >
-          <LucideTrash2 color="red" />
-        </Button>
-      </AlertDialogTrigger>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <AlertDialogTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              className="rounded-lg border border-border/30 bg-background text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+            >
+              <Trash2 size={14} />
+            </Button>
+          </AlertDialogTrigger>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Delete user</p>
+        </TooltipContent>
+      </Tooltip>
+
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account from our servers.
+          <div className="flex items-center gap-3 mb-2">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-destructive/10">
+              <Trash2 className="h-5 w-5 text-destructive" />
+            </div>
+            <AlertDialogTitle className="text-lg font-semibold">
+              Delete member
+            </AlertDialogTitle>
+          </div>
+          <AlertDialogDescription className="text-sm text-muted-foreground">
+            This action cannot be undone. This will permanently delete this
+            member account from the system.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
+        <AlertDialogFooter className="gap-2">
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
             variant="destructive"
@@ -43,10 +64,10 @@ const DeleteUserAlert = ({ userId }: { userId: string }) => {
             {isLoading ? (
               <>
                 <Spinner data-icon="inline-start" />
-                Deleting
+                Deleting...
               </>
             ) : (
-              "Continue"
+              "Delete Member"
             )}
           </AlertDialogAction>
         </AlertDialogFooter>

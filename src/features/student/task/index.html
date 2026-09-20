@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الملف الشخصي — أكاديمية السلطان الحنفي</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --ink: #16302A;
+      --teal-dark: #123D34;
+      --teal: #1F6F5B;
+      --teal-soft: #DCEAE4;
+      --paper: #FBF8F1;
+      --card: #FFFFFF;
+      --gold: #A9822C;
+      --gold-soft: #EFE2C2;
+      --text: #2A3733;
+      --text-mute: #657570;
+      --line: #E3DFD2;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    body {
+      background-color: var(--paper);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* 1. Header */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background-color: var(--card);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+      color: var(--gold-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+      border: 1px solid var(--gold);
+    }
+
+    .brand-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--teal-dark);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .icon-btn {
+      position: relative;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--teal-dark);
+      transition: all 0.2s;
+    }
+
+    .icon-btn:hover {
+      border-color: var(--gold);
+      background-color: var(--card);
+    }
+
+    .badge {
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      background: var(--gold);
+      color: var(--card);
+      font-size: 0.75rem;
+      font-weight: 700;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--card);
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 50px;
+      left: 0;
+      width: 280px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      display: none;
+      flex-direction: column;
+      z-index: 200;
+      overflow: hidden;
+    }
+
+    .dropdown.show {
+      display: flex;
+    }
+
+    .dropdown-header {
+      padding: 12px 16px;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      color: var(--teal-dark);
+      background: var(--paper);
+    }
+
+    .dropdown-item {
+      padding: 12px 16px;
+      font-size: 0.85rem;
+      border-bottom: 1px solid var(--line);
+      color: var(--text);
+    }
+
+    .dropdown-item:last-child {
+      border-bottom: none;
+    }
+
+    .dropdown-item.unread {
+      background-color: var(--teal-soft);
+    }
+
+    .dropdown-time {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-mute);
+      margin-top: 4px;
+    }
+
+    .btn-logout {
+      background-color: var(--teal-dark);
+      color: var(--paper);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-logout:hover {
+      background-color: var(--teal);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 30px 20px;
+      width: 100%;
+      flex: 1;
+    }
+
+    /* 2. Page Title */
+    .page-title-section {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .page-title {
+      font-size: 1.8rem;
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .gold-divider {
+      width: 40px;
+      height: 3px;
+      background: var(--gold);
+      margin: 8px auto 12px;
+      border-radius: 2px;
+    }
+
+    .page-subtitle {
+      color: var(--text-mute);
+      font-size: 0.95rem;
+    }
+
+    /* 3 & 4. Student Card */
+    .student-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 28px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+      margin-bottom: 40px;
+      transition: border-color 0.2s;
+    }
+
+    .student-profile-wrapper {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .avatar-container {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: linear-gradient(160deg, var(--teal-soft), var(--gold-soft));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: var(--teal-dark);
+      border: 2px solid var(--gold);
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .avatar-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .student-info-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      width: 100%;
+    }
+
+    .info-item .label {
+      font-size: 0.85rem;
+      color: var(--text-mute);
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .info-item .value {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    /* Progress Section */
+    .progress-section {
+      border-top: 1px solid var(--line);
+      padding-top: 20px;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-weight: 700;
+      color: var(--teal-dark);
+    }
+
+    .progress-bar-bg {
+      height: 10px;
+      background-color: var(--teal-soft);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background-color: var(--teal);
+      border-radius: 5px;
+      transition: width 0.5s ease-in-out;
+    }
+
+    /* 5 & 6 & 7 & 8. Courses Grid */
+    .courses-header {
+      margin-bottom: 20px;
+    }
+
+    .courses-title {
+      font-size: 1.4rem;
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .course-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 24px;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .course-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-3px);
+    }
+
+    .course-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--teal-soft);
+      color: var(--teal-dark);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+    }
+
+    .course-title {
+      font-size: 1.15rem;
+      color: var(--teal-dark);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .course-desc {
+      font-size: 0.85rem;
+      color: var(--text-mute);
+      line-height: 1.5;
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+
+    .course-progress {
+      margin-bottom: 16px;
+    }
+
+    .course-progress-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-mute);
+      margin-bottom: 4px;
+    }
+
+    .btn-course {
+      width: 100%;
+      background: var(--teal-dark);
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: background 0.2s;
+      font-size: 0.9rem;
+    }
+
+    .btn-course:hover {
+      background: var(--teal);
+    }
+
+    /* 13. Footer */
+    .footer {
+      background: var(--card);
+      border-top: 1px solid var(--line);
+      text-align: center;
+      padding: 24px;
+      margin-top: 50px;
+      color: var(--text-mute);
+      font-size: 0.9rem;
+    }
+
+    .footer-brand {
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    /* 14. Responsive Design */
+    @media (max-width: 900px) {
+      .courses-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 650px) {
+      .student-profile-wrapper {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .student-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .courses-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .brand-title {
+        font-size: 1rem;
+      }
+
+      .btn-logout {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <a href="/" class="brand">
+      <div class="brand-logo">س</div>
+      <span class="brand-title">المدرسة النُّعمانية</span>
+    </a>
+
+    <div class="header-actions">
+      <div style="position: relative;">
+        <button class="icon-btn" id="notifBtn" aria-label="الإشعارات">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg>
+          <span class="badge">3</span>
+        </button>
+        <div class="dropdown" id="notifDropdown">
+          <div class="dropdown-header">الإشعارات</div>
+          <div class="dropdown-item unread">
+            لديك واجب جديد في الفقه
+            <span class="dropdown-time">منذ 10 دقائق</span>
+          </div>
+          <div class="dropdown-item unread">
+            تم إضافة درس جديد في التفسير
+            <span class="dropdown-time">منذ ساعة</span>
+          </div>
+          <div class="dropdown-item unread">
+            لديك رسالة جديدة
+            <span class="dropdown-time">منذ ساعتين</span>
+          </div>
+        </div>
+      </div>
+
+      <a href="/chat" class="icon-btn" aria-label="المحادثات" style="text-decoration: none;">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+        </svg>
+        <span class="badge">2</span>
+      </a>
+
+      <button class="btn-logout" id="logoutBtn">تسجيل الخروج</button>
+    </div>
+  </header>
+
+  <main class="container">
+    
+    <section class="page-title-section">
+      <h1 class="page-title">الملف الشخصي</h1>
+      <div class="gold-divider"></div>
+      <p class="page-subtitle">مرحبًا بك في حسابك، تابع مستواك الدراسي والمقررات الخاصة بك.</p>
+    </section>
+
+    <section class="student-card">
+      <div class="student-profile-wrapper">
+        <div class="avatar-container" id="studentAvatar">
+          <span id="avatarLetter">أ</span>
+        </div>
+        <div class="student-info-grid">
+          <div class="info-item">
+            <span class="label">الاسم</span>
+            <span class="value" id="studentName">أحمد محمد عبدالله</span>
+          </div>
+          <div class="info-item">
+            <span class="label">العمر</span>
+            <span class="value" id="studentAge">22 سنة</span>
+          </div>
+          <div class="info-item">
+            <span class="label">البلد</span>
+            <span class="value" id="studentCountry">مصر</span>
+          </div>
+          <div class="info-item">
+            <span class="label">المستوى</span>
+            <span class="value" id="studentLevel">المستوى الثالث</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="progress-section">
+        <div class="progress-header">
+          <span>مستواك الدراسي</span>
+          <span id="studentProgressText">75%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="studentProgressBar" style="width: 75%;"></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="courses-header">
+        <h2 class="courses-title">المقررات الدراسية</h2>
+        <p class="page-subtitle">المقررات المسجل بها حاليًا</p>
+      </div>
+
+      <div class="courses-grid" id="coursesGrid">
+        </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-brand">أكاديمية السلطان الحنفي</div>
+    <div>جميع الحقوق محفوظة © 2026 أكاديمية السلطان الحنفي</div>
+  </footer>
+
+  <script>
+    // 16. البيانات الأولية (Mock Data) الجاهزة للربط مع الـ API مستقبلاً
+    const initialStudentData = {
+      name: "أحمد محمد عبدالله",
+      age: 22,
+      country: "مصر",
+      level: "المستوى الثالث",
+      image: "", // اتركه فارغًا لاختبار عرض الحرف الأول أو ضع المسار "/images/student.jpg"
+      progress: 75
+    };
+
+    const initialCoursesData = [
+      {
+        id: 1,
+        name: "الفقه وأصوله",
+        icon: "⚖",
+        description: "دراسة الأحكام الشرعية العملية وأصول الاستنباط.",
+        progress: 80
+      },
+      {
+        id: 2,
+        name: "العقيدة",
+        icon: "✦",
+        description: "دراسة أصول الإيمان والمسائل العقدية.",
+        progress: 65
+      },
+      {
+        id: 3,
+        name: "التفسير",
+        icon: "📖",
+        description: "فهم معاني القرآن الكريم وتدبر آياته.",
+        progress: 90
+      },
+      {
+        id: 4,
+        name: "اللغة العربية",
+        icon: "ع",
+        description: "دراسة اللغة العربية لفهم النصوص الشرعية.",
+        progress: 55
+      },
+      {
+        id: 5,
+        name: "المقرأة",
+        icon: "☾",
+        description: "مراجعة وحفظ القرآن الكريم مع الشيخ.",
+        progress: 70
+      }
+    ];
+
+    // دالة لتهيئة بيانات الطالب في الواجهة
+    function renderStudentInfo(student) {
+      document.getElementById('studentName').textContent = student.name;
+      document.getElementById('studentAge').textContent = student.age + " سنة";
+      document.getElementById('studentCountry').textContent = student.country;
+      document.getElementById('studentLevel').textContent = student.level;
+      document.getElementById('studentProgressText').textContent = student.progress + "%";
+      document.getElementById('studentProgressBar').style.width = student.progress + "%";
+
+      const avatarContainer = document.getElementById('studentAvatar');
+      if (student.image && student.image.trim() !== "") {
+        avatarContainer.innerHTML = `<img src="${student.image}" alt="${student.name}">`;
+      } else {
+        const firstLetter = student.name ? student.name.trim().charAt(0) : "أ";
+        avatarContainer.innerHTML = `<span id="avatarLetter">${firstLetter}</span>`;
+      }
+    }
+
+    // دالة لتهيئة قائمة المقررات في الواجهة
+    function renderCourses(courses) {
+      const coursesGrid = document.getElementById('coursesGrid');
+      coursesGrid.innerHTML = '';
+
+      courses.forEach(course => {
+        const courseCard = document.createElement('div');
+        courseCard.className = 'course-card';
+        courseCard.innerHTML = `
+          <div class="course-icon">${course.icon || '📖'}</div>
+          <h3 class="course-title">${course.name}</h3>
+          <p class="course-desc">${course.description}</p>
+          <div class="course-progress">
+            <div class="course-progress-info">
+              <span>التقدم</span>
+              <span>${course.progress}%</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: ${course.progress}%;"></div>
+            </div>
+          </div>
+          <a href="/courses/${course.id}" class="btn-course">دخول إلى المقرر</a>
+        `;
+        coursesGrid.appendChild(courseCard);
+      });
+    }
+
+    // Toggle الإشعارات
+    const notifBtn = document.getElementById('notifBtn');
+    const notifDropdown = document.getElementById('notifDropdown');
+
+    notifBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      notifDropdown.classList.toggle('show');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!notifDropdown.contains(e.target) && e.target !== notifBtn) {
+        notifDropdown.classList.remove('show');
+      }
+    });
+
+    // 12. تسجيل الخروج
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    });
+
+    // تحميل البيانات عند فتح الصفحة
+    document.addEventListener('DOMContentLoaded', () => {
+      renderStudentInfo(initialStudentData);
+      renderCourses(initialCoursesData);
+    });
+  </script>
+</body>
+</html>

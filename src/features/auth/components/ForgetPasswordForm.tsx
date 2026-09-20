@@ -1,11 +1,13 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook/form";
-import { Mail } from "lucide-react";
+import { useForm, Controller } from "react-hook-form";
+import { Mail, RefreshCw } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
-import { ForgetPasswordSchema } from "@/lib/utils/validation";
+import { forgetPasswordSchema } from "@/lib/utils/validation";
+import type { ForgetPasswordSchema } from "@/lib/utils/validation";
 import FieldWrapper from "./FieldWrapper";
+import ErrorMessage from "@/shared/components/common/ErrorBoundary/ErrorMessage";
 
 const ForgetPasswordForm = () => {
   const {
@@ -23,7 +25,7 @@ const ForgetPasswordForm = () => {
     defaultValues: { email: "" },
   });
 
-  const submitHandler = (ForgetPasswordSchema) =>
+  const submitHandler = (data: ForgetPasswordSchema) =>
     forgetPassword(data.email);
 
   return (
@@ -33,16 +35,6 @@ const ForgetPasswordForm = () => {
       noValidate
       data-animate="form"
     >
-      {/* ── Header ── */}
-      <div className="space-y-4 text-center">
-        <h2 className="text-xl font-bold text-foreground">
-          Reset Password
-        </h2>
-        <p className="text-sm text-muted-foreground">
-          Enter your email address to receive a password reset link
-        </p>
-      </div>
-
       {/* ── Server error ── */}
       {isForgettingPasswordError && forgetPasswordError && (
         <div className="w-full">

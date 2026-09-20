@@ -1,63 +1,46 @@
 import { useRef } from "react";
 import { useNavAnimation } from "./navbar.animation";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Bell, Search, GraduationCap } from "lucide-react";
 
 const Navbar = () => {
   const navRef = useRef<HTMLDivElement>(null);
-  // Animations
   useNavAnimation({ sectionRef: navRef });
   return (
-    <header className="z-50">
+    <header className="sticky top-0 z-40 w-full">
       <nav
         ref={navRef}
-        className="fixed top-0 w-full px-4 sm:px-6 lg:px-8 py-4 bg-background/95 backdrop-blur border-b border-border/50"
+        className="flex h-16 w-full items-center gap-4 border-b border-border/40 bg-background/80 backdrop-blur-xl px-4 sm:px-6"
         role="navigation"
         aria-label="Main navigation"
       >
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between">
-          <div className="flex items-center space-x-3">
-            {/* <Logo className="h-8 w-8" /> */}
-            <h1 className="text-xl font-bold text-foreground bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
-              SchoolWise
-            </h1>
+        <SidebarTrigger className="size-8 text-muted-foreground hover:text-foreground" />
+
+        <div className="flex flex-1 items-center justify-between gap-4">
+          <div className="hidden sm:flex items-center gap-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-secondary shadow-sm">
+              <GraduationCap className="h-4 w-4 text-white" />
+            </div>
+            <span className="text-sm font-semibold text-foreground">
+              School
+            </span>
           </div>
-          <div className="hidden md:flex md:items-center md:space-x-6">
-            {/* Navigation links would go here - preserving existing functionality */}
-            <div className="flex space-x-4">
-              <a href="#" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
-                Dashboard
-              </a>
-              <a href="#" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
-                Courses
-              </a>
-              <a href="#" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
-                Members
-              </a>
-              <a href="#" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
-                Subscriptions
-              </a>
-            </div>
-          </div>
-          <div className="flex items-center space-x-3">
-            {/* User actions - preserving existing functionality */}
-            <div className="relative">
-              {/* <button className="p-2 rounded-md hover:bg-muted/50 transition-colors">
-  
-              </button> */}
-            </div>
-            <div className="relative">
-              {/* <button className="p-2 rounded-md hover:bg-muted/50 transition-colors">
-     
-              </button> */}
-            </div>
-            <div className="relative">
-              <div className="relative">
-                <button className="flex items-center space-x-2 p-2 rounded-md hover:bg-muted/50 transition-colors">
-                  <span className="hidden md:block">Welcome</span>
-                  <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                {/* Dropdown menu would go here - preserving existing functionality */}
+
+          <div className="flex items-center gap-3">
+            <button className="relative flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground transition-all duration-200">
+              <Search className="h-4 w-4" />
+            </button>
+            <button className="relative flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground transition-all duration-200">
+              <Bell className="h-4 w-4" />
+              <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-primary ring-2 ring-background" />
+            </button>
+            <div className="flex items-center gap-2 pl-2 border-l border-border/40">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-br from-primary to-secondary text-xs font-bold text-white shadow-sm">
+                A
+              </div>
+              <div className="hidden md:flex flex-col">
+                <span className="text-xs font-medium text-foreground">Admin</span>
+                <span className="text-[10px] text-muted-foreground">admin@school.com</span>
               </div>
             </div>
           </div>

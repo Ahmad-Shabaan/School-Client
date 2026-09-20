@@ -8,11 +8,13 @@ import AdminPanel from "@/features/supervisor/pages/SupervisorPanel";
 import AccessDenied from "@/shared/pages/AccessDenied";
 import AdminPanelLayout from "@/features/admin/layout/AdminPanelLayout";
 import Members from "@/features/admin/pages/Members";
+import StudentProfile from "@/features/student/pages/StudentProfile";
 import { ROUTES } from "@/config/routes";
 import ServerError from "@/shared/pages/ServerError";
 import Courses from "@/features/admin/pages/Courses";
 import CourseDetails from "@/features/admin/pages/CourseDetails";
 import Subscriptions from "@/features/admin/pages/Subscriptions";
+import Home from "@/landing/pages/Home";
 
 const PrivateRoute = lazy(() => import("../components/guards/PrivateRoute"));
 const PublicOnlyRoute = lazy(
@@ -38,8 +40,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <AuthLayout />,
-        children: [{ index: true, element: <LoginPage /> }],
+        element: <Home />,
+      },
+      {
+        path: "/profile",
+        element: <StudentProfile />,
       },
       {
         path: "/login",
@@ -122,6 +127,16 @@ const router = createBrowserRouter([
       {
         path: ROUTES.Teacher.basePath,
         element: <TeacherPanel />,
+      },
+    ],
+  },
+  {
+    // RoleRoute for Student
+    element: <RoleRoute roles={ROUTES[ROLES.Student].roles} />,
+    children: [
+      {
+        path: ROUTES.Student.basePath,
+        element: <StudentProfile />,
       },
     ],
   },

@@ -1,3 +1,4 @@
+import type { FieldValues } from "react-hook-form";
 import * as z from "zod";
 const info = z.object({
   firstName: z
@@ -87,10 +88,13 @@ export const signupSchema = z
     path: ["confirmPassword"],
   });
 
+export const infoFormSchema = z.object({
+  ...info.shape,
+});
 export const userSchema = z.object({
   ...info.shape,
   email,
-  role: z.string().nonempty(),
+  role: z.string().nonempty("Please select a role."),
 });
 
 export const updateUserSchema = z.object({
@@ -117,6 +121,9 @@ export const resetPasswordSchema = z
 export type AddressSchema = z.infer<typeof addressSchema>;
 export type SignupFormValues = z.infer<typeof signupSchema>;
 export type CreateUserFormValues = z.infer<typeof userSchema>;
+type InfoFormValues = z.infer<typeof infoFormSchema>;
+export interface InfoForm extends InfoFormValues, FieldValues {}
+
 export type UpdateUserFormValues = z.infer<typeof updateUserSchema>;
 
 export type LoginSchema = z.infer<typeof loginSchema>;

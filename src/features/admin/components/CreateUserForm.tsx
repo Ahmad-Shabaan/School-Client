@@ -2,20 +2,20 @@ import { useState } from "react";
 import { User, Mail, Plus } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
+// import { Input } from "@/components/ui/input";
 
-import ErrorMessage from "@/shared/components/common/ErrorBoundary/ErrorMessage";
+// import ErrorMessage from "@/shared/components/common/ErrorBoundary/ErrorMessage";
 import { userSchema, type CreateUserFormValues } from "@/lib/utils/validation";
-import SectionDivider from "@/shared/components/common/Form/SectionDivider";
+// import SectionDivider from "@/shared/components/common/Form/SectionDivider";
 import FieldWrapper from "@/shared/components/common/Form/FieldWrapper";
 import type { CreateUserFormProps } from "../types/dashboard.types";
 import {
   Sheet,
-  SheetClose,
-  SheetContent,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
+  // SheetClose,
+  // SheetContent,
+  // SheetFooter,
+  // SheetHeader,
+  // SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import {
@@ -27,6 +27,9 @@ import {
 } from "@/components/ui/select";
 
 import { Button } from "@/components/ui/button";
+import InputForm from "@/shared/components/common/Form/InputForm";
+// import LoadingButton from "@/shared/components/common/Button/LoadingButton";
+import UserForm from "./UserForm";
 
 export default function CreateUserForm({
   onSubmit,
@@ -35,7 +38,6 @@ export default function CreateUserForm({
   isError = false,
 }: CreateUserFormProps) {
   const [open, setOpen] = useState(false);
-
   const {
     control,
     handleSubmit,
@@ -51,7 +53,6 @@ export default function CreateUserForm({
       role: "",
     },
   });
-
   const submitHandler = (data: CreateUserFormValues) => {
     onSubmit(data);
     setOpen(false);
@@ -61,23 +62,85 @@ export default function CreateUserForm({
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" className="bg-surface-dim rounded-full">
-          <Plus />
+        <Button variant="default" size="sm" className="btn-primary">
+          <Plus className="mr-1.5 h-4 w-4" />
           Add Member
         </Button>
       </SheetTrigger>
-      <SheetContent className="overflow-y-scroll hide-scrollbar">
-        <SheetHeader>
-          <SheetTitle className="aside-header">Add a new member</SheetTitle>
+
+      <UserForm
+        submitHandler={submitHandler}
+        handleSubmit={handleSubmit}
+        errors={errors}
+        control={control}
+        isLoading={isLoading}
+        isError={isError}
+        error={error}
+        firstName="firstName"
+        lastName="lastName"
+        btnTxt="Add Member"
+        loadingTxt="Creating member..."
+        sheetTitle="Add a new member"
+        sheetDescription="Fill in the details to create a new member account"
+      >
+        <FieldWrapper
+          id="signup-email"
+          label="Email Address"
+          errorId="email-error"
+          errorMessage={errors.email?.message}
+        >
+          <InputForm
+            control={control}
+            inputField="email"
+            errors={errors}
+            id="signup-email"
+            placeholder="john.doe@example.com"
+            icon={<Mail className="size-4" />}
+          />
+        </FieldWrapper>
+        <FieldWrapper
+          id="user-role"
+          label="Role"
+          errorId="role-error"
+          errorMessage={errors.role?.message}
+        >
+          <Controller
+            name="role"
+            control={control}
+            render={({ field }) => (
+              <Select
+                onValueChange={field.onChange}
+                value={field.value}
+                defaultValue={field.value}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select a role" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="admin">Admin</SelectItem>
+                  <SelectItem value="teacher">Teacher</SelectItem>
+                  <SelectItem value="student">Student</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
+          />
+        </FieldWrapper>
+      </UserForm>
+      {/* <SheetContent className="overflow-y-auto hide-scrollbar">
+        <SheetHeader className="border-b border-border/30 pb-4 mb-2">
+          <SheetTitle className="text-xl font-bold text-foreground tracking-tight">
+            Add a new member
+          </SheetTitle>
+          <p className="text-sm text-muted-foreground">
+            Fill in the details to create a new member account
+          </p>
         </SheetHeader>
         <form
           id="signup-form"
           onSubmit={handleSubmit(submitHandler)}
-          className="flex flex-col gap-4 w-full px-4"
-          data-animate="form"
+          className="flex flex-col gap-5 w-full px-4"
           noValidate
         >
-          {/* ── Server error — identical to LoginForm ── */}
           {isError && error && (
             <ErrorMessage
               msg={error.error ? error.error.message : error.title}
@@ -87,8 +150,6 @@ export default function CreateUserForm({
           )}
 
           <SectionDivider label="Personal info" />
-
-          {/* First + Last name */}
           <div className="grid grid-cols-2 gap-3">
             <FieldWrapper
               id="signup-firstName"
@@ -96,164 +157,87 @@ export default function CreateUserForm({
               errorId="firstName-error"
               errorMessage={errors.firstName?.message}
             >
-              <div className="group relative">
-                <div
-                  className="pointer-events-none absolute inset-y-0 left-0 flex items-center
-                         pl-4 text-on-surface-variant transition-colors duration-200
-                         group-focus-within:text-primary"
-                >
-                  <User className="size-4" />
-                </div>
-                <Controller
-                  name="firstName"
-                  control={control}
-                  render={({ field }) => (
-                    <Input
-                      {...field}
-                      id="signup-firstName"
-                      type="text"
-                      placeholder="John"
-                      autoComplete="given-name"
-                      aria-invalid={!!errors.firstName}
-                      aria-describedby={
-                        errors.firstName ? "firstName-error" : undefined
-                      }
-                      className="pl-11 pr-4"
-                    />
-                  )}
-                />
-              </div>
+              <InputForm
+                control={control}
+                inputField="firstName"
+                errors={errors}
+                id="signup-firstName"
+                placeholder="John"
+              />
             </FieldWrapper>
-
             <FieldWrapper
               id="signup-lastName"
               label="Last Name"
               errorId="lastName-error"
               errorMessage={errors.lastName?.message}
             >
-              <div className="group relative">
-                <div
-                  className="pointer-events-none absolute inset-y-0 left-0 flex items-center
-                         pl-4 text-on-surface-variant transition-colors duration-200
-                         group-focus-within:text-primary"
-                >
-                  <User className="size-4" />
-                </div>
-                <Controller
-                  name="lastName"
-                  control={control}
-                  render={({ field }) => (
-                    <Input
-                      {...field}
-                      id="signup-lastName"
-                      type="text"
-                      placeholder="Doe"
-                      autoComplete="family-name"
-                      aria-invalid={!!errors.lastName}
-                      aria-describedby={
-                        errors.lastName ? "lastName-error" : undefined
-                      }
-                      className="pl-11 pr-4"
-                    />
-                  )}
-                />
-              </div>
+              <InputForm
+                control={control}
+                inputField="lastName"
+                errors={errors}
+                id="signup-lastName"
+                placeholder="Doe"
+              />
             </FieldWrapper>
           </div>
-
-          {/* Email */}
           <FieldWrapper
             id="signup-email"
             label="Email Address"
             errorId="email-error"
             errorMessage={errors.email?.message}
           >
-            <div className="group relative">
-              <div
-                className="pointer-events-none absolute inset-y-0 left-0 flex items-center
-                       pl-4 text-on-surface-variant transition-colors duration-200
-                       group-focus-within:text-primary"
-              >
-                <Mail className="size-4" />
-              </div>
-              <Controller
-                name="email"
-                control={control}
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    id="signup-email"
-                    type="email"
-                    placeholder="john.doe@example.com"
-                    autoComplete="email"
-                    aria-invalid={!!errors.email}
-                    aria-describedby={errors.email ? "email-error" : undefined}
-                    className="pl-11 pr-4"
-                  />
-                )}
-              />
-            </div>
+            <InputForm
+              control={control}
+              inputField="email"
+              errors={errors}
+              id="signup-email"
+              placeholder="john.doe@example.com"
+              icon={<Mail className="size-4" />}
+            />
           </FieldWrapper>
-
           <FieldWrapper
             id="user-role"
             label="Role"
             errorId="role-error"
             errorMessage={errors.role?.message}
           >
-            <div>
-              <Controller
-                name="role"
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    defaultValue={field.value}
-                  >
-                    <SelectTrigger className="w-full max-w-48">
-                      <SelectValue placeholder="Select a role" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="admin">Admin</SelectItem>
-                      <SelectItem value="teacher">Teacher</SelectItem>
-                      <SelectItem value="student">Student</SelectItem>
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-            </div>
-          </FieldWrapper>
-
-
-          {/* ── Submit — identical gradient button to LoginForm ── */}
-          <div>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className=" btn-primary font-bold rounded-md
-          "
-            >
-              {isLoading ? (
-                <span className="flex items-center gap-2">
-                  <span
-                    className="size-4 rounded-full border-2 border-on-primary/30
-                         border-t-on-primary animate-spin"
-                  />
-                  Creating member...
-                </span>
-              ) : (
-                "Add Member"
+            <Controller
+              name="role"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  defaultValue={field.value}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="admin">Admin</SelectItem>
+                    <SelectItem value="teacher">Teacher</SelectItem>
+                    <SelectItem value="student">Student</SelectItem>
+                  </SelectContent>
+                </Select>
               )}
-            </button>
+            />
+          </FieldWrapper>
+          <div className="pt-2">
+            <LoadingButton
+              btnTxt="Add Member"
+              loadingTxt={"Creating member..."}
+              isLoading={isLoading}
+            />
           </div>
         </form>
-        <SheetFooter>
+        <SheetFooter className="border-t border-border/30 pt-4 mt-4">
           <SheetClose asChild>
-            <Button variant="outline">Close</Button>
+            <Button variant="outline" className="w-full">
+              Cancel
+            </Button>
           </SheetClose>
         </SheetFooter>
-      </SheetContent>
+      </SheetContent> */}
     </Sheet>
   );
 }

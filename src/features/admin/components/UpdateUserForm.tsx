@@ -1,32 +1,38 @@
-import { useState } from "react";
-import { User, Pencil } from "lucide-react";
-import { useForm, Controller } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { Pencil } from "lucide-react";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
-
-import ErrorMessage from "@/shared/components/common/ErrorBoundary/ErrorMessage";
+// import ErrorMessage from "@/shared/components/common/ErrorBoundary/ErrorMessage";
 import {
   updateUserSchema,
   type UpdateUserFormValues,
 } from "@/lib/utils/validation";
-import SectionDivider from "@/shared/components/common/Form/SectionDivider";
-import FieldWrapper from "@/shared/components/common/Form/FieldWrapper";
+// import SectionDivider from "@/shared/components/common/Form/SectionDivider";
+// import FieldWrapper from "@/shared/components/common/Form/FieldWrapper";
 import type { UpdateUserRequestDto, UserDto } from "../types/dashboard.types";
 import {
   Sheet,
-  SheetClose,
-  SheetContent,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
+  // SheetClose,
+  // SheetContent,
+  // SheetFooter,
+  // SheetHeader,
+  // SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 import { Button } from "@/components/ui/button";
-import { RefreshCw } from "lucide-react";
 import { useUpdateUser } from "../hooks/useDashboard";
+// import InputForm from "@/shared/components/common/Form/InputForm";
+// import LoadingButton from "@/shared/components/common/Button/LoadingButton";
+import UserForm from "./UserForm";
 
-export default function UpdateUserForm({ user }: { user: UserDto }) {
+const UpdateUserForm = ({ user }: { user: UserDto }) => {
+  console.log("user from table", user);
   const { handleUpdateUser, isLoading, isError, error } = useUpdateUser();
 
   const onSubmit = (values: UpdateUserFormValues) => {
@@ -57,29 +63,59 @@ export default function UpdateUserForm({ user }: { user: UserDto }) {
     setOpen(false);
     reset();
   };
-
+  useEffect(() => {
+    reset({
+      firstName: user.firstName,
+      lastName: user.lastName,
+    });
+  }, [user, reset]);
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
-        <Button
-          variant="ghost"
-          className="w-8 h-8 rounded-full bg-surface-dim hover:bg-surface-variant "
-        >
-          <Pencil />
-        </Button>
-      </SheetTrigger>
-      <SheetContent className="overflow-y-scroll hide-scrollbar">
-        <SheetHeader>
-          <SheetTitle className="aside-header">Update member</SheetTitle>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <SheetTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              className="rounded-lg border border-border/30 bg-background text-muted-foreground hover:bg-accent hover:text-foreground"
+            >
+              <Pencil size={14} />
+            </Button>
+          </SheetTrigger>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Edit user</p>
+        </TooltipContent>
+      </Tooltip>
+
+      <UserForm
+        submitHandler={submitHandler}
+        handleSubmit={handleSubmit}
+        errors={errors}
+        control={control}
+        isLoading={isLoading}
+        isError={isError}
+        error={error}
+        firstName="firstName"
+        lastName="lastName"
+        btnTxt="Update Member"
+        loadingTxt="Updating member..."
+        sheetTitle="Update member"
+        sheetDescription="Edit member details"
+      />
+      {/* <SheetContent className="overflow-y-auto">
+        <SheetHeader className="border-b border-border/30 pb-4 mb-2">
+          <SheetTitle className="text-xl font-bold text-foreground tracking-tight">
+            Update member
+          </SheetTitle>
+          <p className="text-sm text-muted-foreground">Edit member details</p>
         </SheetHeader>
         <form
-          id="signup-form"
+          id="update-form"
           onSubmit={handleSubmit(submitHandler)}
-          className="flex flex-col gap-4 w-full px-4"
-          data-animate="form"
+          className="flex flex-col gap-5 w-full px-1"
           noValidate
         >
-          {/* ── Server error — identical to LoginForm ── */}
           {isError && error && (
             <ErrorMessage
               msg={error.error ? error.error.message : error.title}
@@ -87,108 +123,56 @@ export default function UpdateUserForm({ user }: { user: UserDto }) {
             />
           )}
           <SectionDivider label="Personal info" />
-
-          {/* First + Last name */}
           <div className="grid grid-cols-2 gap-3">
             <FieldWrapper
-              id="signup-firstName"
+              id="update-firstName"
               label="First Name"
               errorId="firstName-error"
               errorMessage={errors.firstName?.message}
             >
-              <div className="group relative">
-                <div
-                  className="pointer-events-none absolute inset-y-0 left-0 flex items-center
-                         pl-4 text-on-surface-variant transition-colors duration-200
-                         group-focus-within:text-primary"
-                >
-                  <User className="size-4" />
-                </div>
-                <Controller
-                  name="firstName"
-                  control={control}
-                  render={({ field }) => (
-                    <Input
-                      {...field}
-                      id="signup-firstName"
-                      type="text"
-                      placeholder="John"
-                      autoComplete="given-name"
-                      aria-invalid={!!errors.firstName}
-                      aria-describedby={
-                        errors.firstName ? "firstName-error" : undefined
-                      }
-                      className="pl-11 pr-4"
-                    />
-                  )}
-                />
-              </div>
+              <InputForm
+                control={control}
+                inputField="firstName"
+                errors={errors}
+                id="update-firstName"
+                placeholder="John"
+              />
             </FieldWrapper>
 
             <FieldWrapper
-              id="signup-lastName"
+              id="update-lastName"
               label="Last Name"
               errorId="lastName-error"
               errorMessage={errors.lastName?.message}
             >
-              <div className="group relative">
-                <div
-                  className="pointer-events-none absolute inset-y-0 left-0 flex items-center
-                         pl-4 text-on-surface-variant transition-colors duration-200
-                         group-focus-within:text-primary"
-                >
-                  <User className="size-4" />
-                </div>
-                <Controller
-                  name="lastName"
-                  control={control}
-                  render={({ field }) => (
-                    <Input
-                      {...field}
-                      id="signup-lastName"
-                      type="text"
-                      placeholder="Doe"
-                      autoComplete="family-name"
-                      aria-invalid={!!errors.lastName}
-                      aria-describedby={
-                        errors.lastName ? "lastName-error" : undefined
-                      }
-                      className="pl-11 pr-4"
-                    />
-                  )}
-                />
-              </div>
+              <InputForm
+                control={control}
+                inputField="lastName"
+                errors={errors}
+                id="update-lastName"
+                placeholder="Doe"
+              />
             </FieldWrapper>
           </div>
 
-          {/* ── Submit — identical gradient button to LoginForm ── */}
-          <div>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className=" btn-primary font-bold rounded-md
-          "
-            >
-              {isLoading ? (
-                <span className="flex items-center gap-2">
-                  <span
-                    className="size-4 rounded-full border-2 border-on-primary/30
-                         border-t-on-primary animate-spin"
-                  />
-                  Updating member...
-                </span>
-              ) : (
-                "Update Member"
-              )}
-            </button>
+          <div className="pt-2">
+            <LoadingButton
+              btnTxt="Update Member"
+              loadingTxt={"Updating member..."}
+              isLoading={isLoading}
+            />
           </div>
         </form>
-        <SheetFooter>
+        <SheetFooter className="border-t border-border/30 pt-4 mt-4">
           <SheetClose asChild>
-            <Button variant="outline">Close</Button>
+            <Button variant="outline" className="w-full">
+              Cancel
+            </Button>
           </SheetClose>
         </SheetFooter>
-      </SheetContent>
+      </SheetContent> */}
     </Sheet>
   );
-}
+};
+
+export default UpdateUserForm;

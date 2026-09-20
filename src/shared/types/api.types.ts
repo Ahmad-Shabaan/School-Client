@@ -1,6 +1,16 @@
-export interface RefreshTokenResponse {
+export interface ApiResponse {
   success: boolean;
   message: string;
+  pagination?: Pagination;
+}
+
+export interface Pagination {
+  pageIndex: number;
+  pageSize: number;
+  totalCount: number;
+  totalPages: number;
+}
+export interface RefreshTokenResponse extends ApiResponse{
   data: {
     refreshToken: string;
     accessToken: string;

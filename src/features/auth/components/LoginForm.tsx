@@ -52,15 +52,15 @@ export default function LoginForm({
       {/* ── Email ── */}
       <FieldWrapper
         id="login-email"
-        label="Email Address"
+        label="البريد الإلكتروني"
         errorId="email-error"
         errorMessage={errors.email?.message}
       >
         <div className="group relative">
           <div
-            className="pointer-events-none absolute inset-y-0 left-0 flex items-center
-                       pl-4 text-on-surface-variant transition-colors duration-200
-                       group-focus-within:text-primary"
+            className="pointer-events-none absolute inset-y-0 start-0 flex items-center
+                       ps-4 text-body-mute transition-colors duration-200
+                       group-focus-within:text-teal"
           >
             <Mail className="size-4" />
           </div>
@@ -72,11 +72,11 @@ export default function LoginForm({
                 {...field}
                 id="login-email"
                 type="email"
-                placeholder="john.doe@example.com"
+                placeholder="example@mail.com"
                 autoComplete="email"
                 aria-invalid={!!errors.email}
                 aria-describedby={errors.email ? "email-error" : undefined}
-                className="pl-11 pr-4"
+                className="border-line! ps-11 pe-4 hover:border-teal/40! focus-visible:ring-teal!"
               />
             )}
           />
@@ -86,15 +86,15 @@ export default function LoginForm({
       {/* ── Password ── */}
       <FieldWrapper
         id="signup-password"
-        label="Password"
+        label="كلمة المرور"
         errorId="password-error"
         errorMessage={errors.password?.message}
       >
         <div className="group relative">
           <div
-            className="pointer-events-none absolute inset-y-0 left-0 flex items-center
-                       pl-4 text-on-surface-variant transition-colors duration-200
-                       group-focus-within:text-primary"
+            className="pointer-events-none absolute inset-y-0 start-0 flex items-center
+                       ps-4 text-body-mute transition-colors duration-200
+                       group-focus-within:text-teal"
           >
             <Lock className="size-4" />
           </div>
@@ -106,22 +106,22 @@ export default function LoginForm({
                 {...field}
                 id="signup-password"
                 type={showPassword ? "text" : "password"}
-                placeholder="•••••••••••••••"
+                placeholder="••••••••"
                 autoComplete="new-password"
                 aria-invalid={!!errors.password}
                 aria-describedby={
                   errors.password ? "password-error" : undefined
                 }
-                className="pl-11 pr-12"
+                className="border-line! ps-11 pe-12 hover:border-teal/40! focus-visible:ring-teal!"
               />
             )}
           />
           <button
             type="button"
             onClick={() => setShowPassword((v) => !v)}
-            aria-label={showPassword ? "Hide password" : "Show password"}
-            className="absolute inset-y-0 right-0 flex items-center pr-4
-            text-on-surface-variant transition-colors hover:text-on-surface"
+            aria-label={showPassword ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"}
+            className="absolute inset-y-0 end-0 flex items-center pe-4
+            text-body-mute transition-colors hover:text-body"
           >
             {showPassword ? (
               <EyeOff className="size-4" />
@@ -134,25 +134,20 @@ export default function LoginForm({
       <div className="flex items-center justify-end">
         <Link
           to="/forgot-password"
-          className="text-sm font-semibold text-primary transition-colors hover:text-secondary"
+          className="text-sm font-semibold text-teal-dark transition-colors hover:text-teal"
         >
-          Forgot password?
+          نسيت كلمة المرور؟
         </Link>
       </div>
 
       {/* ── Submit ── */}
       <div>
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="btn-primary mt-1 font-bold rounded-md"
-        >
-          {isLoading ? (
-            <LoadingButton label={"Signing in.."} />
-          ) : (
-            "Sign In to Account"
-          )}
-        </button>
+        <LoadingButton
+          btnTxt="تسجيل الدخول"
+          loadingTxt="جارٍ تسجيل الدخول..."
+          isLoading={isLoading}
+          className="mt-1 h-11! bg-none! bg-teal-dark! py-0! text-sm! text-white! shadow-[0_10px_24px_rgba(18,61,52,0.22)]! hover:bg-teal! hover:shadow-[0_6px_16px_rgba(18,61,52,0.2)]! sm:h-12! sm:text-base!"
+        />
       </div>
     </form>
   );

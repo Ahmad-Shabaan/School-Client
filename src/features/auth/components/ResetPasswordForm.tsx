@@ -4,9 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import FieldWrapper from "./FieldWrapper";
 import { useAuth } from "../hooks/useAuth";
-import { useSearchParams } from "react-router-dom";
-import { ResetPasswordSchema } from "@/lib/utils/validation";
-import { Lock } from "lucide-react";
+import { useSearchParams, Link } from "react-router-dom";
+import { resetPasswordSchema } from "@/lib/utils/validation";
+import type { ResetPasswordSchema } from "@/lib/utils/validation";
+import { Lock, RefreshCw } from "lucide-react";
+import ErrorMessage from "@/shared/components/common/ErrorBoundary/ErrorMessage";
 
 const ResetPasswordForm = () => {
   const [searchParams] = useSearchParams();
@@ -37,18 +39,13 @@ const ResetPasswordForm = () => {
         <p className="text-sm text-muted-foreground mb-6">
           The password reset link is invalid or has expired. Please request a new one.
         </p>
-        <Button
-          asChild
-          href="/forgot-password"
-          variant="outline"
-          size="lg"
-        >
-          Request New Link
+        <Button asChild variant="outline" size="lg">
+          <Link to="/forgot-password">Request New Link</Link>
         </Button>
       </div>
     );
   }
-  const submitHandler = (ResetPasswordSchema) =>
+  const submitHandler = (data: ResetPasswordSchema) =>
     resetPassword(userId, token, data.password);
 
   return (

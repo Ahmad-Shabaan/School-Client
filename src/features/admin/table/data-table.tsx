@@ -15,7 +15,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import CustomPagination from "@/shared/components/common/Pagination/CustomPagination";
 
@@ -56,21 +55,20 @@ export function DataTable<TData, TValue>({
   });
 
   const pageIndex = table.getState().pagination.pageIndex;
-  // const pageCount = table.getPageCount();
 
   return (
-    <div className="hide-scrollbar rounded-xl bg-surface-container-low shadow-soft border border-outline-variant/10 overflow-hidden">
+    <div className="rounded-xl border border-border/40 bg-card shadow-card overflow-hidden">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow
               key={headerGroup.id}
-              className="border-b border-outline-variant/5 bg-surface-container hover:bg-surface-container"
+              className="border-b border-border/30 bg-muted/20 hover:bg-muted/20"
             >
               {headerGroup.headers.map((header) => (
                 <TableHead
                   key={header.id}
-                  className="h-12 px-6 text-xs font-semibold uppercase tracking-widest text-on-surface-variant"
+                  className={`${header.id === "activationStatus" && "text-left"} h-11 px-6 text-xs font-semibold uppercase tracking-widest text-muted-foreground/80`}
                 >
                   {header.isPlaceholder
                     ? null
@@ -83,13 +81,13 @@ export function DataTable<TData, TValue>({
             </TableRow>
           ))}
         </TableHeader>
-        <TableBody className="border border-border">
+        <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                className="border-b border-outline-variant/5 transition-colors hover:bg-surface-container/40 last:border-b-0"
+                className="border-b border-border/20 transition-colors hover:bg-muted/10 last:border-b-0"
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id} className="px-6 py-4 text-sm">
@@ -102,9 +100,13 @@ export function DataTable<TData, TValue>({
             <TableRow>
               <TableCell
                 colSpan={columns.length}
-                className="h-32 text-center text-sm text-on-surface-variant"
+                className="h-32 text-center text-sm text-muted-foreground"
               >
-                No users found.
+                <div className="flex flex-col items-center gap-2">
+                  <div className="text-muted-foreground/40">
+                    No members found
+                  </div>
+                </div>
               </TableCell>
             </TableRow>
           )}
@@ -113,8 +115,11 @@ export function DataTable<TData, TValue>({
 
       {pageCount >= 1 && (
         <>
-          <div className="h-px bg-linear-to-r from-transparent via-outline-variant/30 to-transparent" />
+          <div className="h-px bg-border/30" />
           <div className="flex items-center justify-between px-6 py-4">
+            <p className="text-xs text-muted-foreground text-nowrap">
+              Page {pageIndex} of {pageCount}
+            </p>
             <CustomPagination
               pageIndex={pageIndex}
               count={pageCount}
@@ -122,44 +127,6 @@ export function DataTable<TData, TValue>({
               onPageChange={onPaginationChange}
             />
           </div>
-          {/* 
-            <p className="text-sm text-on-surface-variant">
-              Page {pageIndex + 1} of {pageCount}
-            </p>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-                className="flex h-9 w-9 items-center justify-center rounded-lg bg-surface-container-highest border border-outline-variant/15 text-on-surface-variant transition-colors hover:bg-surface-container hover:text-on-surface disabled:cursor-not-allowed disabled:opacity-30"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </button>
-
-              <div className="flex items-center gap-1">
-                {Array.from({ length: pageCount }, (_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => table.setPageIndex(i)}
-                    className={`flex h-9 w-9 items-center justify-center rounded-lg text-sm font-semibold transition-all duration-200 ${
-                      i === pageIndex
-                        ? "bg-linear-to-br from-primary to-secondary text-on-primary"
-                        : "bg-surface-container-highest border border-outline-variant/15 text-on-surface-variant hover:bg-surface-container hover:text-on-surface"
-                    }`}
-                  >
-                    {i + 1}
-                  </button>
-                ))}
-              </div>
-
-              <button
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-                className="flex h-9 w-9 items-center justify-center rounded-lg bg-surface-container-highest border border-outline-variant/15 text-on-surface-variant transition-colors hover:bg-surface-container hover:text-on-surface disabled:cursor-not-allowed disabled:opacity-30"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </button>
-            </div>
-          </div> */}
         </>
       )}
     </div>

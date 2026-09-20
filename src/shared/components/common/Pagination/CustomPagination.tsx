@@ -16,38 +16,26 @@ const CustomPagination = ({
   count: totalPages,
   onPageChange,
 }: PaginationParams) => {
-  // const totalPages = useMemo(() => {
-  //   return Math.ceil(count / pageSize);
-  // }, [count, pageSize]);
-
   const pages = useMemo(() => {
     const pages: (number | "ellipsis")[] = [];
-
-    const delta = 1; // the nearest page from current
+    const delta = 1;
     const left = Math.max(2, pageIndex - delta);
     const right = Math.min(totalPages - 1, pageIndex + delta);
 
-    // First page
     pages.push(1);
-
-    // ellipsis before left
     if (left > 2) pages.push("ellipsis");
-
-    // middle pages
     for (let i = left; i <= right; i++) {
       pages.push(i);
     }
-    // ellipsis after right
     if (right < totalPages - 1) pages.push("ellipsis");
-    // Last page
     if (totalPages > 1) pages.push(totalPages);
     return pages;
   }, [totalPages, pageIndex]);
 
-  // Early return for single page (better performance)
   if (totalPages <= 1) {
     return null;
   }
+
   return (
     <Pagination>
       <PaginationContent>
@@ -60,7 +48,7 @@ const CustomPagination = ({
             }}
             className={
               pageIndex === 1
-                ? "pointer-events-none opacity-50"
+                ? "pointer-events-none opacity-30"
                 : "cursor-pointer"
             }
           />
@@ -96,7 +84,7 @@ const CustomPagination = ({
             }}
             className={
               pageIndex === totalPages
-                ? "pointer-events-none opacity-50"
+                ? "pointer-events-none opacity-30"
                 : "cursor-pointer"
             }
           />

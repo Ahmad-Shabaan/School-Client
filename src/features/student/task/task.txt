@@ -1,0 +1,12 @@
+Create this page in React and follow these instructions strictly:
+
+1. Follow the existing project folder structure and place each component/file in the appropriate existing folder. Do not create a new architecture unless necessary.
+2. I will provide an `index.html` containing the reference design. Recreate its visual design, layout, spacing, typography, responsiveness, and overall UI as closely as possible.
+3. Use the colors, CSS variables, fonts, and theme defined in `index.css`. Do not introduce a different color palette or override the existing theme without a strong reason.
+4. Build the page as a single cohesive visual experience (بصرية واحدة), not as disconnected sections with different styles.
+5. Make the page fully responsive for desktop, tablet, and mobile while preserving the original design hierarchy.
+6. Reuse existing components, utilities, assets, and styling conventions from the project whenever possible.
+7. Keep the implementation clean, reusable, and production-ready. Avoid unnecessary dependencies and duplicated CSS.
+8. Do not change the existing project structure or unrelated files. Only modify what is required to implement this page.
+9. Before coding, inspect the existing folder structure, `index.css`, and `index.html`, then implement the page based on them.
+10. The final result should visually match the provided HTML design while being properly implemented in React.

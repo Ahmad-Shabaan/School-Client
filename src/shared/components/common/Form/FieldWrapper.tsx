@@ -1,5 +1,4 @@
 import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
 import * as React from "react";
 
 interface FieldWrapperProps {
@@ -20,7 +19,7 @@ const FieldWrapper = ({
   return (
     <div className="space-y-2">
       <div className="flex items-center space-x-2">
-        <Label htmlFor={id} className="text-sm font-medium text-foreground">
+        <Label htmlFor={id} className="text-sm font-normal text-muted">
           {label}
         </Label>
         {/* Required indicator could go here if needed */}
