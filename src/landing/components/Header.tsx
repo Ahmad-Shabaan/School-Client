@@ -80,7 +80,7 @@ const Header = () => {
 {/* ── Actions ── */}
           <div className="flex flex-none items-center gap-1.5">
             <a
-              href="tel:+201000000000"
+              href="#inquiries"
               aria-label="اتصل بنا"
               className="flex size-9 items-center justify-center rounded-[10px] border border-[var(--line)] text-[var(--teal-dark)] transition-colors duration-200 hover:bg-[var(--teal-soft)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(169,130,44,0.6)] sm:size-8 md:hidden"
             >
