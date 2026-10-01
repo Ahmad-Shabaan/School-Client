@@ -9,7 +9,6 @@ import type {
   changePasswordParams,
 } from "../types/auth.types";
 import type { SignupFormValues } from "@/lib/utils/validation";
-import axios from "axios";
 
 const unwrapData = (response: { data: AuthResponse }): AuthData => {
   const payload = response.data?.data;
