@@ -69,12 +69,6 @@ export default function LoginPage() {
           >
             العودة إلى الصفحة الرئيسية
           </Link>
-            <Link
-            to="/profile"
-            className="text-sm font-semibold text-teal-dark transition-colors duration-200 hover:text-teal"
-          >
-            الذهاب إلى صفحة الملف الشخصي(للاختبار فقط)
-          </Link>
           <p className="text-xs text-body-mute/80">
             جميع الحقوق محفوظة © {new Date().getFullYear()} {footerName}
           </p>
