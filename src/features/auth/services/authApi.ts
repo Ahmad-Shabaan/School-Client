@@ -9,6 +9,7 @@ import type {
   changePasswordParams,
 } from "../types/auth.types";
 import type { SignupFormValues } from "@/lib/utils/validation";
+import axios from "axios";
 
 const unwrapData = (response: { data: AuthResponse }): AuthData => {
   const payload = response.data?.data;
@@ -19,6 +20,8 @@ const unwrapData = (response: { data: AuthResponse }): AuthData => {
 };
 
 const loginApi = async (creds: LoginCredentials): Promise<AuthData> => {
+  const data = await axios.get("http://al-madrasa-al-numaniyyah.runasp.net/WeatherForecast");
+  console.log("data  of web:", data);
   const response = await axiosClient.post<AuthResponse>("/auth/login", creds);
   return unwrapData(response);
 };
