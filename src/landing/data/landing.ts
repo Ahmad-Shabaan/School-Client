@@ -79,7 +79,7 @@ export const sheikhs: SheikhCard[] = [
   },
 ];
 
-export const knowledgeHeading = "العلوم الشرعية";
+export const knowledgeHeading = "المقررات";
 
 export const pillars: Pillar[] = [
   {
@@ -196,7 +196,7 @@ export const footerContactTitle = "تواصل معنا";
 export const footerLinks: NavLink[] = [
   { href: "#school", label: "عن المدرسة" },
   { href: "#sheikhs", label: "المشايخ" },
-  { href: "#knowledge", label: "العلوم الشرعية" },
+  { href: "#knowledge", label: "المقررات" },
   { href: "#inquiries", label: "استفسارات" },
   { href: "#faq", label: "الأسئلة المتكررة" },
 ];
@@ -210,6 +210,7 @@ export const footerContacts: { value: string; ltr?: boolean }[] = [
 export const copyrightLine = `جميع الحقوق محفوظة © 2026 ${footerName}`;
 
 export const servicesTitle = "مزيد من الخدمات";
+export const servicesLabel = "الخدمات";
 
 export const servicesLinks: ServiceLink[] = [
   { href: "#", label: "شروط القبول" },

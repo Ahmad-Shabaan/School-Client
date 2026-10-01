@@ -171,15 +171,13 @@
   opacity: 0;
   visibility: hidden;
   transform: translateY(-8px) scale(0.98);
-  transform-origin: top right;
+  transform-origin: top left;
   transition:
     opacity 0.25s ease,
     transform 0.25s ease,
     visibility 0.25s;
 }
 
-.services-menu:hover .services-panel,
-.services-menu:focus-within .services-panel,
 .services-menu[data-open="true"] .services-panel {
   opacity: 1;
   visibility: visible;

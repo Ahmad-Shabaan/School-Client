@@ -515,8 +515,8 @@
             <span class="value" id="studentName">أحمد محمد عبدالله</span>
           </div>
           <div class="info-item">
-            <span class="label">العمر</span>
-            <span class="value" id="studentAge">22 سنة</span>
+            <span class="label">رقم التسلسل</span>
+            <span class="value" id="studentAge">22</span>
           </div>
           <div class="info-item">
             <span class="label">البلد</span>
@@ -609,7 +609,7 @@
     // دالة لتهيئة بيانات الطالب في الواجهة
     function renderStudentInfo(student) {
       document.getElementById('studentName').textContent = student.name;
-      document.getElementById('studentAge').textContent = student.age + " سنة";
+      document.getElementById('studentAge').textContent = student.age;
       document.getElementById('studentCountry').textContent = student.country;
       document.getElementById('studentLevel').textContent = student.level;
       document.getElementById('studentProgressText').textContent = student.progress + "%";

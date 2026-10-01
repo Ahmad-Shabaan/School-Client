@@ -27,9 +27,9 @@ const StudentInfoCard = ({ student }: { student: Student }) => (
           </span>
         </div>
         <div>
-          <span className="block text-sm text-body-mute">العمر</span>
+          <span className="block text-sm text-body-mute">رقم التسلسل</span>
           <span className="mt-1 block text-base font-bold text-ink">
-            {student.age} سنة
+            {student.age}
           </span>
         </div>
         <div>
