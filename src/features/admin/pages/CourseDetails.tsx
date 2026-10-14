@@ -12,9 +12,24 @@ import {
   Download,
   Share2,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { useEnrollStudentsInCourse } from "../hooks/useCourses";
+import EnrollStudentsForm from "../components/EnrollStudentsForm";
 
 const CourseDetails = () => {
+  const { id } = useParams();
+  const courseId = Number(id);
+  const {
+    handleEnrollStudents,
+    isLoading: enrollStudentsIsLoading,
+    isError: enrollStudentsIsError,
+    error: enrollStudentsError,
+  } = useEnrollStudentsInCourse();
+
+  const handleEnrollSubmit = (studentEmails: string[]) => {
+    handleEnrollStudents(courseId, studentEmails);
+  };
+
   return (
     <div className="page-container">
       <div className="space-y-8">
@@ -42,10 +57,30 @@ const CourseDetails = () => {
         {/* Stats */}
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            { label: "Total Students", value: "128", icon: Users, color: "text-primary" },
-            { label: "Course Duration", value: "12 Weeks", icon: Clock, color: "text-secondary" },
-            { label: "Average Rating", value: "4.8/5.0", icon: Star, color: "text-amber-500" },
-            { label: "Completion Rate", value: "87%", icon: BarChart3, color: "text-emerald-500" },
+            {
+              label: "Total Students",
+              value: "128",
+              icon: Users,
+              color: "text-primary",
+            },
+            {
+              label: "Course Duration",
+              value: "12 Weeks",
+              icon: Clock,
+              color: "text-secondary",
+            },
+            {
+              label: "Average Rating",
+              value: "4.8/5.0",
+              icon: Star,
+              color: "text-amber-500",
+            },
+            {
+              label: "Completion Rate",
+              value: "87%",
+              icon: BarChart3,
+              color: "text-emerald-500",
+            },
           ].map((stat) => (
             <Card key={stat.label} className="border-border/40">
               <CardContent className="p-5">
@@ -54,8 +89,12 @@ const CourseDetails = () => {
                     <stat.icon className={`h-5 w-5 ${stat.color}`} />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">{stat.label}</p>
-                    <p className="text-xl font-bold text-foreground">{stat.value}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {stat.label}
+                    </p>
+                    <p className="text-xl font-bold text-foreground">
+                      {stat.value}
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -68,14 +107,17 @@ const CourseDetails = () => {
           {/* Course Info */}
           <Card className="lg:col-span-2 border-border/40">
             <CardHeader className="pb-4">
-              <h2 className="text-lg font-semibold text-foreground">About This Course</h2>
+              <h2 className="text-lg font-semibold text-foreground">
+                About This Course
+              </h2>
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-sm text-muted-foreground leading-relaxed">
-                This comprehensive course covers advanced mathematical concepts including
-                calculus, linear algebra, and differential equations. Designed for students
-                who have completed introductory mathematics courses and are ready for
-                rigorous mathematical thinking.
+                This comprehensive course covers advanced mathematical concepts
+                including calculus, linear algebra, and differential equations.
+                Designed for students who have completed introductory
+                mathematics courses and are ready for rigorous mathematical
+                thinking.
               </p>
               <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border/30">
                 {[
@@ -87,8 +129,12 @@ const CourseDetails = () => {
                   { label: "Credits", value: "4 Units" },
                 ].map((item) => (
                   <div key={item.label}>
-                    <p className="text-xs text-muted-foreground uppercase tracking-wider">{item.label}</p>
-                    <p className="text-sm font-medium text-foreground mt-0.5">{item.value}</p>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider">
+                      {item.label}
+                    </p>
+                    <p className="text-sm font-medium text-foreground mt-0.5">
+                      {item.value}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -98,22 +144,47 @@ const CourseDetails = () => {
           {/* Sidebar */}
           <Card className="border-border/40">
             <CardHeader className="pb-4">
-              <h2 className="text-lg font-semibold text-foreground">Quick Actions</h2>
+              <h2 className="text-lg font-semibold text-foreground">
+                Quick Actions
+              </h2>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button className="w-full justify-start" variant="default" size="sm">
+              <EnrollStudentsForm
+                onSubmit={handleEnrollSubmit}
+                isLoading={enrollStudentsIsLoading}
+                isError={enrollStudentsIsError}
+                error={enrollStudentsError}
+                courseId={courseId}
+              />
+              <Button
+                className="w-full justify-start"
+                variant="outline"
+                size="sm"
+              >
                 <Users className="mr-2 h-4 w-4" />
                 View Enrolled Students
               </Button>
-              <Button className="w-full justify-start" variant="outline" size="sm">
+              <Button
+                className="w-full justify-start"
+                variant="outline"
+                size="sm"
+              >
                 <Calendar className="mr-2 h-4 w-4" />
                 Schedule Session
               </Button>
-              <Button className="w-full justify-start" variant="outline" size="sm">
+              <Button
+                className="w-full justify-start"
+                variant="outline"
+                size="sm"
+              >
                 <Download className="mr-2 h-4 w-4" />
                 Export Reports
               </Button>
-              <Button className="w-full justify-start" variant="outline" size="sm">
+              <Button
+                className="w-full justify-start"
+                variant="outline"
+                size="sm"
+              >
                 <Share2 className="mr-2 h-4 w-4" />
                 Share Course
               </Button>
@@ -126,8 +197,12 @@ const CourseDetails = () => {
           <CardHeader className="pb-4">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-semibold text-foreground">Course Syllabus</h2>
-                <p className="text-sm text-muted-foreground">12 modules covering key topics</p>
+                <h2 className="text-lg font-semibold text-foreground">
+                  Course Syllabus
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  12 modules covering key topics
+                </p>
               </div>
               <Badge variant="default">Coming Soon</Badge>
             </div>

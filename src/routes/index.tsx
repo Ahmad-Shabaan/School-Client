@@ -15,6 +15,7 @@ import Courses from "@/features/admin/pages/Courses";
 import CourseDetails from "@/features/admin/pages/CourseDetails";
 import Subscriptions from "@/features/admin/pages/Subscriptions";
 import Home from "@/landing/pages/Home";
+import StudentCourse from "@/features/student/pages/StudentCourse";
 
 const PrivateRoute = lazy(() => import("../components/guards/PrivateRoute"));
 const PublicOnlyRoute = lazy(
@@ -133,6 +134,14 @@ const router = createBrowserRouter([
       {
         path: ROUTES.Student.basePath,
         element: <StudentProfile />,
+      },
+      {
+        path: ROUTES.Student.course,
+        element: <StudentCourse />,
+      },
+      {
+        path: ROUTES.Student.courses,
+        element: <StudentCourse />,
       },
     ],
   },

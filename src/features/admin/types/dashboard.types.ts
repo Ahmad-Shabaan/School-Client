@@ -47,6 +47,11 @@ export interface GetUsersResponse extends ApiResponse {
   data: UserDto[];
 }
 
+
+export interface GetUsersEmailResponse extends ApiResponse {
+  data: {isEnrolled: boolean, email: string }[];
+}
+
 export interface CreateUserResponse extends ApiResponse {
   data: UserDto;
 }

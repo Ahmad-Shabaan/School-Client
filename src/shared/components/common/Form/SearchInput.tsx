@@ -24,7 +24,7 @@ const SearchInput = ({
             }}
             className="rounded-lg"
             id="input-button-group"
-            placeholder="Search members..."
+            placeholder="Search for..."
           />
           <Button
             className="h-10"

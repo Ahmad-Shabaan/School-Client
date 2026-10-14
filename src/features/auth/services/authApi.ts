@@ -31,7 +31,12 @@ const getMe = async (skipAuthRefresh?: boolean): Promise<AuthData> => {
 };
 
 const logoutApi = async (): Promise<void> => {
-  await axiosClient.delete("/auth/logout");
+  await axiosClient.delete("/auth/logout",{
+    headers: {
+      "Content-Type": "application/json",
+      "RefreshToken": localStorage.getItem("school_refresh_token") || "",
+    },
+  });
 };
 
 const refreshApi = async (): Promise<RefreshResponse> => {

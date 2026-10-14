@@ -1,9 +1,12 @@
 import { useRef } from "react";
 import { useNavAnimation } from "./navbar.animation";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Bell, Search, GraduationCap } from "lucide-react";
+import { Bell, GraduationCap, LogOut } from "lucide-react";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
 const Navbar = () => {
+  const { logout, isLoggingOut } = useAuth();
+
   const navRef = useRef<HTMLDivElement>(null);
   useNavAnimation({ sectionRef: navRef });
   return (
@@ -27,8 +30,12 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            <button className="relative flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground transition-all duration-200">
-              <Search className="h-4 w-4" />
+            <button 
+              className="cursor-pointer relative flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground transition-all duration-200"
+              onClick={logout}
+              disabled={isLoggingOut}
+            >
+              <LogOut className="h-4 w-4" />
             </button>
             <button className="relative flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground transition-all duration-200">
               <Bell className="h-4 w-4" />
@@ -39,8 +46,12 @@ const Navbar = () => {
                 A
               </div>
               <div className="hidden md:flex flex-col">
-                <span className="text-xs font-medium text-foreground">Admin</span>
-                <span className="text-[10px] text-muted-foreground">admin@school.com</span>
+                <span className="text-xs font-medium text-foreground">
+                  Admin
+                </span>
+                <span className="text-[10px] text-muted-foreground">
+                  admin@school.com
+                </span>
               </div>
             </div>
           </div>

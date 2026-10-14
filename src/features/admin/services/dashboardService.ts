@@ -2,6 +2,7 @@ import axiosClient from "@/shared/api/axiosClient";
 import type {
   ApiResponse,
   CreateUserResponse,
+  GetUsersEmailResponse,
   GetUsersResponse,
   UpdateUserParams,
   UpdateUserStatusParams,
@@ -15,6 +16,13 @@ export const getUsers = async (
 ): Promise<GetUsersResponse> => {
   const response = await axiosClient.get<GetUsersResponse>(
     `/users?page=${filters.pageIndex}&pageSize=${filters.pageSize}&searchTerm=${filters.search}`,
+  );
+  return response.data;
+};
+
+export const getUsersEmail = async (courseId: number): Promise<GetUsersEmailResponse> => {
+  const response = await axiosClient.get<GetUsersEmailResponse>(
+    `/users/emails?courseId=${courseId}`
   );
   return response.data;
 };

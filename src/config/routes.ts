@@ -5,7 +5,7 @@ export const ROUTES = {
     basePath: "/admin",
     dashboard: "dashboard",
     courses: "courses",
-    course: "courses/id",
+    course: "courses/:id",
     members: "members",
     member: "members/:id",
     subscriptions:"subscriptions",
@@ -28,5 +28,7 @@ export const ROUTES = {
     basePath: "/student",
     dashboard: "student",
     roles: [ROLES.Student],
+    courses: "courses",
+    course: "courses/:id",
   },
 } as const;

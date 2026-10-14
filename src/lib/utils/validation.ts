@@ -101,6 +101,41 @@ export const updateUserSchema = z.object({
   ...info.shape,
 });
 
+export const courseSchema = z.object({
+  name: z
+    .string()
+    .min(2, "Course name is required")
+    .max(120, "Course name is too long"),
+  description: z
+    .string()
+    .min(10, "Description must be at least 10 characters")
+    .max(1000, "Description is too long"),
+  file: z
+    .file({ message: "Course image is required" })
+    .max(5_000_000, "Image must be 5MB or smaller"),
+});
+
+export const updateCourseSchema = z.object({
+  name: z
+    .string()
+    .min(2, "Course name is required")
+    .max(120, "Course name is too long"),
+  description: z
+    .string()
+    .min(10, "Description must be at least 10 characters")
+    .max(1000, "Description is too long"),
+  file: z
+    .file({ message: "Please choose a valid file" })
+    .max(5_000_000, "Image must be 5MB or smaller")
+    .optional(),
+});
+
+export const enrollStudentsSchema = z.object({
+  emails: z
+    .array(z.string())
+    .min(1, "Select at least one student to enroll."),
+});
+
 export const loginSchema = z.object({
   ...credentials.shape,
 });
@@ -125,6 +160,12 @@ type InfoFormValues = z.infer<typeof infoFormSchema>;
 export interface InfoForm extends InfoFormValues, FieldValues {}
 
 export type UpdateUserFormValues = z.infer<typeof updateUserSchema>;
+
+export type CreateCourseFormValues = z.infer<typeof courseSchema>;
+
+export type UpdateCourseFormValues = z.infer<typeof updateCourseSchema>;
+
+export type EnrollStudentsFormValues = z.infer<typeof enrollStudentsSchema>;
 
 export type LoginSchema = z.infer<typeof loginSchema>;
 export type ForgetPasswordSchema = z.infer<typeof forgetPasswordSchema>;

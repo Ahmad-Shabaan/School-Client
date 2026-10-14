@@ -15,6 +15,14 @@ export interface StudentCourse {
   progress: number;
 }
 
+export interface Lesson {
+  id: number;
+  title: string;
+  icon: string;
+  description: string;
+  duration: string;
+}
+
 export interface StudentNotification {
   id: number;
   message: string;
