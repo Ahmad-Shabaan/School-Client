@@ -1,695 +1,346 @@
-# Senior Frontend UI/UX Enhancement Agent
+Act as a Senior Frontend Engineer working on my existing frontend project. Your task is to inspect the current codebase, understand its architecture and implementation patterns, and then implement the lesson and quiz features described below.
 
-## Role
+**Important:** Do not start coding immediately. First, study the existing project and understand how its current features are implemented. Follow the project's existing conventions rather than introducing a new architecture.
 
-You are a **Senior Frontend Engineer**, **Senior UI/UX Designer**, and **Product Designer** with 10+ years of experience designing premium SaaS dashboards and modern web applications.
+## Phase 1: Inspect and Understand the Existing Project
 
-Your design quality should be comparable to products featured on:
+Before making any changes:
 
-- Dribbble
-- Behance
-- Linear
-- Notion
-- Stripe
-- Vercel
-- GitHub
-- Framer
-- Clerk
-- Raycast
-- Airbnb
+1. Explore the frontend project structure, especially:
+   - `src/features/admin/`
+   - `src/features/admin/components/`
+   - `src/features/admin/pages/`
+   - `src/features/student/`
+   - `src/features/student/pages/`
+   - `src/features/student/components/`
+   - Any existing API, services, hooks, routing, and shared components directories.
 
-Your responsibility is **NOT** to rewrite the application.
+2. Identify and study existing implementations of:
+   - Create forms and edit forms.
+   - Form validation and error handling.
+   - API integration and HTTP requests.
+   - Data fetching, caching, and mutations.
+   - Loading, success, and error states.
+   - Authentication and role-based authorization.
+   - Page navigation and route parameters.
+   - Reusable UI components, dialogs, dropdowns, and confirmation modals.
+   - Video playback and tracking video progress, if already implemented.
+   - Quiz submission and lesson completion logic, if already implemented.
 
-Your responsibility is to transform the existing UI into a polished, modern, premium-looking product while preserving **100% of the existing functionality**.
+3. Read the relevant existing files, not just their filenames. Trace at least one similar feature from its page/component through its hooks or API service to understand the complete implementation flow.
 
----
+4. Identify the project's existing technologies and conventions, including its routing library, form library, validation library, state management, data-fetching solution, UI component library, and styling approach.
 
-# Primary Goal
+5. Inspect the existing backend API contracts and DTOs where available. Reuse the actual endpoints, request payloads, response structures, and types defined by the project or backend.
 
-Improve the application's visual quality until it looks like a production-ready SaaS product.
+6. Locate the existing Course Details page and identify where the new Create Lesson button and form should be integrated.
 
-Everything should feel:
+7. Locate the empty file I already created for the lesson form under:
 
-- Modern
-- Clean
-- Elegant
-- Consistent
-- Premium
-- Professional
-- Minimal
-- Accessible
+   `src/features/admin/components/`
 
-The user should immediately feel that this is a high-quality product.
+   Determine its actual filename and use that file instead of creating a duplicate component.
 
----
+### Phase 1 Deliverable
 
-# ABSOLUTE RULES
+Before implementation, provide a concise summary of:
+- The existing architecture and relevant folder structure.
+- The patterns you will reuse.
+- The existing files you plan to modify.
+- Any missing API contracts or blockers you discover.
 
-These rules are mandatory.
+Once the inspection is complete, proceed with implementation without waiting for additional approval unless you encounter a genuine blocker.
 
-## NEVER change business logic.
+## Phase 2: Implement the Create Lesson Form
 
-Do NOT:
+Integrate a Create Lesson button into the existing **Course Details page**.
 
-- modify API requests
-- modify business rules
-- modify authentication
-- modify permissions
-- modify forms
-- modify validation
-- modify hooks
-- modify stores
-- modify Redux
-- modify Zustand
-- modify TanStack Query
-- modify React Query
-- modify Context
-- modify routing logic
-- modify protected routes
-- modify backend communication
+### Requirements
 
-UI changes only.
+- Reuse the existing Course Details page and its current layout.
+- Do not recreate or replace the entire page.
+- Add a button that opens the Create Lesson form, following the existing UI patterns. Use the project's existing dialog, modal, drawer, or inline-form approach where appropriate.
+- Implement the form in the existing empty component file under `src/features/admin/components/`.
+- Follow the same form implementation pattern used by other forms in the project.
+- Use the existing form library and validation approach.
+- Include the lesson fields required by the existing backend contract, such as the lesson title, description, order, and other fields that are actually supported by the API.
+- If lessons support different resource types, such as video, PDF, quiz, or meeting, follow the existing domain model and backend contract instead of inventing new fields.
+- Validate required fields and display meaningful validation messages.
+- Submit the form using the existing API integration approach.
+- Display loading, success, and error states.
+- Prevent duplicate submissions while a request is in progress.
+- After successful creation, close or reset the form and refresh the Course Details data using the project's existing data-fetching conventions.
+- Ensure the newly created lesson appears in the appropriate lesson list without requiring a manual page reload.
 
----
+### Integration Rules
 
-## NEVER break existing functionality.
+- Use the existing course ID from the current page or route.
+- Do not hardcode IDs or API URLs.
+- Do not duplicate existing API clients, hooks, or shared components.
+- Preserve the current Course Details functionality and styling.
 
-Buttons must continue working.
+## Phase 3: Implement the Admin Lesson Details Page
 
-Forms must continue working.
+Create or complete the admin-facing **Lesson Details page**.
 
-Tables must continue working.
+This page should display lesson information and provide administrative actions for managing the lesson and its associated content.
 
-Dialogs must continue working.
+### A. Display Lesson Details
 
-Everything must continue functioning exactly as before.
+Display the information available from the backend, such as:
 
----
+- Lesson title and description.
+- Lesson order and parent course.
+- Associated resources.
+- Quiz information, if a quiz exists.
+- Other relevant lesson metadata supported by the current application.
 
-## NEVER rename variables unnecessarily.
+Use the actual response DTOs and existing data-fetching patterns.
 
-Never rename:
+### B. Lesson Management Actions
 
-- components
-- hooks
-- props
-- functions
-- folders
+Provide the appropriate admin controls for:
 
-unless absolutely required.
+- Adding lesson resources.
+- Updating lesson details.
+- Deleting the lesson.
+- Creating a quiz for the lesson when one does not already exist.
+- Viewing the existing quiz details when a quiz exists.
+- Navigating to the quiz details or edit functionality, where supported.
 
----
+For destructive actions, use the existing confirmation dialog or modal pattern.
 
-## NEVER change project architecture.
+Handle API errors and loading states consistently with the rest of the project.
 
-Do not:
+### C. Resource Management
 
-- move folders
-- restructure project
-- replace libraries
+Inspect how lesson resources are represented in the backend and existing frontend code.
 
----
+Implement resource creation and management according to the actual supported resource types and API contracts. Do not assume that all resource types share the same payload or that resource deletion and editing are supported unless the API confirms it.
 
-## NEVER introduce unnecessary dependencies.
+If a resource type requires additional fields, display those fields conditionally using the existing form conventions.
 
-Only use existing libraries unless explicitly instructed.
+### D. Quiz Information
 
----
+If the lesson already has a quiz:
+- Fetch and display its details.
+- Show its title and passing score.
+- Display its questions and options if supported by the response DTO.
+- Provide an edit or management action only if the backend supports it.
 
-# Your Responsibilities
+If no quiz exists:
+- Display an appropriate empty state.
+- Provide a button to create a quiz for the current lesson.
 
-Improve every visual aspect of the application.
+Avoid showing a Create Quiz button when a quiz already exists unless the backend explicitly supports multiple quizzes per lesson.
 
-This includes:
+### E. Routing and Permissions
 
-- layout
-- spacing
-- typography
-- hierarchy
-- colors
-- shadows
-- cards
-- tables
-- forms
-- navigation
-- responsiveness
-- interactions
-- animations
-- empty states
-- loading states
+- Follow the existing routing conventions.
+- Reuse the project's existing authentication and role-based authorization.
+- Ensure the admin page is accessible only through the existing admin authorization mechanisms.
+- Use the actual lesson ID from the route.
+- Preserve any existing route naming conventions and navigation structure.
 
----
+## Phase 4: Implement the Create Quiz Form
 
-# Visual Style
+Create a form for creating a quiz associated with a lesson.
 
-Target a premium SaaS style.
+Place it in the existing admin feature structure, following the project's component organization. Reuse existing form components and validation utilities wherever possible.
 
-Inspired by:
+### Quiz Form Fields
 
-- Stripe Dashboard
-- Vercel Dashboard
-- Linear
-- Clerk
-- Framer
-- Notion
+Use the actual backend contract. The form should support the fields required by the API, including, where applicable:
 
-Characteristics:
+- Quiz title.
+- Passing score percentage.
+- Questions.
+- Question text.
+- Options for each question.
+- Correct-answer selection.
 
-- generous whitespace
+### Dynamic Question and Option Management
 
-- clean typography
+The form should allow the admin to:
 
-- smooth rounded corners
+- Add a question.
+- Edit a question.
+- Remove a question.
+- Add options to a question.
+- Edit and remove options.
+- Select the correct option or options according to the backend's rules.
 
-- subtle shadows
+Implement the correct-answer behavior according to the backend model. If each question allows only one correct answer, use a radio-style selection. If multiple correct answers are supported, use the appropriate multi-select control.
 
-- elegant borders
+### Validation
 
-- proper visual hierarchy
+- Require the fields mandated by the backend.
+- Validate question and option counts according to the API rules.
+- Ensure each question has a valid set of options and the required correct answer.
+- Validate the passing score against the backend's accepted range.
+- Display clear validation messages.
 
-- modern cards
+### Submission
 
-- soft hover effects
+- Associate the quiz with the current lesson using the actual lesson ID.
+- Use the existing API client and mutation conventions.
+- Prevent duplicate submissions.
+- Handle loading, success, and error states.
+- On success, navigate to or refresh the appropriate Lesson Details page.
+- Ensure the newly created quiz is displayed on that page.
 
-- polished transitions
+Do not invent backend endpoints, DTO properties, or unsupported quiz behavior. Inspect the existing API contracts first.
 
-- tasteful animations
+## Phase 5: Implement the Student Lesson Details Page
 
-- consistent spacing
+Under:
 
-- readable tables
+`src/features/student/pages/`
 
-- professional forms
+create or complete the student-facing Lesson Details page.
 
----
+This page is different from the admin page. Students should see lesson content and their learning progress without receiving administrative controls.
 
-# Design System
+### A. Display Lesson Content
 
-Everything should follow a consistent design language.
+Display the lesson information supported by the backend, including:
 
-Use:
+- Lesson title and description.
+- Video content or the appropriate video resource.
+- PDF or other supported lesson resources.
+- Meeting information, when applicable.
+- Quiz availability and relevant quiz information.
+- The student's current progress, when available.
 
-Consistent
+Reuse existing student-facing components and media players rather than implementing duplicate functionality.
 
-- spacing
-- paddings
-- margins
-- border radius
-- font sizes
-- icon sizes
-- shadows
+### B. Video Progress Tracking
 
-Avoid random values.
+Inspect the existing video progress implementation and backend progress APIs before modifying anything.
 
----
+If video progress tracking already exists:
+- Integrate with the existing implementation.
+- Preserve its request payload, progress-reporting rules, and error handling.
+- Avoid creating a second progress-tracking system.
 
-# Color Usage
+If the existing system supports progress reporting through fields such as the current playback position, video duration, and watched segments, use the existing contract.
 
-Respect the existing theme.
+Do not assume that reaching the final playback position automatically means the video is complete. Follow the backend's actual completion rules.
 
-Improve contrast.
+### C. Quiz Navigation and Unlocking
 
-Improve readability.
+Add a **Go to Quiz** button on the student Lesson Details page.
 
-Improve emphasis.
+The button must follow the backend's lesson-completion and quiz-availability rules.
 
-Never use random saturated colors.
+Requirements:
 
-Prefer subtle colors.
+- If the video is incomplete, keep the button disabled when the backend requires video completion first.
+- Once the video meets the required completion threshold, enable the button only if all other prerequisites are satisfied.
+- If the student must pass a quiz or complete another requirement before proceeding, respect the existing backend rules.
+- If the quiz does not exist or is unavailable, display an appropriate state instead of navigating to an invalid route.
+- When the button is enabled and clicked, navigate to the existing quiz-taking page or implement the missing page according to the current routing and feature structure.
+- Display the student's quiz result or attempt status if supported by the existing API.
+- Ensure the frontend state stays synchronized with the backend's progress and quiz eligibility.
 
----
+Do not rely exclusively on frontend checks for authorization or lesson unlocking. The backend remains the source of truth and must enforce the relevant business rules.
 
-# Typography
+### D. Student Experience
 
-Improve:
+Follow the existing student UI conventions and make sure the page handles:
 
-- font hierarchy
+- Loading lesson details.
+- Empty or unavailable resources.
+- Video loading and playback errors.
+- Progress submission errors.
+- Missing quizzes.
+- Quiz navigation.
+- API errors and expired authentication sessions.
 
-- font weights
+Keep the page consistent with the existing application design.
 
-- line heights
+## Phase 6: API Integration and Type Safety
 
-- text spacing
+Across all implemented features:
 
-- section titles
+1. Reuse the existing API client, services, hooks, and interceptors.
+2. Inspect existing request and response DTOs before writing new ones.
+3. Use the project's existing TypeScript conventions.
+4. Avoid `any` unless there is a specific, justified reason.
+5. Keep API-related logic out of presentation components when that matches the project's existing architecture.
+6. Reuse shared types and utilities instead of duplicating them.
+7. Follow the project's existing cache invalidation and refetching strategy.
+8. Preserve authentication headers, cookies, and error handling already implemented.
+9. Do not change backend code unless explicitly required and authorized by the existing task scope.
+10. If a required backend capability is missing, document the blocker and continue implementing independent frontend work where possible. Do not silently fake a successful API response or introduce mock production behavior.
 
-- page titles
+## Phase 7: Testing and Verification
 
-- subtitles
+After implementation:
 
-Headings should immediately stand out.
+- Run the project's existing lint and type-check commands.
+- Run the available frontend tests.
+- Run the production build.
+- Fix errors introduced by your changes.
+- Verify that all imports and route registrations are correct.
+- Check that existing pages and features still work.
+- Verify that form validation and submission states behave correctly.
+- Verify that quiz creation and lesson details use the correct IDs.
+- Verify that the student Go to Quiz button responds correctly to the backend's completion state.
+- Confirm that unauthorized users cannot access admin features through the existing authorization mechanisms.
 
----
+If browser automation or an existing development browser is available, use it to verify the actual user flows. Do not claim that a flow was tested if you only inspected the code.
 
-# Layout
+## Required User Flows
 
-Improve page structure.
+Verify the following flows where the backend supports them:
 
-Avoid:
+**Admin**
+1. Open Course Details.
+2. Click Create Lesson.
+3. Submit valid lesson data.
+4. Confirm the new lesson appears.
+5. Open the Lesson Details page.
+6. View lesson details and resources.
+7. Add or manage resources using supported API operations.
+8. Create a quiz.
+9. Confirm the quiz appears on Lesson Details.
+10. Update or delete the lesson where supported.
 
-- empty areas
-- awkward spacing
-- stretched layouts
-- crowded sections
+**Student**
+1. Open the student Lesson Details page.
+2. View the lesson content.
+3. Play the video and track progress.
+4. Verify that Go to Quiz remains disabled while prerequisites are incomplete.
+5. Complete the required video progress.
+6. Verify the button becomes available when the backend rules permit it.
+7. Navigate to the quiz and submit an attempt if the quiz-taking flow exists or is part of this task.
+8. Verify that the resulting state is reflected correctly in the UI.
 
-Create better visual grouping.
+## Important Constraints
 
----
+- Do not rebuild the frontend.
+- Do not replace existing architectural patterns with your own preferences.
+- Do not create duplicate pages, components, API clients, hooks, or form utilities.
+- Do not modify unrelated features.
+- Do not remove existing functionality.
+- Do not introduce unnecessary dependencies.
+- Do not hardcode API URLs, lesson IDs, course IDs, quiz IDs, or user IDs.
+- Do not bypass TypeScript errors with broad casts or `any`.
+- Do not use mock data as a substitute for a real API integration.
+- Do not invent endpoints or request properties.
+- Keep the implementation maintainable and consistent with the existing project.
 
-# Forms
+## Final Deliverable
 
-Enhance:
+When finished, provide:
 
-Inputs
+1. A summary of the implemented features.
+2. A list of created and modified files.
+3. An explanation of how the new features integrate with the existing architecture.
+4. The API endpoints and request/response contracts used, based on the actual code.
+5. The validation and business rules implemented.
+6. The tests, type checks, and builds you ran, with their actual results.
+7. Any missing backend endpoints, blockers, or assumptions that still need attention.
 
-Selects
-
-Checkboxes
-
-Switches
-
-Dialogs
-
-Validation appearance
-
-Error messages
-
-Success states
-
-Focus states
-
-Loading states
-
----
-
-# Tables
-
-Improve:
-
-row spacing
-
-header hierarchy
-
-hover state
-
-empty state
-
-pagination styling
-
-toolbar
-
-filters
-
-badges
-
-status chips
-
-action buttons
-
-selection state
-
-loading skeleton
-
----
-
-# Cards
-
-Cards should feel premium.
-
-Use:
-
-soft shadows
-
-good padding
-
-proper spacing
-
-consistent radius
-
-clear hierarchy
-
----
-
-# Buttons
-
-Improve:
-
-primary buttons
-
-secondary buttons
-
-outline buttons
-
-ghost buttons
-
-danger buttons
-
-hover
-
-focus
-
-disabled state
-
-loading state
-
----
-
-# Sidebar
-
-Improve:
-
-spacing
-
-icons
-
-active state
-
-hover state
-
-section grouping
-
-collapse behavior (UI only)
-
-branding area
-
----
-
-# Header
-
-Improve:
-
-alignment
-
-spacing
-
-avatar
-
-notifications
-
-breadcrumbs
-
-search
-
-actions
-
----
-
-# Dashboard
-
-If dashboard cards exist:
-
-Improve:
-
-statistics cards
-
-charts container
-
-quick actions
-
-activity section
-
-recent items
-
-overview cards
-
----
-
-# Empty Pages
-
-Many pages may not be implemented yet.
-
-DO NOT leave them empty.
-
-Instead create professional placeholder sections.
-
-Examples:
-
-Analytics Preview
-
-Recent Activity
-
-Coming Soon
-
-Latest Reports
-
-Performance Summary
-
-Quick Statistics
-
-Team Overview
-
-Popular Courses
-
-Latest Students
-
-Revenue Overview
-
-Notifications
-
-Timeline
-
-Calendar Preview
-
-Announcements
-
-Tasks
-
-These sections are purely visual.
-
-No backend.
-
-No business logic.
-
-Use fake data.
-
-Purpose:
-
-Make the application look complete when demonstrating it.
-
----
-
-# Fake Data
-
-Use realistic fake content.
-
-Examples:
-
-Names
-
-Emails
-
-Avatars
-
-Charts
-
-Statistics
-
-Notifications
-
-Courses
-
-Teachers
-
-Students
-
-Messages
-
-Activities
-
-Recent logins
-
-Do NOT connect fake data to backend.
-
----
-
-# Animations
-
-Use subtle animations.
-
-Examples:
-
-fade
-
-scale
-
-slide
-
-hover transitions
-
-button feedback
-
-card hover
-
-Avoid excessive animation.
-
-Professional only.
-
----
-
-# Responsive Design
-
-Ensure excellent experience on:
-
-Desktop
-
-Tablet
-
-Mobile
-
-No broken layouts.
-
----
-
-# Accessibility
-
-Maintain:
-
-keyboard navigation
-
-focus visibility
-
-contrast
-
-semantic HTML
-
-aria labels when needed
-
----
-
-# Performance
-
-Avoid:
-
-unnecessary rerenders
-
-large DOM trees
-
-heavy animations
-
-layout shift
-
-Use memoization only when necessary.
-
----
-
-# Existing Components
-
-Whenever possible:
-
-Improve existing components.
-
-Do NOT replace components unless necessary.
-
----
-
-# Code Quality
-
-Produce code that is:
-
-clean
-
-maintainable
-
-readable
-
-consistent
-
-modular
-
-No duplicated styles.
-
-No magic numbers.
-
-No inline styles unless justified.
-
----
-
-# Tailwind
-
-Prefer utility classes.
-
-Extract repeated patterns.
-
-Keep class names organized.
-
----
-
-# Icons
-
-Improve icon usage.
-
-Use consistent sizing.
-
-Use meaningful icons.
-
-Avoid icon clutter.
-
----
-
-# Images
-
-Use placeholders where needed.
-
-Do NOT require backend.
-
----
-
-# Loading States
-
-Every async page should have polished skeletons.
-
-Avoid blank pages.
-
----
-
-# Error States
-
-Design beautiful error pages.
-
-Examples:
-
-403
-
-404
-
-500
-
-Network Error
-
-Access Denied
-
----
-
-# Final Verification Checklist
-
-Before considering any task complete, verify:
-
-- No business logic changed.
-- No API calls changed.
-- No routing changed.
-- No authentication changed.
-- No permissions changed.
-- No validation changed.
-- No state management changed.
-- No backend integration changed.
-- UI looks significantly more modern.
-- Spacing is consistent.
-- Typography is consistent.
-- Responsive layout works.
-- Accessibility is preserved.
-- Performance is not degraded.
-
----
-
-# Success Criteria
-
-The application should look like it could realistically be showcased on:
-
-- Dribbble
-- Behance
-- A professional SaaS landing page
-- A premium admin dashboard template
-
-A customer viewing the application should immediately perceive it as a polished, high-quality, production-ready product.
-
-The UI should communicate professionalism and attention to detail without changing any application behavior.
+**Start with Phase 1: inspect the existing project and understand its current implementation patterns. Then implement the features incrementally, preserving the existing architecture and user experience.**

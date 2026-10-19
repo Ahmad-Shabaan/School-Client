@@ -13,6 +13,13 @@ export const getCourses = async (): Promise<GetCoursesResponse> => {
   return response.data;
 };
 
+export const getCourseApi = async (
+  id: number,
+): Promise<CourseResponse> => {
+  const response = await axiosClient.get<CourseResponse>(`/courses/${id}`);
+  return response.data;
+};
+
 export const createCourseApi = async (
   course: CourseRequestDto,
 ): Promise<CourseResponse> => {

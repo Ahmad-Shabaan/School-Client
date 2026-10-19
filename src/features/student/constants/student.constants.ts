@@ -6,3 +6,5 @@ export const STUDENT_COURSES_QUERY_KEY = {
   all: () => ["student", "courses"] as const,
   details: (id: string) => ["student", "courses", "details", id] as const,
 };
+
+export const VALIDATION_MEETING_URL = 24 * 60 * 60 * 1000;

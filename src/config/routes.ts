@@ -6,6 +6,7 @@ export const ROUTES = {
     dashboard: "dashboard",
     courses: "courses",
     course: "courses/:id",
+    lesson: "lessons/:id",
     members: "members",
     member: "members/:id",
     subscriptions:"subscriptions",
@@ -27,8 +28,10 @@ export const ROUTES = {
   [ROLES.Student]: {
     basePath: "/student",
     dashboard: "student",
-    roles: [ROLES.Student],
     courses: "courses",
     course: "courses/:id",
+    lesson: "lessons/:id",
+    quiz: "lessons/:id/quiz",
+    roles: [ROLES.Student]
   },
 } as const;

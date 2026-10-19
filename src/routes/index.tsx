@@ -10,6 +10,7 @@ import AdminPanelLayout from "@/features/admin/layout/AdminPanelLayout";
 import Members from "@/features/admin/pages/Members";
 import StudentProfile from "@/features/student/pages/StudentProfile";
 import { ROUTES } from "@/config/routes";
+import StudentLayout from "@/features/student/layout/StudentLayout";
 import ServerError from "@/shared/pages/ServerError";
 import Courses from "@/features/admin/pages/Courses";
 import CourseDetails from "@/features/admin/pages/CourseDetails";
@@ -23,7 +24,6 @@ const PublicOnlyRoute = lazy(
 );
 const AuthLayout = lazy(() => import("@/features/auth/layouts/AuthLayout"));
 const LoginPage = lazy(() => import("@/features/auth/pages/LoginPage"));
-// const AppLayout = lazy(() => import("@/shared/components/layout/AppLayout"));
 const ForgetPassword = lazy(
   () => import("@/features/auth/pages/ForgetPassword"),
 );
@@ -32,11 +32,15 @@ const ChangePasswordPage = lazy(
   () => import("@/features/auth/pages/ChangePasswordPage"),
 );
 const Dashboard = lazy(() => import("@/features/admin/pages/Dashboard"));
+const LessonDetails = lazy(
+  () => import("@/features/admin/pages/LessonDetails"),
+);
+const StudentLesson = lazy(() => import("@/features/student/pages/Lesson"));
+const StudentQuiz = lazy(() => import("@/features/student/pages/Quiz"));
 const NotFound = lazy(() => import("@/shared/pages/NotFound"));
 
 const router = createBrowserRouter([
   {
-    // PublicOnlyRoute: Logged in users trying to access login will be redirected to /library
     element: <PublicOnlyRoute />,
     children: [
       {
@@ -68,7 +72,6 @@ const router = createBrowserRouter([
     ],
   },
   {
-    // RoleRoute for Admin only
     element: <RoleRoute roles={ROUTES[ROLES.Admin].roles} />,
     children: [
       {
@@ -92,6 +95,10 @@ const router = createBrowserRouter([
             element: <CourseDetails />,
           },
           {
+            path: ROUTES.Admin.lesson,
+            element: <LessonDetails />,
+          },
+          {
             path: ROUTES.Admin.members,
             element: <Members />,
           },
@@ -108,7 +115,6 @@ const router = createBrowserRouter([
     ],
   },
   {
-    // RoleRoute for Admin only
     element: <RoleRoute roles={ROUTES[ROLES.PreAdmin].roles} />,
     children: [
       {
@@ -118,7 +124,6 @@ const router = createBrowserRouter([
     ],
   },
   {
-    // RoleRoute for Sub-Admin or Admin
     element: <RoleRoute roles={ROUTES[ROLES.Teacher].roles} />,
     children: [
       {
@@ -128,20 +133,17 @@ const router = createBrowserRouter([
     ],
   },
   {
-    // RoleRoute for Student
     element: <RoleRoute roles={ROUTES[ROLES.Student].roles} />,
     children: [
       {
+        element: <StudentLayout />,
         path: ROUTES.Student.basePath,
-        element: <StudentProfile />,
-      },
-      {
-        path: ROUTES.Student.course,
-        element: <StudentCourse />,
-      },
-      {
-        path: ROUTES.Student.courses,
-        element: <StudentCourse />,
+        children: [
+          { index: true, element: <StudentProfile /> },
+          { path: ROUTES.Student.course, element: <StudentCourse /> },
+          { path: ROUTES.Student.lesson, element: <StudentLesson /> },
+          { path: ROUTES.Student.quiz, element: <StudentQuiz /> },
+        ],
       },
     ],
   },

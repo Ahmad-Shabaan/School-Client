@@ -1,7 +1,5 @@
-import StudentHeader from "../components/StudentHeader";
 import StudentInfoCard from "../components/StudentInfoCard";
 import CourseCard from "../components/CourseCard";
-import StudentFooter from "../components/StudentFooter";
 import { coursesQueryOptions } from "../options/student.options";
 import { useAppSelector } from "@/store/hooks";
 import { ROUTES } from "@/config/routes";
@@ -23,13 +21,6 @@ const StudentProfile = () => {
   }
   const courses = data?.data ?? [];
   return (
-    <div
-      dir="rtl"
-      lang="ar"
-      className="flex min-h-svh flex-col bg-paper font-tajawal text-body"
-    >
-      <StudentHeader />
-
       <main className="w-full flex-1">
         <div className="mx-auto w-full max-w-250 px-5 py-7 sm:py-8">
           {isLoading ? (
@@ -90,8 +81,6 @@ const StudentProfile = () => {
         </div>
       </main>
 
-      <StudentFooter />
-    </div>
   );
 };
 

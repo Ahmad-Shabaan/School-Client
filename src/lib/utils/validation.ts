@@ -136,6 +136,93 @@ export const enrollStudentsSchema = z.object({
     .min(1, "Select at least one student to enroll."),
 });
 
+export const lessonSchema = z.object({
+  title: z
+    .string()
+    .min(2, "Lesson title is required")
+    .max(500, "Lesson title is too long"),
+  description: z
+    .string()
+    .min(10, "Description must be at least 10 characters")
+    .max(2000, "Description is too long"),
+  youtubeUrl: z
+    .union([z.url("Enter a valid YouTube URL"), z.literal("")])
+    .optional(),
+  meetingUrl: z
+    .union([z.url("Enter a valid meeting URL"), z.literal("")])
+    .optional(),
+  meetingDateTime: z.string().optional(),
+  goals: z.array(
+    z.object({
+      text: z
+        .string()
+        .min(1, "Goal is required")
+        .max(1000, "Goal is too long"),
+    }),
+  ),
+  resources: z.array(
+    z.object({
+      title: z
+        .string()
+        .min(1, "Resource title is required")
+        .max(500, "Resource title is too long"),
+      fileUrl: z
+        .string()
+        .min(1, "Resource URL is required")
+        .max(2000, "Resource URL is too long")
+        .url("Enter a valid URL"),
+      fileType: z.string().max(100).optional(),
+    }),
+  ),
+});
+
+export const quizSchema = z
+  .object({
+    title: z
+      .string()
+      .min(1, "Quiz title is required")
+      .max(500, "Quiz title is too long"),
+    passingScorePercent: z
+      .number({ message: "Passing score is required" })
+      .min(0, "Passing score cannot be negative")
+      .max(100, "Passing score cannot exceed 100"),
+    questions: z
+      .array(
+        z.object({
+          text: z
+            .string()
+            .min(1, "Question text is required")
+            .max(2000, "Question text is too long"),
+          correctIndex: z
+            .number({ message: "Select the correct answer" })
+            .min(0, "Select the correct answer"),
+          options: z
+            .array(
+              z.object({
+                text: z
+                  .string()
+                  .min(1, "Option text is required")
+                  .max(1000, "Option text is too long"),
+              }),
+            )
+            .min(2, "Each question needs at least two options")
+            .max(20, "A question cannot have more than 20 options"),
+        }),
+      )
+      .min(1, "Add at least one question"),
+  })
+  .superRefine((data, ctx) => {
+    data.questions.forEach((question, questionIndex) => {
+      if (question.correctIndex >= question.options.length) {
+        ctx.addIssue({
+          code: "custom",
+          message: "Select the correct answer",
+          path: ["questions", questionIndex, "correctIndex"],
+        });
+      }
+    });
+  });
+
 export const loginSchema = z.object({
   ...credentials.shape,
 });
@@ -166,6 +253,10 @@ export type CreateCourseFormValues = z.infer<typeof courseSchema>;
 export type UpdateCourseFormValues = z.infer<typeof updateCourseSchema>;
 
 export type EnrollStudentsFormValues = z.infer<typeof enrollStudentsSchema>;
+
+export type LessonFormValues = z.infer<typeof lessonSchema>;
+
+export type QuizFormValues = z.infer<typeof quizSchema>;
 
 export type LoginSchema = z.infer<typeof loginSchema>;
 export type ForgetPasswordSchema = z.infer<typeof forgetPasswordSchema>;

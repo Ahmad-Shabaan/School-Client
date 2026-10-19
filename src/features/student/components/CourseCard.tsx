@@ -22,7 +22,7 @@ const CourseCard = ({ course }: { course: CourseDto }) => (
     </div>
 
     <Link
-      to={`/courses/${course.id}`}
+      to={`/student/courses/${course.id}`}
       className="block rounded-md bg-teal-dark px-4 py-2.5 text-center text-sm font-bold text-white transition-colors duration-200 hover:bg-teal"
     >
       دخول إلى المقرر
