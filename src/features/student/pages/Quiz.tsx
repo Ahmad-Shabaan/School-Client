@@ -9,8 +9,6 @@ import {
   Send,
   XCircle,
 } from "lucide-react";
-import StudentHeader from "../components/StudentHeader";
-import StudentFooter from "../components/StudentFooter";
 import ProgressBar from "../components/ProgressBar";
 import {
   quizAttemptsQueryOptions,
