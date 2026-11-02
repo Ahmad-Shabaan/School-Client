@@ -21,7 +21,10 @@ import {
   MessageSquare,
 } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useMemo } from "react";
 import { useAppSelector } from "@/store/hooks";
+import { useAdminConversations } from "@/features/chat/hooks/useChat";
+import { MAX_CHAT_BADGE_COUNT } from "@/features/chat/constants/chat.constants";
 
 const navItems = [
   {
@@ -50,6 +53,21 @@ export function AppSidebar() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.auth.user);
+
+  // Live unread badge for the "Messages" entry. The conversations query is
+  // shared with the admin chat page, and useChatConnection keeps the cache
+  // up to date app-wide (preview, sort, unread counts), so this badge reacts
+  // in realtime even while the admin is on another page.
+  const { data: conversationsData } = useAdminConversations();
+  const unreadMessagesCount = useMemo(() => {
+    if (!conversationsData) return 0;
+    const conversations = conversationsData.pages.flatMap((page) => page.data);
+    const total = conversations.reduce(
+      (sum, conversation) => sum + conversation.unreadCount,
+      0,
+    );
+    return Math.min(total, MAX_CHAT_BADGE_COUNT);
+  }, [conversationsData]);
 
   const displayName = user
     ? `${user.firstName} ${user.lastName}`.trim()
@@ -98,6 +116,14 @@ export function AppSidebar() {
                 >
                   <item.icon className="h-4 w-4" />
                   <span>{item.label}</span>
+                  {item.path === "chat" && unreadMessagesCount > 0 && (
+                    <span
+                      className="flex h-5 min-w-5 items-center justify-center rounded-full bg-destructive px-1.5 text-[10px] font-bold leading-none text-white"
+                      aria-label={`${unreadMessagesCount} unread messages`}
+                    >
+                      {unreadMessagesCount}
+                    </span>
+                  )}
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}

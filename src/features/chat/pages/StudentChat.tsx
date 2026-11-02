@@ -33,7 +33,6 @@ import ChatSkeleton from "../components/ChatSkeleton";
 import ChatEmptyState from "../components/ChatEmptyState";
 import type {
   ChatMessageDto,
-  ChatUnreadCountResponse,
   ConversationResponse,
 } from "../types/chat.types";
 
@@ -171,11 +170,8 @@ export default function StudentChat() {
         });
       }
 
-      queryClient.setQueryData<ChatUnreadCountResponse>(
-        CHAT_QUERY_KEY.unreadCount(),
-        (previous) =>
-          previous ? { ...previous, data: previous.data + 1 } : previous,
-      );
+      // The app-wide unread badge is maintained by the global
+      // useChatConnection hook; avoid double-counting here.
 
       if (isAtBottom()) {
         scheduleMarkRead();
@@ -197,10 +193,10 @@ export default function StudentChat() {
         return next ?? cached;
       });
 
-      queryClient.setQueryData<ChatUnreadCountResponse>(
-        CHAT_QUERY_KEY.unreadCount(),
-        (previous) => (previous ? { ...previous, data: 0 } : previous),
-      );
+      // Note: read events with a reader other than the student are admin
+      // receipt events; they must NOT clear the student's unread badge
+      // (that only resets when the student themselves reads, handled by
+      // the mark-as-read mutation above).
 
       queryClient.setQueryData<ConversationResponse>(
         CHAT_QUERY_KEY.conversation(),
@@ -284,7 +280,8 @@ export default function StudentChat() {
   }
 
   return (
-    <main className="flex max-h-[calc(100svh-4.25rem)] min-h-0 w-full flex-1 flex-col">
+    <main className="flex min-h-0 w-full flex-1 items-center justify-center">
+      <div className="flex max-h-[calc(100svh-4.25rem)] min-h-0 w-full max-w-2xl flex-col sm:border-x sm:border-line">
       <header className="flex shrink-0 items-center justify-between border-b border-line bg-white/90 px-4 py-3 backdrop-blur sm:px-5 sm:py-3.5">
         <div className="flex items-center gap-2">
           <div className="flex size-8 flex-none items-center justify-center rounded-lg bg-teal-soft text-teal-dark font-extrabold">
@@ -367,6 +364,7 @@ export default function StudentChat() {
           disabled={!conversationId}
           placeholder="اكتب رسالتك لفريق الإدارة..."
         />
+      </div>
       </div>
     </main>
   );

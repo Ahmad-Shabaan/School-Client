@@ -27,7 +27,7 @@ const BELL_STYLES: Record<
     button:
       "group relative flex size-10 items-center justify-center rounded-[10px] border border-line bg-paper text-teal-dark transition-all duration-200 hover:border-gold hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50",
     badge:
-      "absolute -top-1 -left-1 flex min-w-[18px] items-center justify-center rounded-full border-2 border-white bg-gold px-1 text-[11px] font-bold leading-[16px] text-white",
+      "absolute -top-1 -left-1 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-white bg-gold px-1 text-[10px] font-bold leading-none text-white",
   },
   admin: {
     // Matches the neighboring navbar action buttons (logout = h-9 w-9) and the

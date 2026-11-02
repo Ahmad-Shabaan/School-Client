@@ -1,19 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
 import AppError from "@/shared/components/common/ErrorBoundary/AppError";
 import { handleErrorMessage } from "@/lib/utils/handleErrorMessage";
 import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/components/ui/spinner";
 import { useAdminConversations } from "../hooks/useChat";
-import {
-  sortConversationsByLastActivity,
-  updateConversations,
-  type ConversationsData,
-} from "../utils/chatCache";
-import { CHAT_QUERY_KEY } from "../constants/chat.constants";
 import { adminChatPath } from "@/config/routes";
-import { onChatReconnected, onMessageSent } from "../services/chatHub";
 import ChatSkeleton, { ConversationRowsSkeleton } from "../components/ChatSkeleton";
 import ChatEmptyState from "../components/ChatEmptyState";
 import ConversationSidebarItem from "../components/ConversationSidebarItem";
@@ -55,7 +47,6 @@ function flattenConversations(
 
 export default function AdminChat() {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const { conversationId: conversationIdParam } = useParams<{
     conversationId?: string;
   }>();
@@ -92,55 +83,9 @@ export default function AdminChat() {
     [navigate],
   );
 
-  // ── Live sidebar updates: preview, unread count and ordering ──
-  useEffect(() => {
-    const unsubscribe = onMessageSent((message) => {
-      const listKey = CHAT_QUERY_KEY.conversations();
-      const cached = queryClient.getQueryData<ConversationsData>(listKey);
-
-      const isKnown = cached?.pages.some((page) =>
-        page.data.some(
-          (conversation) => conversation.id === message.conversationId,
-        ),
-      );
-
-      if (!isKnown) {
-        void queryClient.invalidateQueries({ queryKey: listKey });
-        return;
-      }
-
-      queryClient.setQueryData<ConversationsData>(listKey, (current) => {
-        if (!current) return current;
-
-        const updated = updateConversations(current, (conversation) =>
-          conversation.id === message.conversationId
-            ? {
-                ...conversation,
-                lastMessage: message.content,
-                lastMessageAt: message.createdAt,
-                unreadCount:
-                  message.senderId === conversation.studentId
-                    ? conversation.unreadCount + 1
-                    : conversation.unreadCount,
-              }
-            : conversation,
-        );
-
-        return updated ? sortConversationsByLastActivity(updated) : current;
-      });
-    });
-
-    const unsubscribeReconnected = onChatReconnected(() => {
-      void queryClient.invalidateQueries({
-        queryKey: CHAT_QUERY_KEY.conversations(),
-      });
-    });
-
-    return () => {
-      unsubscribe();
-      unsubscribeReconnected();
-    };
-  }, [queryClient]);
+  // Sidebar live updates (preview, unread count, ordering) are owned by the
+  // global useChatConnection hook mounted under the authenticated guard, so
+  // they keep working on every admin page — including the sidebar badge.
 
   // Loading shell mirrors the real page layout (header → sidebar rows →
   // conversation pane) so nothing jumps when data resolves.

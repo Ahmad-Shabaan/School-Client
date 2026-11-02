@@ -54,7 +54,7 @@ const StudentHeader = () => {
         >
           <MessageSquare className="size-5" />
           {chatUnreadCount > 0 && (
-            <span className="absolute -top-1 -left-1 flex min-w-[18px] items-center justify-center rounded-full border-2 border-white bg-gold px-1 text-[11px] font-bold leading-[16px] text-white">
+            <span className="absolute -top-1 -left-1 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-white bg-gold px-1 text-[10px] font-bold leading-none text-white">
               {chatUnreadCount > MAX_CHAT_BADGE_COUNT
                 ? `${MAX_CHAT_BADGE_COUNT}+`
                 : chatUnreadCount}

@@ -19,7 +19,6 @@ import { MAX_BADGE_COUNT } from "@/features/notifications/constants/notification
 import { useMyUnreadChatCount } from "@/features/chat/hooks/useChat";
 import { MAX_CHAT_BADGE_COUNT } from "@/features/chat/constants/chat.constants";
 import { studentChatPath } from "@/config/routes";
-import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useAppSelector } from "@/store/hooks";
 
@@ -30,6 +29,10 @@ interface StudentMobileMenuProps {
 
 const itemClassName =
   "flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold text-body transition-colors hover:bg-teal-soft hover:text-teal-dark focus-visible:bg-teal-soft focus-visible:text-teal-dark focus-visible:outline-none";
+
+// Same gold badge as the header icons → consistent circle/color everywhere.
+const rowBadgeClassName =
+  "flex h-5 min-w-5 items-center justify-center rounded-full bg-gold px-1.5 text-[10px] font-bold leading-none text-white";
 
 const StudentMobileMenu = ({ open, onOpenChange }: StudentMobileMenuProps) => {
   const { logout, isLoggingOut } = useAuth();
@@ -104,7 +107,7 @@ const StudentMobileMenu = ({ open, onOpenChange }: StudentMobileMenuProps) => {
             <Bell className="size-4.5 flex-none" />
             <span>الإشعارات</span>
             {unreadCount > 0 && (
-              <span className="ms-auto flex min-w-5 items-center justify-center rounded-full bg-gold px-1.5 py-0.5 text-[10px] font-extrabold leading-none text-white">
+              <span className={`ms-auto ${rowBadgeClassName}`}>
                 {unreadCount > MAX_BADGE_COUNT
                   ? `${MAX_BADGE_COUNT}+`
                   : unreadCount}
@@ -128,11 +131,11 @@ const StudentMobileMenu = ({ open, onOpenChange }: StudentMobileMenuProps) => {
             <MessageSquare className="size-4.5 flex-none" />
             <span>المحادثة</span>
             {chatUnreadCount > 0 && (
-              <Badge variant="outline" className="text-xs px-2 py-0.5">
+              <span className={`ms-auto ${rowBadgeClassName}`}>
                 {chatUnreadCount > MAX_CHAT_BADGE_COUNT
                   ? `${MAX_CHAT_BADGE_COUNT}+`
                   : chatUnreadCount}
-              </Badge>
+              </span>
             )}
           </Link>
 
