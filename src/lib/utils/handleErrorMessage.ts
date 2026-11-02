@@ -8,7 +8,6 @@ export const handleErrorMessage = (unknownError: unknown): ApiErrorResponse => {
       responseData &&
       typeof responseData === "object" &&
       !Array.isArray(responseData) &&
-      "type" in responseData &&
       "title" in responseData &&
       "detail" in responseData &&
       "status" in responseData

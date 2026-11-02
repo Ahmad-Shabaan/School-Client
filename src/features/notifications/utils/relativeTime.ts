@@ -4,7 +4,7 @@ export const getRelativeTime = (isoDate: string): string => {
 
   const diffMinutes = Math.max(0, Math.floor((Date.now() - created) / 60_000));
 
-  if (diffMinutes < 1) return "الأ";
+  if (diffMinutes < 1) return "الآن";
   if (diffMinutes < 60) return `منذ ${diffMinutes} دقيقة`;
 
   const diffHours = Math.floor(diffMinutes / 60);
