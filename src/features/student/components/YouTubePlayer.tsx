@@ -76,6 +76,7 @@ interface YouTubePlayerProps {
   onStateChange?: (state: number) => void;
   onError?: (errorCode: number) => void;
   className?: string;
+  playerVars?: Record<string, number | string | boolean>;
 }
 
 const YouTubePlayer = ({
@@ -84,6 +85,7 @@ const YouTubePlayer = ({
   onStateChange,
   onError,
   className,
+  playerVars: extraPlayerVars,
 }: YouTubePlayerProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<YouTubePlayerLike | null>(null);
@@ -91,11 +93,13 @@ const YouTubePlayer = ({
   const onReadyRef = useRef(onReady);
   const onStateChangeRef = useRef(onStateChange);
   const onErrorRef = useRef(onError);
+  const playerVarsRef = useRef(extraPlayerVars);
 
   useEffect(() => {
     onReadyRef.current = onReady;
     onStateChangeRef.current = onStateChange;
     onErrorRef.current = onError;
+    playerVarsRef.current = extraPlayerVars;
   });
 
   useEffect(() => {
@@ -114,6 +118,7 @@ const YouTubePlayer = ({
             playsinline: 1,
             enablejsapi: 1,
             origin: window.location.origin,
+            ...playerVarsRef.current,
           },
           events: {
             onReady: (event) => onReadyRef.current?.(event.target),

@@ -17,6 +17,8 @@ const buttonVariants = cva(
           "border border-border bg-background shadow-sm hover:bg-accent hover:text-accent-foreground hover:border-accent/50 hover:shadow-md focus:ring-accent/20 dark:border-border dark:bg-input/30 dark:hover:bg-input/50",
         secondary:
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 hover:shadow-md focus:ring-secondary/20",
+        brand:
+          "bg-teal-dark text-white shadow-sm hover:bg-teal hover:shadow-md focus:ring-teal/20",
         ghost:
           "hover:bg-accent hover:text-accent-foreground focus:ring-accent/20 dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline hover:text-primary/90 focus:ring-primary/20",
@@ -62,4 +64,4 @@ function Button({
   );
 }
 
-export { Button, buttonVariants };
+export { Button };

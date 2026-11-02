@@ -22,10 +22,3 @@ export interface Lesson {
   description: string;
   duration: string;
 }
-
-export interface StudentNotification {
-  id: number;
-  message: string;
-  time: string;
-  unread?: boolean;
-}

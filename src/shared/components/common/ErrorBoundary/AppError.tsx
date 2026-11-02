@@ -3,22 +3,23 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 interface PaymentErrorProps {
+  title?: string;
   message?: string;
   link: string;
   to: string;
   onRetry?: () => void;
 }
 
-const AppError = ({ message, onRetry, link, to }: PaymentErrorProps) => {
+const AppError = ({ title, message, onRetry, link, to }: PaymentErrorProps) => {
   return (
-    // <main className="main-container">
-    //   <div className="page-container">
     <main className="flex-1 col-center text-center gap-4 sm:gap-6 pt-12 sm:pt-14 lg:pt-16  pb-4 px-4 ">
       <div className="size-16 rounded-full bg-error/10 flex items-center justify-center">
         <AlertTriangle className="size-7 text-error" />
       </div>
       <div className="col-center">
-        <h1 className="section-header  sm:text-4xl">Something went wrong</h1>
+        <h1 className="section-header  sm:text-4xl">
+          {title ?? "Something went wrong"}
+        </h1>
 
         <p className="section-description">
           {message ??
@@ -42,8 +43,6 @@ const AppError = ({ message, onRetry, link, to }: PaymentErrorProps) => {
         )}
       </div>
     </main>
-    //   </div>
-    // </main>
   );
 };
 

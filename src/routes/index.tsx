@@ -32,11 +32,18 @@ const ChangePasswordPage = lazy(
   () => import("@/features/auth/pages/ChangePasswordPage"),
 );
 const Dashboard = lazy(() => import("@/features/admin/pages/Dashboard"));
+const AdminChat = lazy(() => import("@/features/chat/pages/AdminChat"));
 const LessonDetails = lazy(
   () => import("@/features/admin/pages/LessonDetails"),
 );
 const StudentLesson = lazy(() => import("@/features/student/pages/Lesson"));
 const StudentQuiz = lazy(() => import("@/features/student/pages/Quiz"));
+const StudentChat = lazy(() => import("@/features/chat/pages/StudentChat"));
+const Posts = lazy(() => import("@/features/posts/pages/Posts"));
+const PostDetails = lazy(() => import("@/features/posts/pages/PostDetails"));
+const CoursePostsLayout = lazy(
+  () => import("@/features/student/layout/CoursePostsLayout"),
+);
 const NotFound = lazy(() => import("@/shared/pages/NotFound"));
 
 const router = createBrowserRouter([
@@ -110,6 +117,14 @@ const router = createBrowserRouter([
             path: ROUTES.Admin.subscriptions,
             element: <Subscriptions />,
           },
+          {
+            path: ROUTES.Admin.chat,
+            element: <AdminChat />,
+          },
+          {
+            path: `chat/:conversationId`,
+            element: <AdminChat />,
+          },
         ],
       },
     ],
@@ -141,8 +156,17 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <StudentProfile /> },
           { path: ROUTES.Student.course, element: <StudentCourse /> },
+          {
+            path: ROUTES.Student.coursePosts,
+            element: <CoursePostsLayout />,
+            children: [
+              { index: true, element: <Posts /> },
+              { path: ":postId", element: <PostDetails /> },
+            ],
+          },
           { path: ROUTES.Student.lesson, element: <StudentLesson /> },
           { path: ROUTES.Student.quiz, element: <StudentQuiz /> },
+          { path: ROUTES.Student.chat, element: <StudentChat /> },
         ],
       },
     ],

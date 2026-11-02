@@ -86,6 +86,13 @@ create new custom variant use it if حاجات مش معمولة ب variables*/
   --color-line: #e3dfd2;
   --font-tajawal: "Tajawal", "Inter", sans-serif;
 
+  /* ── Loading placeholders ──────────────────────────────── */
+  --color-skeleton-surface: #eef1ff;
+  --color-skeleton-brand: #dceae4;
+  --color-skeleton-paper: #f1ece0;
+  --color-skeleton-sheen: rgba(255, 255, 255, 0.75);
+  --animate-skeleton-shimmer: skeleton-shimmer 1.9s ease-in-out infinite;
+
   /* ── Core Backgrounds ───────────────────────────────────── */
   --color-background: #f8f9ff; /* Very light blue-tinted white */
   --color-foreground: #1a1c2e; /* Deep navy-grey for primary text */
@@ -234,6 +241,12 @@ create new custom variant use it if حاجات مش معمولة ب variables*/
 
   --color-outline: #717583;
   --color-outline-variant: #444855;
+
+  /* ── Loading placeholders ──────────────────────────────── */
+  --color-skeleton-surface: #1b2133;
+  --color-skeleton-brand: #1f3a33;
+  --color-skeleton-paper: #24262c;
+  --color-skeleton-sheen: rgba(255, 255, 255, 0.12);
 
   --color-inverse-surface: #faf8ff;
   --color-inverse-on-surface: #515562;
@@ -638,6 +651,21 @@ create new custom variant use it if حاجات مش معمولة ب variables*/
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes skeleton-shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* Loading placeholders – shimmer sweep with an optional stagger delay */
+[data-slot="skeleton"]::after {
+  animation: skeleton-shimmer 1.9s ease-in-out infinite;
+  animation-delay: var(--skeleton-delay, 0s);
 }
 
 /* ---break---*/

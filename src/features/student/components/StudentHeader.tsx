@@ -1,8 +1,13 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { LogOut, MessageSquare, User } from "lucide-react";
+import { LogOut, Menu, MessageSquare, User } from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
 import { useAuth } from "@/features/auth/hooks/useAuth";
-import NotificationsDropdown from "./NotificationsDropdown";
+import { useMyUnreadChatCount } from "@/features/chat/hooks/useChat";
+import { MAX_CHAT_BADGE_COUNT } from "@/features/chat/constants/chat.constants";
+import { studentChatPath } from "@/config/routes";
+import { NotificationBell } from "@/features/notifications/components";
+import StudentMobileMenu from "./StudentMobileMenu";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +20,10 @@ import {
 const StudentHeader = () => {
   const { logout, isLoggingOut } = useAuth();
   const user = useAppSelector((state) => state.auth.user);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const { data: unreadCountData } = useMyUnreadChatCount(true);
+  const chatUnreadCount = unreadCountData?.data ?? 0;
 
   const initial = user?.firstName?.trim().charAt(0) || "أ";
   const displayName = user
@@ -35,18 +44,22 @@ const StudentHeader = () => {
         </span>
       </Link>
 
-      <div className="flex items-center gap-2 sm:gap-3">
-        <NotificationsDropdown />
+      <div className="hidden items-center gap-2 sm:flex sm:gap-3">
+        <NotificationBell />
 
         <Link
-          to="/chat"
-          aria-label="المحادثات"
-          className="group relative flex size-9 items-center justify-center rounded-[10px] border border-line bg-paper text-teal-dark transition-all duration-200 hover:border-gold hover:bg-white sm:size-10"
+          to={studentChatPath()}
+          className="group relative flex size-10 items-center justify-center rounded-[10px] border border-line bg-paper text-teal-dark transition-all duration-200 hover:border-gold hover:bg-white"
+          aria-label="الدردشة مع الإدارة"
         >
-          <MessageSquare className="size-4 sm:size-5" />
-          <span className="absolute -top-1 -left-1 flex size-[16px] items-center justify-center rounded-full border-2 border-white bg-gold text-[10px] font-bold text-white sm:size-[18px] sm:text-[11px]">
-            2
-          </span>
+          <MessageSquare className="size-5" />
+          {chatUnreadCount > 0 && (
+            <span className="absolute -top-1 -left-1 flex min-w-[18px] items-center justify-center rounded-full border-2 border-white bg-gold px-1 text-[11px] font-bold leading-[16px] text-white">
+              {chatUnreadCount > MAX_CHAT_BADGE_COUNT
+                ? `${MAX_CHAT_BADGE_COUNT}+`
+                : chatUnreadCount}
+            </span>
+          )}
         </Link>
 
         <DropdownMenu>
@@ -97,6 +110,19 @@ const StudentHeader = () => {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
+      <button
+        type="button"
+        onClick={() => setIsMenuOpen(true)}
+        aria-label="فتح القائمة"
+        aria-haspopup="dialog"
+        aria-expanded={isMenuOpen}
+        className="flex size-9 flex-none cursor-pointer items-center justify-center rounded-[10px] border border-line bg-paper text-teal-dark transition-all duration-200 hover:border-gold hover:bg-white sm:hidden"
+      >
+        <Menu className="size-4" />
+      </button>
+
+      <StudentMobileMenu open={isMenuOpen} onOpenChange={setIsMenuOpen} />
     </header>
   );
 };

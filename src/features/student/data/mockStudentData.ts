@@ -1,9 +1,4 @@
-import type {
-  Lesson,
-  Student,
-  StudentCourse,
-  StudentNotification,
-} from "../type/student";
+import type { Lesson, Student, StudentCourse } from "../type/student";
 
 export const initialStudentData: Student = {
   name: "أحمد محمد عبدالله",
@@ -124,26 +119,5 @@ export const initialLessonsData: Lesson[] = [
     description:
       "مقدمة في أصول العقيدة وأهم المسائل التي يحتاج إليها طالب العلم.",
     duration: "55 دقيقة",
-  },
-];
-
-export const initialNotificationsData: StudentNotification[] = [
-  {
-    id: 1,
-    message: "لديك واجب جديد في الفقه",
-    time: "منذ 10 دقائق",
-    unread: true,
-  },
-  {
-    id: 2,
-    message: "تم إضافة درس جديد في التفسير",
-    time: "منذ ساعة",
-    unread: true,
-  },
-  {
-    id: 3,
-    message: "لديك رسالة جديدة",
-    time: "منذ ساعتين",
-    unread: true,
   },
 ];

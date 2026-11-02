@@ -11,6 +11,7 @@ import {
   getLessonAccess,
   getLessonDetails,
   getLessonProgress,
+  getLessonWatermark,
   getQuizAttempts,
   getQuizByLesson,
   getQuizManagement,
@@ -23,6 +24,7 @@ import type {
   QuizAttemptsResponse,
   QuizManagementResponse,
   QuizResponse,
+  WatermarkResponse,
 } from "../types/lesson.types";
 
 export const courseLessonsQueryOptions = (courseId: number) =>
@@ -57,6 +59,15 @@ export const lessonProgressQueryOptions = (lessonId: number) =>
     queryKey: LESSONS_QUERY_KEY.progress(lessonId),
     queryFn: () => getLessonProgress(lessonId),
     staleTime: 0,
+    gcTime: LESSONS_GC_TIME,
+    enabled: Number.isFinite(lessonId) && lessonId > 0,
+  });
+
+export const lessonWatermarkQueryOptions = (lessonId: number) =>
+  queryOptions<WatermarkResponse, ApiErrorResponse>({
+    queryKey: LESSONS_QUERY_KEY.watermark(lessonId),
+    queryFn: () => getLessonWatermark(lessonId),
+    staleTime: LESSONS_STALE_TIME,
     gcTime: LESSONS_GC_TIME,
     enabled: Number.isFinite(lessonId) && lessonId > 0,
   });

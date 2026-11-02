@@ -1,7 +1,12 @@
+import { lazy } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "@/store/hooks";
 import { hasAnyRole, hasAllRoles } from "@/features/auth/utils/roleHelpers";
 import type { Role } from "@/shared/types/common.types";
+
+const AuthenticatedConnections = lazy(
+  () => import("@/components/guards/AuthenticatedConnections"),
+);
 
 interface RoleRouteProps {
   roles: readonly Role[];
@@ -12,6 +17,9 @@ interface RoleRouteProps {
  * Guard for routes that require specific roles.
  * Supports both "any of" (default) and "all of" role checks.
  * Redirects to /library if the user's roles do not satisfy the requirement.
+ *
+ * It also mounts the app-wide SignalR connections so every authenticated role
+ * area shares the same notification/chat connections for the session.
  */
 const RoleRoute = ({ roles, requireAll = false }: RoleRouteProps) => {
   const auth = useAppSelector((state) => state.auth);
@@ -25,7 +33,10 @@ const RoleRoute = ({ roles, requireAll = false }: RoleRouteProps) => {
     : hasAnyRole(auth.user.roles, roles);
 
   return hasRequiredRole ? (
-    <Outlet />
+    <>
+      <AuthenticatedConnections />
+      <Outlet />
+    </>
   ) : (
     <Navigate to="/access-denied" replace />
   );

@@ -13,6 +13,7 @@ import type {
   QuizResponse,
   SubmitProgressRequest,
   UpdateLessonRequest,
+  WatermarkResponse,
 } from "../types/lesson.types";
 
 export const getCourseLessons = async (
@@ -80,6 +81,15 @@ export const getLessonProgress = async (
 ): Promise<LessonProgressResponse> => {
   const response = await axiosClient.get<LessonProgressResponse>(
     `/lessons/${lessonId}/progress`,
+  );
+  return response.data;
+};
+
+export const getLessonWatermark = async (
+  lessonId: number,
+): Promise<WatermarkResponse> => {
+  const response = await axiosClient.get<WatermarkResponse>(
+    `/lessons/${lessonId}/watermark`,
   );
   return response.data;
 };

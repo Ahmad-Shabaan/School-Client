@@ -202,3 +202,13 @@ export interface LessonProgressResponse extends ApiResponse {
 export interface LessonAccessResponse extends ApiResponse {
   data: LessonAccessDto;
 }
+
+export interface WatermarkDto {
+  displayName: string;
+  studentId: string;
+  maskedEmail: string;
+}
+
+export interface WatermarkResponse extends ApiResponse {
+  data: WatermarkDto;
+}

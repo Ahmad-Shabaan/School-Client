@@ -18,6 +18,7 @@ import {
   CreditCard,
   GraduationCap,
   LayoutDashboard,
+  MessageSquare,
 } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -35,6 +36,12 @@ const navItems = [
     icon: CreditCard,
     path: "subscriptions",
     match: "subscriptions",
+  },
+  {
+    label: "Messages",
+    icon: MessageSquare,
+    path: "chat",
+    match: "chat",
   },
 ];
 

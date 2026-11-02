@@ -8,6 +8,7 @@ export const LESSONS_QUERY_KEY = {
   details: (lessonId: number) => ["lessons", "details", lessonId] as const,
   access: (lessonId: number) => ["lessons", "access", lessonId] as const,
   progress: (lessonId: number) => ["lessons", "progress", lessonId] as const,
+  watermark: (lessonId: number) => ["lessons", "watermark", lessonId] as const,
 };
 
 export const QUIZ_QUERY_KEY = {

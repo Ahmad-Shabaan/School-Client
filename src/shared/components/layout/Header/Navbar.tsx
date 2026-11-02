@@ -1,8 +1,9 @@
 import { useRef } from "react";
 import { useNavAnimation } from "./navbar.animation";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Bell, GraduationCap, LogOut } from "lucide-react";
+import { GraduationCap, LogOut } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { NotificationBell } from "@/features/notifications/components";
 
 const Navbar = () => {
   const { logout, isLoggingOut } = useAuth();
@@ -37,10 +38,7 @@ const Navbar = () => {
             >
               <LogOut className="h-4 w-4" />
             </button>
-            <button className="relative flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground transition-all duration-200">
-              <Bell className="h-4 w-4" />
-              <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-primary ring-2 ring-background" />
-            </button>
+            <NotificationBell />
             <div className="flex items-center gap-2 pl-2 border-l border-border/40">
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-br from-primary to-secondary text-xs font-bold text-white shadow-sm">
                 A

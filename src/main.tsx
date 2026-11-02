@@ -22,7 +22,7 @@ import Loading from "./shared/components/common/Loading.tsx";
 const queryClient = new QueryClient();
 createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
+    <PersistGate loading={<Loading />} persistor={persistor}>
       <QueryClientProvider client={queryClient}>
         <Suspense fallback={<Loading />}>
           <TooltipProvider>
