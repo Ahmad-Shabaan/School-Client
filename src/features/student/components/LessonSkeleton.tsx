@@ -53,7 +53,7 @@ const LessonSkeleton = () => {
             </div>
 
             {/* Progress */}
-            <div className="mt-4 rounded-[14px] border border-line bg-white p-5">
+            <div className="mt-4 rounded-[14px] border border-line bg-white p-4 sm:p-5">
               <div className="mb-3 flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
                   <Bone className="size-4 rounded-full" delay={0.12} />
@@ -67,7 +67,7 @@ const LessonSkeleton = () => {
           </div>
 
           {/* Meeting */}
-          <div className="mb-6 rounded-[14px] border border-line bg-white p-5">
+          <div className="mb-6 rounded-[14px] border border-line bg-white p-4 sm:p-5">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-3">
                 <Bone
@@ -91,7 +91,7 @@ const LessonSkeleton = () => {
             {/* Goals + resources */}
             <div className="space-y-6 lg:col-span-2">
               {/* Goals */}
-              <section className="rounded-[14px] border border-line bg-white p-6">
+              <section className="rounded-[14px] border border-line bg-white p-4 sm:p-6">
                 <div className="mb-4 flex items-center gap-2">
                   <Bone className="size-5 rounded-full" delay={0.22} />
                   <Bone className="h-6 w-24 rounded-[7px]" delay={0.23} />
@@ -117,7 +117,7 @@ const LessonSkeleton = () => {
               </section>
 
               {/* Resources */}
-              <section className="rounded-[14px] border border-line bg-white p-6">
+              <section className="rounded-[14px] border border-line bg-white p-4 sm:p-6">
                 <div className="mb-4 flex items-center gap-2">
                   <Bone className="size-5 rounded-full" delay={0.34} />
                   <Bone className="h-6 w-24 rounded-[7px]" delay={0.35} />
@@ -127,7 +127,7 @@ const LessonSkeleton = () => {
                     (_, index) => (
                       <div
                         key={index}
-                        className="flex items-center justify-between gap-3 rounded-[7px] border border-line px-4 py-3"
+                        className="flex items-center justify-between gap-3 rounded-[7px] border border-line px-3 py-3 sm:px-4"
                         aria-hidden="true"
                       >
                         <div className="flex min-w-0 items-center gap-2.5">
@@ -158,8 +158,8 @@ const LessonSkeleton = () => {
             </div>
 
             {/* Quiz sidebar */}
-            <div>
-              <section className="rounded-[14px] border border-line bg-white p-6">
+            <div className="max-lg:order-first">
+              <section className="rounded-[14px] border border-line bg-white p-4 sm:p-6">
                 <div className="mb-4 flex items-center gap-2">
                   <Bone className="size-5 rounded-full" delay={0.42} />
                   <Bone className="h-6 w-20 rounded-[7px]" delay={0.43} />

@@ -22,7 +22,7 @@ describe("LessonWatermark", () => {
 
     expect(screen.getByText("أحمد شعبان")).toBeTruthy();
     expect(
-      screen.getByText("Student ID: 9f8a1f4f-5b2e-4a3c-9a06-71ddf33e9ac1"),
+      screen.getByText("ID: 9f8a1f4f-5b2e-4a3c-9a06-71ddf33e9ac1"),
     ).toBeTruthy();
     expect(screen.getByText("a***@example.com")).toBeTruthy();
   });

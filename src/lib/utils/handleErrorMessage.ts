@@ -2,8 +2,18 @@ import type { ApiErrorResponse } from "@/shared/types/api.types";
 import axios from "axios";
 export const handleErrorMessage = (unknownError: unknown): ApiErrorResponse => {
   if (axios.isAxiosError(unknownError)) {
-    if (unknownError.response) {
-      const error = unknownError.response?.data as ApiErrorResponse;
+    const responseData: unknown = unknownError.response?.data;
+
+    if (
+      responseData &&
+      typeof responseData === "object" &&
+      !Array.isArray(responseData) &&
+      "type" in responseData &&
+      "title" in responseData &&
+      "detail" in responseData &&
+      "status" in responseData
+    ) {
+      const error = responseData as ApiErrorResponse;
       error.title = error.error ? error.error.message : error.title;
       return error;
     }

@@ -10,7 +10,7 @@ interface PaymentErrorProps {
   onRetry?: () => void;
 }
 
-const AppError = ({ title, message, onRetry, link, to }: PaymentErrorProps) => {
+const AppError = ({ title , message, onRetry, link, to }: PaymentErrorProps) => {
   return (
     <section
       aria-live="polite"

@@ -127,16 +127,16 @@ const Lesson = () => {
   }
 
   return (
-    <main className="w-full flex-1">
+    <main className="w-full flex-1 overflow-x-clip">
       <div className="mx-auto w-full max-w-275 px-4 py-8 pb-12 sm:px-5 sm:py-9">
         {/* Breadcrumb + title */}
         <div className="mb-6">
           <Link
             to={`/student/courses/${lesson.courseId}`}
-            className="mb-3 inline-flex items-center gap-1.5 text-sm text-body-mute transition-colors hover:text-teal-dark"
+            className="mb-3 inline-flex max-w-full items-center gap-1.5 text-sm text-body-mute transition-colors hover:text-teal-dark"
           >
-            <ArrowRight className="size-4" />
-            العودة إلى دروس المادة
+            <ArrowRight className="size-4 shrink-0" />
+            <span className="truncate">العودة إلى دروس المادة</span>
           </Link>
           <div className="mb-[18px] flex flex-wrap items-center gap-3">
             <span className="rounded-full bg-gold-soft px-2.5 py-1 text-xs font-extrabold text-gold">
@@ -144,22 +144,22 @@ const Lesson = () => {
             </span>
             {isVideoCompleted && (
               <span className="flex items-center gap-1 rounded-full bg-teal-soft px-2.5 py-1 text-xs font-extrabold text-teal-dark">
-                <Award className="size-3.5" />
+                <Award className="size-3.5 shrink-0" />
                 تم مشاهدة الفيديو
               </span>
             )}
             {hasQuiz && (
               <span className="flex items-center gap-1 rounded-full bg-gold-soft px-2.5 py-1 text-xs font-extrabold text-gold">
-                <ListChecks className="size-3.5" />
+                <ListChecks className="size-3.5 shrink-0" />
                 يوجد اختبار
               </span>
             )}
           </div>
-          <h1 className="text-[1.6rem] font-extrabold text-ink sm:text-[1.9rem]">
+          <h1 className="break-words text-[1.6rem] font-extrabold text-ink sm:text-[1.9rem]">
             {lesson.title}
           </h1>
-          <div className="mx-auto my-2 mr-0 w-10 rounded-[2px] bg-gold" />
-          <p className="text-sm leading-[1.8] text-body-mute sm:text-[0.95rem]">
+          <div className="my-2 block w-10 rounded-[2px] bg-gold" />
+          <p className="break-words text-sm leading-[1.8] text-body-mute sm:text-[0.95rem]">
             {lesson.description}
           </p>
         </div>
@@ -188,8 +188,8 @@ const Lesson = () => {
             </div>
 
             {/* Progress */}
-            <div className="mt-4 rounded-[14px] border border-line bg-white p-5">
-              <div className="mb-3 flex items-center justify-between text-xs font-bold text-teal-dark">
+            <div className="mt-4 rounded-[14px] border border-line bg-white p-4 sm:p-5">
+              <div className="mb-3 flex items-center justify-between gap-2 text-xs font-bold text-teal-dark">
                 <span className="flex items-center gap-1.5">
                   <PlayCircle className="size-4" />
                   نسبة المشاهدة
@@ -205,7 +205,7 @@ const Lesson = () => {
             </div>
           </div>
         ) : (
-          <div className="mb-6 rounded-[14px] border border-dashed border-line bg-white p-8 text-center">
+          <div className="mb-6 rounded-[14px] border border-dashed border-line bg-white p-6 text-center sm:p-8">
             <PlayCircle className="mx-auto mb-3 size-10 text-body-mute opacity-40" />
             <p className="text-sm text-body-mute">لا يوجد فيديو لهذا الدرس.</p>
           </div>
@@ -213,20 +213,22 @@ const Lesson = () => {
 
         {/* Meeting */}
         {lesson.meetingUrl && (
-          <div className="mb-6 rounded-[14px] border border-line bg-white p-5">
-            <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="mb-6 rounded-[14px] border border-line bg-white p-4 sm:p-5">
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-3">
               <div className="flex items-center gap-3">
-                <div className="flex size-11 items-center justify-center rounded-xl bg-teal-soft text-teal-dark">
+                <div className="flex size-11 flex-none items-center justify-center rounded-xl bg-teal-soft text-teal-dark">
                   <Link2 className="size-5" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <p className="text-sm font-extrabold text-teal-dark">
                     حصة مباشرة
                   </p>
                   {lesson.meetingDateTime && (
-                    <p className="flex items-center gap-1.5 text-xs text-body-mute">
-                      <CalendarClock className="size-3.5" />
-                      {new Date(lesson.meetingDateTime).toLocaleString("ar-EG")}
+                    <p className="flex min-w-0 items-center gap-1.5 text-xs text-body-mute">
+                      <CalendarClock className="size-3.5 shrink-0" />
+                      <span className="min-w-0 flex-1 truncate">
+                        {new Date(lesson.meetingDateTime).toLocaleString("ar-EG")}
+                      </span>
                     </p>
                   )}
                   {!isSessionJoinable && (
@@ -241,7 +243,7 @@ const Lesson = () => {
                   href={lesson.meetingUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-[7px] bg-teal-dark px-4 py-2 text-xs font-bold text-white transition-colors hover:bg-teal"
+                  className="flex min-h-9 w-full items-center justify-center rounded-[7px] bg-teal-dark px-4 py-2 text-xs font-bold text-white transition-colors hover:bg-teal sm:w-auto sm:min-h-0"
                 >
                   الانضمام إلى الحصة
                 </a>
@@ -249,7 +251,7 @@ const Lesson = () => {
                 <button
                   type="button"
                   disabled
-                  className="cursor-not-allowed rounded-[7px] border border-line bg-paper px-4 py-2 text-xs font-bold text-body-mute opacity-70"
+                  className="flex min-h-9 w-full cursor-not-allowed items-center justify-center rounded-[7px] border border-line bg-paper px-4 py-2 text-center text-xs font-bold text-body-mute opacity-70 sm:w-auto sm:min-h-0"
                 >
                   الانضمام إلى الحصة
                 </button>
@@ -262,7 +264,7 @@ const Lesson = () => {
           {/* Goals + resources */}
           <div className="space-y-6 lg:col-span-2">
             {lesson.goals.length > 0 && (
-              <section className="rounded-[14px] border border-line bg-white p-6">
+              <section className="rounded-[14px] border border-line bg-white p-4 sm:p-6">
                 <h2 className="mb-4 flex items-center gap-2 text-[1.1rem] font-extrabold text-teal-dark">
                   <Target className="size-5" />
                   أهداف الدرس
@@ -274,14 +276,14 @@ const Lesson = () => {
                       className="flex items-start gap-2 text-sm leading-[1.7] text-body-mute"
                     >
                       <Target className="mt-1 size-3.5 shrink-0 text-gold" />
-                      {goal.text}
+                      <p className="min-w-0 flex-1 break-words">{goal.text}</p>
                     </li>
                   ))}
                 </ul>
               </section>
             )}
 
-            <section className="rounded-[14px] border border-line bg-white p-6">
+            <section className="rounded-[14px] border border-line bg-white p-4 sm:p-6">
               <h2 className="mb-4 flex items-center gap-2 text-[1.1rem] font-extrabold text-teal-dark">
                 <FileText className="size-5" />
                 مراجع الدرس
@@ -295,16 +297,16 @@ const Lesson = () => {
                   {lesson.resources.map((resource) => (
                     <li
                       key={resource.id}
-                      className="flex items-center justify-between gap-3 rounded-[7px] border border-line px-4 py-3"
+                      className="flex items-center justify-between gap-3 rounded-[7px] border border-line px-3 py-3 sm:px-4"
                     >
-                      <div className="flex min-w-0 items-center gap-2.5">
+                      <div className="flex min-w-0 flex-1 items-center gap-2.5">
                         <FileText className="size-4 shrink-0 text-body-mute" />
-                        <div className="min-w-0">
-                          <p className="truncate text-sm font-bold text-ink">
+                        <div className="min-w-0 flex-1">
+                          <p className="line-clamp-2 break-words text-sm font-bold text-ink">
                             {resource.title}
                           </p>
                           {resource.fileType && (
-                            <p className="text-xs text-body-mute">
+                            <p className="mt-0.5 break-words text-xs text-body-mute">
                               {resource.fileType}
                             </p>
                           )}
@@ -314,7 +316,7 @@ const Lesson = () => {
                         href={resource.fileUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="shrink-0 text-xs font-bold text-teal-dark underline-offset-2 hover:underline"
+                        className="shrink-0 self-start text-xs font-bold text-teal-dark underline-offset-2 hover:underline"
                       >
                         فتح
                       </a>
@@ -325,9 +327,9 @@ const Lesson = () => {
             </section>
           </div>
 
-          {/* Quiz sidebar */}
-          <div>
-            <section className="rounded-[14px] border border-line bg-white p-6">
+          {/* Quiz sidebar — primary CTA, lifted to the top on mobile */}
+          <div className={cn(hasQuiz && "max-lg:order-first")}>
+            <section className="rounded-[14px] border border-line bg-white p-4 sm:p-6">
               <h2 className="mb-4 flex items-center gap-2 text-[1.1rem] font-extrabold text-teal-dark">
                 <ListChecks className="size-5" />
                 اختبار الدرس
@@ -340,15 +342,15 @@ const Lesson = () => {
               ) : // ) : !isQuizAccessible ? (
               !isVideoCompleted ? (
                 <div className="space-y-3">
-                  <div className="flex items-start gap-2 rounded-[7px] bg-gold-soft p-3 text-xs font-bold leading-[1.7] text-gold">
+                  <div className="flex min-w-0 items-start gap-2 rounded-[7px] bg-gold-soft p-3 text-xs font-bold leading-[1.7] text-gold">
                     <Lock className="mt-0.5 size-4 shrink-0" />
                     {/* <span>
                       {missingRequirement ??
                         "يجب استكمال متطلبات الدرس قبل فتح الاختبار."}
                     </span> */}
-                    <span>
+                    <p className="min-w-0 flex-1 break-words">
                       يجب الوصول إلى ٩٠٪ من مشاهدة الفيديو لفتح الاختبار.
-                    </span>
+                    </p>
                   </div>
                   <button
                     type="button"
@@ -361,7 +363,7 @@ const Lesson = () => {
               ) : (
                 <div className="space-y-3">
                   <div className="rounded-[7px] bg-teal-soft p-3">
-                    <p className="text-sm font-extrabold text-teal-dark">
+                    <p className="break-words text-sm font-extrabold text-teal-dark">
                       {quiz?.title ?? "اختبار الدرس"}
                     </p>
                     <p className="mt-1 text-xs text-body-mute">

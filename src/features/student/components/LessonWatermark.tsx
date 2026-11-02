@@ -34,10 +34,10 @@ const LessonWatermark = ({ watermark }: LessonWatermarkProps) => {
       className="pointer-events-none absolute z-10 select-none transition-all duration-1000 ease-in-out"
       style={position}
     >
-      <div className="max-w-44 rounded-md bg-black/50 px-2.5 py-1.5 text-[10px] font-bold leading-relaxed text-white [text-shadow:0_0_3px_rgba(0,0,0,0.75)] shadow-[0_1px_4px_rgba(0,0,0,0.35)] backdrop-blur-[2px] sm:max-w-48 sm:px-3 sm:py-2 sm:text-[11px] md:text-xs">
+      <div className="max-w-36 rounded-md bg-black/50 px-2.5 py-1.5 text-[10px] font-bold leading-relaxed text-white [text-shadow:0_0_3px_rgba(0,0,0,0.75)] shadow-[0_1px_4px_rgba(0,0,0,0.35)] backdrop-blur-[2px] sm:max-w-48 sm:px-3 sm:py-2 sm:text-[11px] md:text-xs">
         <p className="truncate">{watermark.displayName}</p>
-        <p className="truncate">Student ID: {watermark.studentId}</p>
-        <p className="break-all">{watermark.maskedEmail}</p>
+        <p className="truncate">ID: {watermark.studentId}</p>
+        <p className="hidden md:block break-all ">{watermark.maskedEmail}</p>
       </div>
     </div>
   );
