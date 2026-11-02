@@ -62,7 +62,7 @@ export const getConversationsApi = async (
   pageSize: number = CHAT_CONVERSATIONS_PAGE_SIZE,
 ): Promise<ConversationsListResponse> => {
   const response = await axiosClient.get<ConversationsListResponse>(
-    "/admin/chat",
+    "/adminchat",
     { params: { pageIndex, pageSize } },
   );
   return response.data;
@@ -72,7 +72,7 @@ export const getAdminConversationApi = async (
   conversationId: number,
 ): Promise<ConversationResponse> => {
   const response = await axiosClient.get<ConversationResponse>(
-    `/admin/chat/conversations/${conversationId}`,
+    `/adminchat/conversations/${conversationId}`,
   );
   return response.data;
 };
@@ -83,7 +83,7 @@ export const getAdminConversationMessagesApi = async (
   pageSize: number = CHAT_MESSAGES_PAGE_SIZE,
 ): Promise<ChatMessagesListResponse> => {
   const response = await axiosClient.get<ChatMessagesListResponse>(
-    `/admin/chat/conversations/${conversationId}/messages`,
+    `/adminchat/conversations/${conversationId}/messages`,
     { params: { pageIndex, pageSize } },
   );
   return response.data;
@@ -94,7 +94,7 @@ export const sendAdminMessageApi = async (
   content: string,
 ): Promise<ChatMessageResponse> => {
   const response = await axiosClient.post<ChatMessageResponse>(
-    "/admin/chat/messages",
+    "/adminchat/messages",
     { conversationId, content },
   );
   return response.data;
@@ -104,7 +104,7 @@ export const markConversationMessagesAsReadApi = async (
   conversationId: number,
 ): Promise<ApiResponse> => {
   const response = await axiosClient.post<ApiResponse>(
-    `/admin/chat/conversations/${conversationId}/mark-as-read`,
+    `/adminchat/conversations/${conversationId}/mark-as-read`,
   );
   return response.data;
 };

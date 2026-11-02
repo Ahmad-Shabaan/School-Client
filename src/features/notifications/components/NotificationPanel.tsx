@@ -4,6 +4,7 @@ import {
   BookOpen,
   BellOff,
   Loader2,
+  Plus,
   ShieldAlert,
   Trash2,
   X,
@@ -34,6 +35,9 @@ const TYPE_ICONS: Record<NotificationType, LucideIcon> = {
 type NotificationPanelProps = {
   onClose: () => void;
   variant?: NotificationVariant;
+  /** Admin only: opens the create-notification Sheet, owned by the parent
+   *  bell so the form's lifecycle is independent from this panel. */
+  onCreateClick?: () => void;
 };
 
 const PANEL_STYLES: Record<
@@ -84,7 +88,7 @@ const PANEL_STYLES: Record<
       "items-center gap-2 border-t border-line bg-paper text-xs font-bold text-teal-dark transition-colors hover:bg-teal-soft disabled:opacity-60",
   },
   admin: {
-    root: "overflow-hidden rounded-xl border border-border bg-popover text-start shadow-lg",
+    root: "overflow-hidden rounded-xl border border-border bg-white text-start shadow-lg",
     header: "border-b border-border/60 bg-accent/40",
     headerTitle: "text-sm font-semibold text-foreground",
     markAll:
@@ -108,16 +112,36 @@ const PANEL_STYLES: Record<
   },
 };
 
-const NotificationSkeletons = ({ styles }: { styles: (typeof PANEL_STYLES)[NotificationVariant] }) => (
+// Mirrors the real NotificationItem layout (icon circle → title, message
+// lines, type • time meta) so loading doesn't shift content on resolve.
+const SKELETON_WIDTHS = [
+  { title: "w-1/2", line1: "w-full", line2: "w-2/3", meta: "w-1/3" },
+  { title: "w-2/5", line1: "w-full", line2: "w-1/2", meta: "w-1/4" },
+  { title: "w-1/3", line1: "w-11/12", line2: "w-3/4", meta: "w-2/5" },
+] as const;
+
+const NotificationSkeletons = ({
+  styles,
+}: {
+  styles: (typeof PANEL_STYLES)[NotificationVariant];
+}) => (
   <ul aria-hidden="true">
-    {[0, 1, 2].map((index) => (
+    {SKELETON_WIDTHS.map((widths, index) => (
       <li
         key={index}
-        className={`flex animate-pulse flex-col gap-2 px-4 py-3 ${styles.skeletonRow}`}
+        className={`flex animate-pulse items-start gap-3 px-4 py-3 ${styles.skeletonRow}`}
       >
-        <span className={`h-3.5 w-1/2 rounded ${styles.skeletonBone}`} />
-        <span className={`h-3 w-full rounded ${styles.skeletonBone}`} />
-        <span className={`h-3 w-1/4 rounded ${styles.skeletonBone}`} />
+        <span
+          className={`mt-0.5 size-7 flex-none rounded-full ${styles.skeletonBone}`}
+        />
+        <span className="flex min-w-0 flex-1 flex-col gap-2">
+          <span className={`h-3.5 rounded ${widths.title} ${styles.skeletonBone}`} />
+          <span className={`h-3 rounded ${widths.line1} ${styles.skeletonBone}`} />
+          <span className={`h-3 rounded ${widths.line2} ${styles.skeletonBone}`} />
+          <span
+            className={`h-2.5 rounded ${widths.meta} ${styles.skeletonBone} opacity-70`}
+          />
+        </span>
       </li>
     ))}
   </ul>
@@ -225,6 +249,7 @@ const NotificationItem = ({
 const NotificationPanel = ({
   onClose,
   variant = "student",
+  onCreateClick,
 }: NotificationPanelProps) => {
   const {
     data,
@@ -253,6 +278,17 @@ const NotificationPanel = ({
       <div className={cn("flex items-center justify-between px-4 py-3", styles.header)}>
         <span className={styles.headerTitle}>الإشعارات</span>
         <div className="flex items-center gap-2">
+          {variant === "admin" && onCreateClick && (
+            <button
+              type="button"
+              aria-label="Create notification"
+              title="Create notification"
+              onClick={onCreateClick}
+              className="flex size-8 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+            >
+              <Plus className="size-4" />
+            </button>
+          )}
           {unreadCount > 0 && (
             <button
               type="button"

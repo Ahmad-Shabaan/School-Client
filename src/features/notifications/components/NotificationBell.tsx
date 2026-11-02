@@ -1,8 +1,16 @@
 import { Bell } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
+import { createPortal } from "react-dom";
 import NotificationPanel, {
   type NotificationVariant,
 } from "./NotificationPanel";
+import NotificationForm from "./NotificationForm";
 import { useUnreadNotificationsCount } from "../hooks/useNotifications";
 import { MAX_BADGE_COUNT } from "../constants/notification.constants";
 
@@ -31,32 +39,116 @@ const BELL_STYLES: Record<
   },
 };
 
+const PANEL_WIDTH = 360;
+const PANEL_GAP = 8;
+const PANEL_EDGE_MARGIN = 8;
+const MOBILE_PANEL_TOP = 72;
+const MOBILE_QUERY = "(max-width: 639px)";
+
+type PanelPlacement =
+  | { mode: "mobile" }
+  | { mode: "desktop"; x: number; y: number };
+
+/**
+ * Measures the bell button at open time. The panel is a fixed-position
+ * overlay, so its coordinates must come from the viewport-absolute
+ * `getBoundingClientRect()`, clamped inside the viewport so it never
+ * overflows on desktop.
+ */
+const computePanelPlacement = (bell: HTMLElement): PanelPlacement => {
+  // jsdom (tests) has no matchMedia; fall back to the desktop anchor path.
+  const isMobile = window.matchMedia?.(MOBILE_QUERY)?.matches ?? false;
+  if (isMobile) return { mode: "mobile" };
+
+  const rect = bell.getBoundingClientRect();
+  const x = Math.max(
+    PANEL_EDGE_MARGIN,
+    Math.min(rect.left, window.innerWidth - PANEL_WIDTH - PANEL_EDGE_MARGIN),
+  );
+  return { mode: "desktop", x, y: rect.bottom + PANEL_GAP };
+};
+
+const getPanelStyle = (placement: PanelPlacement): CSSProperties =>
+  placement.mode === "mobile"
+    ? {
+        left: PANEL_EDGE_MARGIN,
+        right: PANEL_EDGE_MARGIN,
+        top: MOBILE_PANEL_TOP,
+      }
+    : { left: placement.x, top: placement.y, width: PANEL_WIDTH };
+
 const NotificationBell = ({
   variant = "student",
 }: NotificationBellProps = {}) => {
   const [isOpen, setIsOpen] = useState(false);
+  // Owned here (not inside the panel) so the create-notification Sheet's
+  // lifecycle is independent from the ephemeral panel: the panel's outside
+  // press handler only knows about the bell wrapper and the panel portal,
+  // and Radix portals the Sheet to <body> as a separate subtree.
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  // Computed once per open, in the click handler — never inside an effect —
+  // so there is no synchronous setState-in-effect render cascade.
+  const [placement, setPlacement] = useState<PanelPlacement | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const { data } = useUnreadNotificationsCount(true);
   const unreadCount = data?.data ?? 0;
 
-  const close = () => setIsOpen(false);
-  const toggle = () => setIsOpen((open) => !open);
+  const close = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
+  const toggle = useCallback(() => {
+    if (isOpen) {
+      close();
+      return;
+    }
+    const bell = containerRef.current?.querySelector("button");
+    setPlacement(
+      bell
+        ? computePanelPlacement(bell)
+        : ({
+            mode: "desktop",
+            x: 0,
+            y: MOBILE_PANEL_TOP,
+          } satisfies PanelPlacement),
+    );
+    setIsOpen(true);
+  }, [isOpen, close]);
 
   useEffect(() => {
     if (!isOpen) return;
 
     const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
       if (
         containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
+        !containerRef.current.contains(target) &&
+        !panelRef.current?.contains(target)
       ) {
         close();
       }
     };
 
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // When the create-notification Sheet is open, Escape belongs to it
+      // (Radix handles its dismissal), so don't yank the panel as well.
+      if (event.key === "Escape" && !isFormOpen) close();
+    };
+
+    // Resizing invalidates the captured coordinates, so closing (instead of
+    // re-measuring) keeps the panel anchored without extra layout work.
+    const handleResize = () => close();
+
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isOpen]);
+    document.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("resize", handleResize);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [isOpen, isFormOpen, close]);
 
   const styles = BELL_STYLES[variant];
 
@@ -79,19 +171,47 @@ const NotificationBell = ({
         )}
       </button>
 
-      {isOpen && (
-        <>
-          <button
-            type="button"
-            aria-hidden="true"
-            tabIndex={-1}
-            className="fixed inset-0 z-40 cursor-default"
-            onClick={close}
-          />
-          <div className="fixed inset-x-3 top-[calc(64px+8px)] z-50 sm:absolute sm:inset-x-auto sm:left-0 sm:top-[calc(100%+8px)] sm:w-[360px]">
-            <NotificationPanel onClose={close} variant={variant} />
-          </div>
-        </>
+      {isOpen &&
+        placement &&
+        createPortal(
+          <>
+            {/* Full-screen click-catcher; invisible by design so it never
+                tints the page — it only captures outside clicks. */}
+            <button
+              type="button"
+              aria-hidden="true"
+              tabIndex={-1}
+              className="fixed inset-0 z-[90] cursor-default"
+              onClick={close}
+            />
+            {/* Portaled to <body> so the panel lives above every page
+                section/navigation stacking context (navbar is sticky z-40;
+                nested panels could be painted over by page content). */}
+            <div
+              ref={panelRef}
+              style={getPanelStyle(placement)}
+              className="fixed z-[100]"
+            >
+              <NotificationPanel
+                onClose={close}
+                variant={variant}
+                onCreateClick={
+                  variant === "admin" ? () => setIsFormOpen(true) : undefined
+                }
+              />
+            </div>
+          </>,
+          document.body,
+        )}
+
+      {/* Mounted at bell level (outside the panel portal) so it survives
+          the panel closing; hidden entirely for the student variant. */}
+      {variant === "admin" && (
+        <NotificationForm
+          variant={variant}
+          open={isFormOpen}
+          onOpenChange={setIsFormOpen}
+        />
       )}
     </div>
   );

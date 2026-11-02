@@ -8,6 +8,7 @@ import {
 import type { AxiosError } from "axios";
 import { toast } from "sonner";
 import { handleErrorMessage } from "@/lib/utils/handleErrorMessage";
+import type { ApiErrorResponse } from "@/shared/types/api.types";
 import {
   NOTIFICATIONS_GC_TIME,
   NOTIFICATIONS_QUERY_KEY,
@@ -16,6 +17,7 @@ import {
 } from "../constants/notification.constants";
 import {
   deleteNotificationApi,
+  createNotificationsApi,
   getNotificationsApi,
   getUnreadNotificationsCountApi,
   markAllNotificationsAsReadApi,
@@ -183,5 +185,29 @@ export function useDeleteNotification() {
     });
     if (!removed) return { list, unreadDelta: 0 };
     return { list: { ...list, pages }, unreadDelta: wasUnread ? -1 : 0 };
+  });
+}
+
+/** ── Create notification (admin only) ─────────────────────── */
+export interface CreateNotificationParams {
+  title: string;
+  message: string;
+}
+
+export function useCreateNotification() {
+  const queryClient = useQueryClient();
+
+  return useMutation<ApiErrorResponse, AxiosError, CreateNotificationParams>({
+    mutationFn: (params) =>
+      createNotificationsApi(params.title, params.message),
+    mutationKey: [...NOTIFICATIONS_QUERY_KEY.all(), "create"],
+    onError: (error) => {
+      toast.error(handleErrorMessage(error).title);
+    },
+    onSuccess: () => {
+      toast.success("Notification has been sent successfully.");
+      void queryClient.invalidateQueries({ queryKey: LIST_KEY });
+      void queryClient.invalidateQueries({ queryKey: UNREAD_KEY });
+    },
   });
 }

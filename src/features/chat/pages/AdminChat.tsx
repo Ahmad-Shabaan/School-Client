@@ -14,10 +14,11 @@ import {
 import { CHAT_QUERY_KEY } from "../constants/chat.constants";
 import { adminChatPath } from "@/config/routes";
 import { onChatReconnected, onMessageSent } from "../services/chatHub";
-import ChatSkeleton from "../components/ChatSkeleton";
+import ChatSkeleton, { ConversationRowsSkeleton } from "../components/ChatSkeleton";
 import ChatEmptyState from "../components/ChatEmptyState";
 import ConversationSidebarItem from "../components/ConversationSidebarItem";
 import AdminChatConversation from "./AdminChatConversation";
+import { Skeleton } from "@/components/ui/skeleton";
 import type { ConversationDto } from "../types/chat.types";
 
 const MOBILE_BREAKPOINT = 1024;
@@ -141,11 +142,50 @@ export default function AdminChat() {
     };
   }, [queryClient]);
 
+  // Loading shell mirrors the real page layout (header → sidebar rows →
+  // conversation pane) so nothing jumps when data resolves.
   if (isLoading) {
+    const sidebarSkeleton = (
+      <div className="min-h-0 flex-1 overflow-y-auto p-3 sm:p-4">
+        <ConversationRowsSkeleton count={6} tone="paper" />
+      </div>
+    );
+
     return (
-      <div className="page-container flex flex-col min-h-0">
-        <div className="mx-auto w-full max-w-4xl px-4 py-8 sm:px-6">
-          <ChatSkeleton count={4} />
+      <div
+        className="page-container flex h-[calc(100svh-4rem)] min-h-0 flex-col"
+        aria-busy="true"
+      >
+        <div className="flex shrink-0 items-center justify-between border-b border-line bg-white px-4 py-3 sm:px-6 sm:py-4">
+          <div className="flex items-center gap-3" aria-hidden="true">
+            <Skeleton tone="paper" className="size-9 rounded-xl" />
+            <div className="flex flex-col gap-1.5">
+              <Skeleton tone="paper" className="h-3 w-28 rounded-full" />
+              <Skeleton
+                tone="paper"
+                className="h-2.5 w-44 rounded-full opacity-70"
+              />
+            </div>
+          </div>
+          <div className="hidden sm:block" aria-hidden="true">
+            <Skeleton tone="paper" className="h-3 w-24 rounded-full opacity-70" />
+          </div>
+        </div>
+
+        <div className="flex min-h-0 flex-1 lg:hidden">
+          <div className="flex w-full flex-col border-r border-line" aria-hidden="true">
+            {sidebarSkeleton}
+          </div>
+        </div>
+
+        <div className="hidden min-h-0 flex-1 overflow-hidden lg:flex" aria-hidden="true">
+          <div className="flex w-full flex-col border-r border-line lg:w-[420px]">
+            {sidebarSkeleton}
+          </div>
+          <div className="flex min-h-0 flex-1 flex-col items-center justify-center px-6">
+            {/* Single bubble keeps the pane scrollbar-free while loading. */}
+            <ChatSkeleton count={1} tone="paper" />
+          </div>
         </div>
       </div>
     );

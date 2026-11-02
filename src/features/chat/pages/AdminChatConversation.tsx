@@ -28,6 +28,7 @@ import {
 import ChatMessageBubble from "../components/ChatMessageBubble";
 import ChatComposer from "../components/ChatComposer";
 import ChatSkeleton from "../components/ChatSkeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 import ChatEmptyState from "../components/ChatEmptyState";
 import type {
   ChatMessageDto,
@@ -275,10 +276,41 @@ export default function AdminChatConversation({
   const isSending = sendAdminMessage.isPending;
   const hasMessages = messages.length > 0;
 
+  // Loading shell mirrors the loaded conversation: header (avatar + title +
+  // counters), message thread, then the composer bar.
   if (isLoading) {
     return (
-      <div className="flex-1 min-h-0 flex flex-col items-center justify-center pt-10">
-        <ChatSkeleton count={4} />
+      <div className="flex min-h-0 flex-1 flex-col" aria-busy="true">
+        <div className="flex shrink-0 items-center justify-between border-b border-line bg-white px-4 py-3">
+          <div className="flex items-center gap-3" aria-hidden="true">
+            <Skeleton tone="paper" className="size-8 rounded-lg" />
+            <div className="flex flex-col gap-1.5">
+              <Skeleton tone="paper" className="h-3 w-28 rounded-full" />
+              <Skeleton
+                tone="paper"
+                className="h-2 w-24 rounded-full opacity-70"
+              />
+            </div>
+          </div>
+          <div className="hidden sm:block" aria-hidden="true">
+            <Skeleton tone="paper" className="h-4 w-12 rounded-full" />
+          </div>
+        </div>
+
+        <div className="min-h-0 flex-1 p-3 sm:p-4" aria-hidden="true">
+          <div className="flex h-full flex-col justify-center">
+            {/* A single bubble avoids vertical overflow (and thus a
+                scrollbar) inside the fixed-height conversation pane. */}
+            <ChatSkeleton count={1} tone="paper" />
+          </div>
+        </div>
+
+        <div className="border-t border-line bg-white p-3 sm:p-4" aria-hidden="true">
+          <div className="flex items-center gap-2">
+            <Skeleton tone="paper" className="h-10 flex-1 rounded-xl" />
+            <Skeleton tone="paper" className="size-10 flex-none rounded-xl" />
+          </div>
+        </div>
       </div>
     );
   }
@@ -344,8 +376,8 @@ export default function AdminChatConversation({
         }}
       >
         {isFetching && !hasMessages && (
-          <div className="flex h-full flex-col items-center justify-center pt-10">
-            <ChatSkeleton count={3} />
+          <div className="flex h-full flex-col items-center justify-center pt-10" aria-busy="true">
+            <ChatSkeleton count={1} tone="paper" />
           </div>
         )}
 

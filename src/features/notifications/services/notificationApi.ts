@@ -1,11 +1,25 @@
 import axiosClient from "@/shared/api/axiosClient";
-import type { ApiResponse } from "@/shared/types/api.types";
+import type { ApiErrorResponse, ApiResponse } from "@/shared/types/api.types";
 import { NOTIFICATIONS_PAGE_SIZE } from "../constants/notification.constants";
 import type {
   MutationParams,
   NotificationsListResponse,
   UnreadNotificationsCountResponse,
 } from "../types/notification.types";
+
+
+const createNotificationsApi = async (
+  title: string,
+  message: string,
+): Promise<ApiErrorResponse > => {
+  const response = await axiosClient.post<ApiErrorResponse>(
+    "/notifications",
+    { title, message }
+  );
+  return response.data;
+};
+
+
 
 const getNotificationsApi = async (
   pageIndex: number,
@@ -55,4 +69,5 @@ export {
   markNotificationAsReadApi,
   markAllNotificationsAsReadApi,
   deleteNotificationApi,
+  createNotificationsApi,
 };

@@ -130,6 +130,17 @@ export const updateCourseSchema = z.object({
     .optional(),
 });
 
+export const notificationSchema = z.object({
+  title: z
+    .string()
+    .min(2, "Notification title is required")
+    .max(120, "Notification title is too long"),
+  message: z
+    .string()
+    .min(10, "Message must be at least 10 characters")
+    .max(1000, "Message is too long"),
+});
+
 export const enrollStudentsSchema = z.object({
   emails: z
     .array(z.string())
@@ -251,6 +262,8 @@ export type UpdateUserFormValues = z.infer<typeof updateUserSchema>;
 export type CreateCourseFormValues = z.infer<typeof courseSchema>;
 
 export type UpdateCourseFormValues = z.infer<typeof updateCourseSchema>;
+
+export type NotificationFormValues = z.infer<typeof notificationSchema>;
 
 export type EnrollStudentsFormValues = z.infer<typeof enrollStudentsSchema>;
 

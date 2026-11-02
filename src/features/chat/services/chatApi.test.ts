@@ -88,7 +88,7 @@ describe("chatApi", () => {
 
     await getConversationsApi(1, 10);
 
-    expect(mockGet).toHaveBeenCalledWith("/admin/chat", {
+    expect(mockGet).toHaveBeenCalledWith("/adminchat", {
       params: { pageIndex: 1, pageSize: 10 },
     });
   });
@@ -98,7 +98,7 @@ describe("chatApi", () => {
 
     await getConversationsApi(0);
 
-    expect(mockGet).toHaveBeenCalledWith("/admin/chat", {
+    expect(mockGet).toHaveBeenCalledWith("/adminchat", {
       params: { pageIndex: 0, pageSize: 20 },
     });
   });
@@ -108,7 +108,7 @@ describe("chatApi", () => {
 
     await getAdminConversationApi(7);
 
-    expect(mockGet).toHaveBeenCalledWith("/admin/chat/conversations/7");
+    expect(mockGet).toHaveBeenCalledWith("/adminchat/conversations/7");
   });
 
   it("fetches admin conversation messages with paging parameters", async () => {
@@ -117,7 +117,7 @@ describe("chatApi", () => {
     await getAdminConversationMessagesApi(7, 2, 15);
 
     expect(mockGet).toHaveBeenCalledWith(
-      "/admin/chat/conversations/7/messages",
+      "/adminchat/conversations/7/messages",
       { params: { pageIndex: 2, pageSize: 15 } },
     );
   });
@@ -127,7 +127,7 @@ describe("chatApi", () => {
 
     await sendAdminMessageApi(7, "Reply");
 
-    expect(mockPost).toHaveBeenCalledWith("/admin/chat/messages", {
+    expect(mockPost).toHaveBeenCalledWith("/adminchat/messages", {
       conversationId: 7,
       content: "Reply",
     });
@@ -139,7 +139,7 @@ describe("chatApi", () => {
     await markConversationMessagesAsReadApi(7);
 
     expect(mockPost).toHaveBeenCalledWith(
-      "/admin/chat/conversations/7/mark-as-read",
+      "/adminchat/conversations/7/mark-as-read",
     );
   });
 });
