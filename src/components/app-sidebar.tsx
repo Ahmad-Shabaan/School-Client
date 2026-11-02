@@ -21,6 +21,7 @@ import {
   MessageSquare,
 } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAppSelector } from "@/store/hooks";
 
 const navItems = [
   {
@@ -48,6 +49,15 @@ const navItems = [
 export function AppSidebar() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const user = useAppSelector((state) => state.auth.user);
+
+  const displayName = user
+    ? `${user.firstName} ${user.lastName}`.trim()
+    : "Administrator";
+  const roleLabel = user?.roles?.[0]
+    ? user.roles[0].charAt(0).toUpperCase() + user.roles[0].slice(1).toLowerCase()
+    : "System Administrator";
+  const avatarInitial = user?.firstName?.trim().charAt(0) || "S";
 
   const handleNavigation = (path: string) => {
     navigate(`${ROUTES[ROLES.Admin].basePath}/${path}`);
@@ -97,15 +107,15 @@ export function AppSidebar() {
       <SidebarSeparator className="mx-3 w-auto mt-auto" />
       <SidebarFooter className="px-3 pb-4">
         <div className="flex items-center gap-3 rounded-lg bg-sidebar-accent/50 px-3 py-2.5">
-          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-br from-primary to-primary-dim text-[10px] font-bold text-white">
-            A
+          <div className="flex h-7 w-7 flex-none items-center justify-center rounded-md bg-gradient-to-br from-primary to-primary-dim text-[10px] font-bold text-white">
+            {avatarInitial}
           </div>
-          <div className="flex flex-col">
-            <span className="text-xs font-medium text-sidebar-foreground">
-              Admin
+          <div className="flex min-w-0 flex-col">
+            <span className="truncate text-xs font-medium text-sidebar-foreground">
+              {displayName}
             </span>
-            <span className="text-[10px] text-sidebar-foreground/40">
-              System Administrator
+            <span className="truncate text-[10px] text-sidebar-foreground/40">
+              {roleLabel}
             </span>
           </div>
         </div>

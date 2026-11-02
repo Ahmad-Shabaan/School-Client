@@ -85,7 +85,7 @@ export default function LoginForm({
 
       {/* ── Password ── */}
       <FieldWrapper
-        id="signup-password"
+        id="login-password"
         label="كلمة المرور"
         errorId="password-error"
         errorMessage={errors.password?.message}
@@ -104,10 +104,10 @@ export default function LoginForm({
             render={({ field }) => (
               <Input
                 {...field}
-                id="signup-password"
+                id="login-password"
                 type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
-                autoComplete="new-password"
+                autoComplete="current-password"
                 aria-invalid={!!errors.password}
                 aria-describedby={
                   errors.password ? "password-error" : undefined

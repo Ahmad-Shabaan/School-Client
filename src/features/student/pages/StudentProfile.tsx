@@ -28,7 +28,7 @@ const StudentProfile = () => {
           ) : isError ? (
             <AppError
               message={error.title}
-              link="Back to Home"
+              link="العودة إلى الصفحة الرئيسية"
               to={ROUTES.Student.basePath}
             />
           ) : (

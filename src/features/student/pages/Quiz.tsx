@@ -255,7 +255,7 @@ const Quiz = () => {
               {attempts.map((attempt) => (
                 <li
                   key={attempt.id}
-                  className="flex items-center justify-between rounded-[7px] border border-line px-4 py-3 text-sm"
+                  className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 rounded-[7px] border border-line px-4 py-3 text-sm"
                 >
                   <span className="font-bold text-ink">
                     المحاولة {attempt.attemptNumber}

@@ -29,6 +29,7 @@ interface DataTableProps<TData, TValue> {
   pagination: Pagination;
   pageCount: number;
   onPaginationChange: React.Dispatch<React.SetStateAction<Pagination>>;
+  emptyMessage?: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -37,6 +38,7 @@ export function DataTable<TData, TValue>({
   pagination,
   pageCount,
   onPaginationChange,
+  emptyMessage = "No results found",
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable({
@@ -103,9 +105,7 @@ export function DataTable<TData, TValue>({
                 className="h-32 text-center text-sm text-muted-foreground"
               >
                 <div className="flex flex-col items-center gap-2">
-                  <div className="text-muted-foreground/40">
-                    No members found
-                  </div>
+                  <div className="text-muted-foreground/40">{emptyMessage}</div>
                 </div>
               </TableCell>
             </TableRow>
@@ -116,7 +116,7 @@ export function DataTable<TData, TValue>({
       {pageCount >= 1 && (
         <>
           <div className="h-px bg-border/30" />
-          <div className="flex items-center justify-between px-6 py-4">
+          <div className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
             <p className="text-xs text-muted-foreground text-nowrap">
               Page {pageIndex} of {pageCount}
             </p>

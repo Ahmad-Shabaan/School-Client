@@ -10,9 +10,9 @@ const StudentLayout = () => {
       className="flex min-h-svh flex-col bg-paper font-tajawal text-body"
     >
       <StudentHeader />
-      <main className="w-full flex-1">
+      <div className="flex w-full flex-1 flex-col">
         <Outlet />
-      </main>
+      </div>
       <StudentFooter />
     </div>
   );

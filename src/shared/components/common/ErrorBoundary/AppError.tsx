@@ -12,7 +12,10 @@ interface PaymentErrorProps {
 
 const AppError = ({ title, message, onRetry, link, to }: PaymentErrorProps) => {
   return (
-    <main className="flex-1 col-center text-center gap-4 sm:gap-6 pt-12 sm:pt-14 lg:pt-16  pb-4 px-4 ">
+    <section
+      aria-live="polite"
+      className="flex-1 col-center text-center gap-4 sm:gap-6 pt-12 sm:pt-14 lg:pt-16  pb-4 px-4"
+    >
       <div className="size-16 rounded-full bg-error/10 flex items-center justify-center">
         <AlertTriangle className="size-7 text-error" />
       </div>
@@ -23,7 +26,7 @@ const AppError = ({ title, message, onRetry, link, to }: PaymentErrorProps) => {
 
         <p className="section-description">
           {message ??
-            "We couldn't load the checkout page.<br/>This might be a temporary issue."}
+            "We couldn't load this page. This might be a temporary issue."}
         </p>
       </div>
 
@@ -42,7 +45,7 @@ const AppError = ({ title, message, onRetry, link, to }: PaymentErrorProps) => {
           </Button>
         )}
       </div>
-    </main>
+    </section>
   );
 };
 

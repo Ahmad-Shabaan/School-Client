@@ -107,6 +107,7 @@ const Members = () => {
           pageCount={data?.pagination?.totalPages ?? 0}
           onPaginationChange={setPagination}
           data={data?.data ?? []}
+          emptyMessage="No members found"
         />
       </div>
     </div>

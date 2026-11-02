@@ -168,7 +168,7 @@ export default function AdminChat() {
 
   if (isMobile && selectedId) {
     return (
-      <div className="flex h-[calc(100svh)] flex-col">
+      <div className="flex h-[calc(100svh-4rem)] min-h-0 flex-col">
         <header className="flex shrink-0 items-center justify-between border-b border-line bg-white px-4 py-3">
           <Link
             to={adminChatPath()}
@@ -215,7 +215,7 @@ export default function AdminChat() {
   );
 
   return (
-    <div className="page-container flex flex-col min-h-0">
+    <div className="page-container flex h-[calc(100svh-4rem)] min-h-0 flex-col">
       <header className="flex shrink-0 items-center justify-between border-b border-line bg-white px-4 py-3 sm:px-6 sm:py-4">
         <div className="flex items-center gap-3">
           <div className="flex size-9 flex-none items-center justify-center rounded-xl bg-teal-soft font-extrabold text-teal-dark">

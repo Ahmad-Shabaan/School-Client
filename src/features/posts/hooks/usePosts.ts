@@ -61,6 +61,16 @@ interface OptimisticPostsContext {
   optimisticId?: number;
 }
 
+/**
+ * Context for optimistic creates. Rollback is a surgical inverse (removing the
+ * unique transient id) instead of a cache restore, so a failed create can
+ * never clobber a sibling mutation that already committed to the cache.
+ */
+interface OptimisticCreateContext {
+  optimisticId: number;
+  postId?: number;
+}
+
 const useCurrentUser = (): User | null =>
   useAppSelector((state) => state.auth.user);
 
@@ -80,11 +90,15 @@ export const useCreatePost = () => {
   const queryClient = useQueryClient();
   const user = useCurrentUser();
 
-  return useMutation<PostResponse, AxiosError, CreatePostRequest, OptimisticPostsContext>({
+  return useMutation<
+    PostResponse,
+    AxiosError,
+    CreatePostRequest,
+    OptimisticCreateContext
+  >({
     mutationFn: createPostApi,
     async onMutate(request) {
       await queryClient.cancelQueries({ queryKey: POSTS_QUERY_KEY.all() });
-      const snapshot = snapshotPostsQueries(queryClient);
       const author = currentAuthor(user);
 
       const post: PostDto = {
@@ -99,10 +113,12 @@ export const useCreatePost = () => {
       };
 
       applyOptimisticPostCreated(queryClient, post);
-      return { snapshot, optimisticId: post.id };
+      return { optimisticId: post.id };
     },
     onError(error, _vars, context) {
-      if (context) restorePostsQueries(queryClient, context.snapshot);
+      if (context) {
+        applyOptimisticPostDeleted(queryClient, context.optimisticId);
+      }
       toast.error(errorTitle(error));
     },
     onSuccess: () => {
@@ -182,11 +198,15 @@ export const useCreateComment = () => {
   const queryClient = useQueryClient();
   const user = useCurrentUser();
 
-  return useMutation<CommentResponse, AxiosError, CreateCommentRequest, OptimisticPostsContext>({
+  return useMutation<
+    CommentResponse,
+    AxiosError,
+    CreateCommentRequest,
+    OptimisticCreateContext
+  >({
     mutationFn: createCommentApi,
     async onMutate(request) {
       await queryClient.cancelQueries({ queryKey: POSTS_QUERY_KEY.all() });
-      const snapshot = snapshotPostsQueries(queryClient);
       const author = currentAuthor(user);
 
       const comment: CommentDto = {
@@ -203,10 +223,16 @@ export const useCreateComment = () => {
       };
 
       applyOptimisticCommentCreated(queryClient, comment);
-      return { snapshot, optimisticId: comment.id };
+      return { optimisticId: comment.id, postId: comment.postId ?? undefined };
     },
     onError(error, _vars, context) {
-      if (context) restorePostsQueries(queryClient, context.snapshot);
+      if (context && context.postId != null) {
+        applyOptimisticCommentDeleted(
+          queryClient,
+          context.postId,
+          context.optimisticId,
+        );
+      }
       toast.error(errorTitle(error));
     },
     onSuccess: () => {

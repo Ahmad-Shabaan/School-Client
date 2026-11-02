@@ -284,8 +284,8 @@ export default function StudentChat() {
   }
 
   return (
-    <main className="w-full flex-1 flex flex-col">
-      <header className="sticky top-0 z-20 flex items-center justify-between border-b border-line bg-white/90 px-4 py-3 backdrop-blur sm:px-5 sm:py-3.5">
+    <main className="flex max-h-[calc(100svh-4.25rem)] min-h-0 w-full flex-1 flex-col">
+      <header className="flex shrink-0 items-center justify-between border-b border-line bg-white/90 px-4 py-3 backdrop-blur sm:px-5 sm:py-3.5">
         <div className="flex items-center gap-2">
           <div className="flex size-8 flex-none items-center justify-center rounded-lg bg-teal-soft text-teal-dark font-extrabold">
             <span className="text-sm">إدارة</span>
@@ -308,7 +308,7 @@ export default function StudentChat() {
 
       <div
         ref={containerRef}
-        className="flex-1 min-h-0 overflow-y-auto p-3 sm:p-4 pb-12"
+        className="min-h-40 flex-1 overflow-y-auto p-3 sm:p-4 pb-12"
         onScroll={() => {
           atBottomRef.current = isAtBottom();
         }}
@@ -355,7 +355,7 @@ export default function StudentChat() {
 
         {showLoadMoreError && (
           <p className="text-center text-xs text-error-dim mt-2">
-            تعذر تحميل الرسائل الأقدم، يفرج المحاولة مرة أخرى.
+            تعذر تحميل الرسائل الأقدم، حاول المحاولة مرة أخرى.
           </p>
         )}
       </div>

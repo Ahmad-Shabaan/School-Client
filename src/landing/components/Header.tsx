@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { LogIn, Menu, X } from "lucide-react";
 import {
   brandMark,
@@ -88,14 +89,14 @@ const Header = () => {
               <span className="sr-only">اتصل بنا</span>
             </a>
 
-            <a
-              href="/login"
+            <Link
+              to="/login"
               aria-label="تسجيل الدخول"
               className="flex size-9 items-center justify-center rounded-[10px] border border-[var(--line)] text-[var(--teal-dark)] transition-colors duration-200 hover:bg-[var(--teal-soft)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(169,130,44,0.6)] sm:size-8 md:hidden"
             >
               <LogIn className="size-4 sm:size-3.5" />
               <span className="sr-only">تسجيل الدخول</span>
-            </a>
+            </Link>
 
             <button
               type="button"

@@ -17,7 +17,7 @@ const Footer = () => {
               </div>
             </div>
             <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} BookWise. All rights reserved.
+              © {new Date().getFullYear()} School. All rights reserved.
             </p>
             <p className="text-xs text-muted-foreground/60">
               Made with ❤️ for education
@@ -29,30 +29,18 @@ const Footer = () => {
             <h3 className="text-sm font-medium text-foreground/90 mb-2 uppercase tracking-wider">
               Company
             </h3>
-            <div className="space-y-1">
+            <div className="space-y-1 flex flex-col">
               <Link
-                to="/about"
+                to="/"
                 className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
               >
-                About Us
+                Home
               </Link>
               <Link
-                to="/privacy"
+                to="/login"
                 className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
               >
-                Privacy Policy
-              </Link>
-              <Link
-                to="/terms"
-                className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
-              >
-                Terms of Service
-              </Link>
-              <Link
-                to="/support"
-                className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
-              >
-                Support
+                Login
               </Link>
             </div>
           </div>

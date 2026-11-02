@@ -26,9 +26,9 @@ const ErrorMessage = ({
           {Object.entries(errors).map(([field, errors]) => (
             <div key={field} className="w-full ">
               <strong>{field}</strong>
-              <ul>
+              <ul className="w-full space-y-0.5">
                 {errors.map((error) => (
-                  <li className="truncate" key={error}>
+                  <li key={error} className="break-words leading-relaxed">
                     {error}
                   </li>
                 ))}
