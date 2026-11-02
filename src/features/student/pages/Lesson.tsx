@@ -19,7 +19,7 @@ import type { YouTubePlayerLike } from "../components/YouTubePlayer";
 import { useVideoProgress } from "../hooks/useVideoProgress";
 import { useSessionJoinability } from "../hooks/useSessionJoinability";
 import {
-  lessonAccessQueryOptions,
+  // lessonAccessQueryOptions,
   lessonDetailsQueryOptions,
   lessonProgressQueryOptions,
   lessonWatermarkQueryOptions,
