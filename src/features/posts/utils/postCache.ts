@@ -105,6 +105,32 @@ export const updatePostInFeed = (
   return changed ? { ...feed, pages } : feed;
 };
 
+/**
+ * Applies a per-post patch to every post cached in a feed. Used when the
+ * updater target is known only by an id stored inside the post tree
+ * (e.g. optimistic comment edits, where the mutation input has no postId).
+ */
+export const patchEveryPostInFeed = (
+  feed: PostsFeedData,
+  updater: (post: PostDto) => PostDto,
+): PostsFeedData => {
+  let changed = false;
+
+  const pages = feed.pages.map((page) => {
+    const data = page.data.map((post) => {
+      const updated = updater(post);
+      if (updated === post) return post;
+
+      changed = true;
+      return updated;
+    });
+
+    return changed ? { ...page, data } : page;
+  });
+
+  return changed ? { ...feed, pages } : feed;
+};
+
 export const removePostFromFeed = (
   feed: PostsFeedData | undefined,
   postId: number,

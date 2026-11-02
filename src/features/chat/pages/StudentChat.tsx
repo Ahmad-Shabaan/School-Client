@@ -249,7 +249,7 @@ export default function StudentChat() {
     return (
       <main className="w-full flex-1">
         <div className="mx-auto w-full max-w-xl px-4 py-8 sm:px-5 sm:py-12">
-          <ChatSkeleton count={4} />
+          <ChatSkeleton count={4} tone="brand" />
         </div>
       </main>
     );
@@ -315,7 +315,7 @@ export default function StudentChat() {
       >
         {isFetching && !hasMessages && (
           <div className="h-full flex flex-col items-center justify-center pt-10">
-            <ChatSkeleton count={3} />
+            <ChatSkeleton count={3} tone="brand" />
           </div>
         )}
 

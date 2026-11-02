@@ -18,7 +18,6 @@ import {
 } from "@/features/admin/options/lessons.options";
 import { useSubmitQuizAttempt } from "@/features/admin/hooks/useLessons";
 import type { QuizAnswerInput } from "@/features/admin/types/lesson.types";
-import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import AppError from "@/shared/components/common/ErrorBoundary/AppError";
 import { ROUTES } from "@/config/routes";
