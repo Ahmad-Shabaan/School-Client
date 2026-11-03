@@ -16,4 +16,5 @@ export const QUIZ_QUERY_KEY = {
   byLesson: (lessonId: number) => ["quiz", "lesson", lessonId] as const,
   manage: (lessonId: number) => ["quiz", "manage", lessonId] as const,
   attempts: (lessonId: number) => ["quiz", "attempts", lessonId] as const,
+  attempt: (lessonId: number) => ["quiz", "attempt", lessonId] as const,
 };

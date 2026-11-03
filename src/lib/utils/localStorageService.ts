@@ -1,11 +1,10 @@
-import { v4 as uuidv4 } from "uuid";
-
-export function getBasketId() {
-  let id = localStorage.getItem("basketId");
-  // Guest browsing
-  if (!id) {
-    id = uuidv4();
-    localStorage.setItem("basketId", id);
-  }
-  return id;
+export function localStorageService(
+  elementKey: string,
+  elementValue?: string,
+): string {
+  let result = localStorage.getItem(elementKey);
+  if (!result) {
+    localStorage.setItem(elementKey, elementValue || "");
+    result = localStorage.getItem(elementKey) || "";}
+  return result;
 }

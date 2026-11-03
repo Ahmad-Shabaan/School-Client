@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import {
   AlertTriangle,
   ArrowRight,
   CheckCircle2,
-  ListChecks,
+  // ListChecks,
   Send,
   XCircle,
 } from "lucide-react";
@@ -13,7 +13,7 @@ import ProgressBar from "../components/ProgressBar";
 import QuizSkeleton from "../components/QuizSkeleton";
 
 import {
-  quizAttemptsQueryOptions,
+  // quizAttemptsQueryOptions,
   quizByLessonQueryOptions,
 } from "@/features/admin/options/lessons.options";
 import { useSubmitQuizAttempt } from "@/features/admin/hooks/useLessons";
@@ -27,6 +27,7 @@ import type { ApiErrorResponse } from "@/shared/types/api.types";
 const Quiz = () => {
   const { id } = useParams();
   const lessonId = Number(id);
+  const Navigate = useNavigate();
 
   const {
     data: quizData,
@@ -35,7 +36,7 @@ const Quiz = () => {
     error: quizError,
   } = useQuery(quizByLessonQueryOptions(lessonId));
 
-  const { data: attemptsData } = useQuery(quizAttemptsQueryOptions(lessonId));
+  // const { data: attemptsData } = useQuery(quizAttemptsQueryOptions(lessonId));
 
   const {
     handleSubmitAttempt,
@@ -49,7 +50,7 @@ const Quiz = () => {
   );
 
   const quiz = quizData?.data;
-  const attempts = attemptsData?.data ?? [];
+  // const attempts = attemptsData?.data ?? [];
   const latestResult = attemptResult?.data;
 
   const handleSelect = (questionId: number, optionId: number) => {
@@ -79,10 +80,21 @@ const Quiz = () => {
     handleSubmitAttempt(lessonId, payload);
   };
 
-  const handleRetake = () => {
-    setAnswers({});
-    setValidationMessage(null);
-  };
+  // const handleRetake = () => {
+  //   setAnswers({});
+  //   setValidationMessage(null);
+  // };
+
+  useEffect(() => {
+    if (latestResult?.isPassed === false) {
+      Navigate(
+        `/student/lessons/${lessonId}?score=${latestResult.score ?? 0}`,
+        {
+          replace: true,
+        },
+      );
+    }
+  }, [latestResult?.isPassed, latestResult?.score, Navigate, lessonId]);
 
   if (quizIsLoading) {
     return <QuizSkeleton />;
@@ -142,7 +154,7 @@ const Quiz = () => {
                 <p className="text-lg font-extrabold text-ink">
                   {latestResult.isPassed
                     ? "أحسنت! لقد نجحت في الاختبار"
-                    : "لم تجتز الاختبار هذه المرة"}
+                    : " لم تجتز الاختبار هذه المرة يجب عليك اعادة مشاهدة الدرس و اعادة الاختبار مرة اخرى"}
                 </p>
                 <p className="text-sm text-body-mute">
                   نتيجتك: {Number(latestResult.score)}٪
@@ -152,13 +164,13 @@ const Quiz = () => {
             <div className="mt-4">
               <ProgressBar value={Number(latestResult.score)} />
             </div>
-            <button
+            {/* <button
               type="button"
               onClick={handleRetake}
               className="mt-4 rounded-[7px] border border-line bg-white px-4 py-2 text-xs font-bold text-teal-dark transition-colors hover:bg-teal-soft"
             >
               إعادة المحاولة
-            </button>
+            </button> */}
           </div>
         )}
 
@@ -169,7 +181,7 @@ const Quiz = () => {
               key={question.id}
               role="radiogroup"
               aria-label={`السؤال ${questionIndex + 1}`}
-              className="rounded-[14px] border border-line bg-white p-6"
+              className={`${latestResult?.isPassed || submitIsLoading ? "opacity-50" : ""} rounded-[14px] border border-line bg-white p-6`}
             >
               <h2 className="mb-4 text-[1.05rem] font-extrabold leading-[1.7] text-teal-dark">
                 <span className="ml-2 text-gold">س{questionIndex + 1}.</span>
@@ -184,6 +196,7 @@ const Quiz = () => {
                       key={option.id}
                       type="button"
                       role="radio"
+                      disabled={latestResult?.isPassed || submitIsLoading}
                       aria-checked={isSelected}
                       onClick={() => handleSelect(question.id, option.id)}
                       className={cn(
@@ -227,13 +240,18 @@ const Quiz = () => {
           <button
             type="button"
             onClick={handleSubmit}
-            disabled={submitIsLoading}
+            disabled={submitIsLoading || latestResult?.isPassed}
             className="flex w-full items-center justify-center gap-2 rounded-[7px] bg-teal-dark px-4 py-3 text-sm font-bold text-white transition-colors hover:bg-teal disabled:cursor-not-allowed disabled:opacity-60"
           >
             {submitIsLoading ? (
               <>
                 <span className="size-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
                 جارٍ إرسال الإجابات...
+              </>
+            ) : latestResult?.isPassed ? (
+              <>
+                <CheckCircle2 className="size-4" />
+                تهانينا! لقد اجتزت الاختبار بنجاح
               </>
             ) : (
               <>
@@ -245,7 +263,7 @@ const Quiz = () => {
         </div>
 
         {/* Attempts history */}
-        {attempts.length > 0 && (
+        {/* {attempts.length > 0 && (
           <section className="mt-8 rounded-[14px] border border-line bg-white p-6">
             <h2 className="mb-4 flex items-center gap-2 text-[1.1rem] font-extrabold text-teal-dark">
               <ListChecks className="size-5" />
@@ -290,7 +308,7 @@ const Quiz = () => {
               ))}
             </ul>
           </section>
-        )}
+        )} */}
       </div>
     </main>
   );

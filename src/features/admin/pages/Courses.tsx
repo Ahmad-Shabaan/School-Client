@@ -105,7 +105,7 @@ const Courses = () => {
                   style={{ animationDelay: `${index * 55}ms` }}
                   className="group relative flex flex-col gap-0 overflow-hidden rounded-2xl border-border/40 bg-surface-container-lowest py-0 shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-card-hover animate-[fadeInUp_0.5s_ease-out_both]"
                 >
-                  <div className="relative aspect-16/10 w-full overflow-hidden bg-surface-container">
+                  <div className="flex size-8 sm:size-10 overflow-hidden items-center justify-center rounded-xl border border-gold bg-teal-soft text-[1.7rem] text-teal-dark">
                     {course.file ? (
                       <img
                         src={`data:image/png;base64,${course.file}`}
@@ -113,9 +113,7 @@ const Courses = () => {
                         className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.08]"
                       />
                     ) : (
-                      <div className="gradient-primary flex h-full w-full items-center justify-center">
-                        <BookOpen className="h-8 w-8 text-on-primary/90" />
-                      </div>
+                      <BookOpen className="h-8 w-8 text-on-primary/90" />
                     )}
 
                     <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/55 via-black/5 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-100" />

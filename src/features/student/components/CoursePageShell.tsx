@@ -37,16 +37,24 @@ const CoursePageShell = ({
       <section className="mb-7 overflow-hidden rounded-[18px] border border-line bg-white shadow-[0_4px_14px_rgba(22,48,42,0.04)]">
         <div className="border-b border-line bg-gradient-to-l from-teal-soft/70 via-paper to-gold-soft/50 p-5 sm:p-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            <div className="flex min-w-0 items-start gap-3">
-              <span className="flex size-12 flex-none items-center justify-center rounded-2xl border border-gold/40 bg-white text-teal-dark shadow-sm">
-                <GraduationCap className="size-6" />
-              </span>
+            <div className="flex items-center min-w-0 gap-3">
+              <div className="flex size-8 sm:size-10 overflow-hidden items-center justify-center rounded-xl border border-gold bg-teal-soft text-[1.7rem] text-teal-dark">
+                {course.file ? (
+                  <img
+                    src={`data:image/png;base64,${course.file}`}
+                    alt={course.courseName}
+                    className="object-cover"
+                  />
+                ) : (
+                  <GraduationCap className="size-6" />
+                )}
+              </div>
 
               <div className="min-w-0">
                 <span className="text-[0.7rem] font-extrabold tracking-wide text-body-mute">
                   المقرر الدراسي
                 </span>
-                <h1 className="break-words text-xl font-extrabold text-ink sm:text-2xl">
+                <h1 className="wrap-break-word text-xl font-extrabold text-ink sm:text-2xl">
                   {course.courseName}
                 </h1>
               </div>

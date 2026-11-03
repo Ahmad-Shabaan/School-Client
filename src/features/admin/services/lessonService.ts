@@ -7,6 +7,7 @@ import type {
   LessonProgressResponse,
   QuizAnswerInput,
   QuizAttemptResponse,
+  QuizAttemptResultResponse,
   QuizAttemptsResponse,
   QuizManagementResponse,
   QuizPayloadRequest,
@@ -119,6 +120,15 @@ export const getQuizAttempts = async (
 ): Promise<QuizAttemptsResponse> => {
   const response = await axiosClient.get<QuizAttemptsResponse>(
     `/lessons/${lessonId}/quiz/attempts`,
+  );
+  return response.data;
+};
+
+export const getQuizAttemptResult = async (
+  lessonId: number,
+): Promise<QuizAttemptResultResponse> => {
+  const response = await axiosClient.get<QuizAttemptResultResponse>(
+    `/lessons/${lessonId}/quiz-result`,
   );
   return response.data;
 };

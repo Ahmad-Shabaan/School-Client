@@ -1,12 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  ArrowLeft,
-  Check,
-  MessageCircle,
-  Pencil,
-  Trash2,
-} from "lucide-react";
+import { ArrowLeft, Check, MessageCircle, Pencil, Trash2 } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,7 +20,11 @@ import { studentCoursePostPath } from "@/config/routes";
 import { MAX_POST_LENGTH } from "../constants/posts.constants";
 import { useDeletePost, useUpdatePost } from "../hooks/usePosts";
 import type { PostDto } from "../types/post.types";
-import { formatDateTime, formatRelativeTime, getInitials } from "../utils/postFormat";
+import {
+  formatDateTime,
+  formatRelativeTime,
+  getInitials,
+} from "../utils/postFormat";
 import CommentsSection from "./CommentsSection";
 
 interface PostCardProps {
@@ -127,8 +125,8 @@ const PostCard = ({ post, isDetails = false, onDeleted }: PostCardProps) => {
                 <AlertDialogHeader>
                   <AlertDialogTitle>حذف المنشور</AlertDialogTitle>
                   <AlertDialogDescription>
-                    سيتم حذف هذا المنشور وجميع تعليقاته. لا يمكن التراجع عن
-                    هذا الإجراء.
+                    سيتم حذف هذا المنشور وجميع تعليقاته. لا يمكن التراجع عن هذا
+                    الإجراء.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

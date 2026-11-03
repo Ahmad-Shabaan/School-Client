@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   AlertTriangle,
@@ -23,6 +23,7 @@ import {
   lessonDetailsQueryOptions,
   lessonProgressQueryOptions,
   lessonWatermarkQueryOptions,
+  quizAttemptResultQueryOptions,
   quizByLessonQueryOptions,
 } from "@/features/admin/options/lessons.options";
 import { LESSONS_QUERY_KEY } from "@/features/admin/constants/lessons.constants";
@@ -32,11 +33,28 @@ import AppError from "@/shared/components/common/ErrorBoundary/AppError";
 import { ROUTES } from "@/config/routes";
 import { handleErrorMessage } from "@/lib/utils/handleErrorMessage";
 import type { ApiErrorResponse } from "@/shared/types/api.types";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogFooter,
+  AlertDialogDescription,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const Lesson = () => {
   const { id } = useParams();
   const lessonId = Number(id);
   const queryClient = useQueryClient();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const quizScore = searchParams.get("score");
+  const handleClose = () => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.delete("score");
+    setSearchParams(newParams);
+  };
 
   const {
     data: lessonData,
@@ -46,6 +64,9 @@ const Lesson = () => {
   } = useQuery(lessonDetailsQueryOptions(lessonId));
 
   const { data: progressData } = useQuery(lessonProgressQueryOptions(lessonId));
+  const { data: quizResult } = useQuery(
+    quizAttemptResultQueryOptions(lessonId),
+  );
 
   // const { data: accessData } = useQuery(lessonAccessQueryOptions(lessonId));
   const { data: watermarkData } = useQuery(
@@ -71,8 +92,11 @@ const Lesson = () => {
     handlePaused,
     handleEnded,
     YT_PLAYER_STATE: STATES,
-  } = useVideoProgress(lessonId, playerRef);
-
+  } = useVideoProgress(
+    lessonId,
+    playerRef,
+    Boolean(lessonData?.data.access.isVideoCompleted),
+  );
   const isSessionJoinable = useSessionJoinability(
     lessonData?.data.meetingDateTime ?? null,
   );
@@ -82,12 +106,18 @@ const Lesson = () => {
   // const access = accessData?.data ?? lesson?.access;
 
   const watchedPercentage = Number(progress?.watchedPercentage ?? 0);
+
   const isVideoCompleted = progress?.isVideoCompleted ?? false;
 
   const quiz = quizData?.data;
   const hasQuiz = lesson?.hasQuiz ?? false;
   // const isQuizAccessible = access?.isAccessible ?? false;
   // const missingRequirement = access?.missingRequirement ?? null;
+  // useEffect(() => {
+  //   if (Number(quizScore) < quiz?.passingScorePercent) {
+  //     setIsAlertOpen(true);
+  //   }
+  // }, [quizScore, quiz?.passingScorePercent, isAlertOpen]);
 
   const handleStateChange = (state: number) => {
     if (state === STATES.PLAYING) handlePlaying();
@@ -227,7 +257,9 @@ const Lesson = () => {
                     <p className="flex min-w-0 items-center gap-1.5 text-xs text-body-mute">
                       <CalendarClock className="size-3.5 shrink-0" />
                       <span className="min-w-0 flex-1 truncate">
-                        {new Date(lesson.meetingDateTime).toLocaleString("ar-EG")}
+                        {new Date(lesson.meetingDateTime).toLocaleString(
+                          "ar-EG",
+                        )}
                       </span>
                     </p>
                   )}
@@ -360,6 +392,21 @@ const Lesson = () => {
                     الانتقال إلى الاختبار
                   </button>
                 </div>
+              ) : quizResult?.data.isPassed ? (
+                <div className="space-y-3">
+                  <div className="flex min-w-0 items-start gap-2 rounded-[7px] bg-teal-soft p-3 text-xs font-bold leading-[1.7] text-teal-dark">
+                    <Award className="mt-0.5 size-4 shrink-0" />
+                    <p className="min-w-0 flex-1 break-words">
+                      لقد اجتزت الاختبار بنجاح.
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-sm font-bold text-teal-dark">
+                      درجتك:{quizResult?.data.score}{" "}
+                      <span className="font-extrabold"></span>
+                    </span>
+                  </div>
+                </div>
               ) : (
                 <div className="space-y-3">
                   <div className="rounded-[7px] bg-teal-soft p-3">
@@ -382,6 +429,38 @@ const Lesson = () => {
               )}
             </section>
           </div>
+
+          {/* //open={isAlertOpen} onOpenChange={setIsAlertOpen} */}
+          <AlertDialog
+            open={
+              quizScore !== null &&
+              Number(quizScore) < (quiz?.passingScorePercent ?? 80)
+            }
+          >
+            {/* <AlertDialogTrigger asChild>
+              <button
+                type="button"
+                aria-label="درجة الاختبار"
+                className="flex size-8 cursor-pointer items-center justify-center rounded-lg text-body-mute transition-colors hover:bg-error/10 hover:text-error-dim"
+              >
+                <Trash2 className="size-4" />
+              </button>
+            </AlertDialogTrigger> */}
+            <AlertDialogContent dir="rtl" className="font-tajawal">
+              <AlertDialogHeader>
+                <AlertDialogTitle>درجة الاختبار</AlertDialogTitle>
+                <AlertDialogDescription>
+                  للاسق لم تجتز هذا الاختبار. حاول مرة أخرى بعد مراجعة الدرس.
+                  درجتك: {quizScore}٪
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel onClick={handleClose}>
+                  تم
+                </AlertDialogCancel>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
     </main>

@@ -147,6 +147,12 @@ export interface QuizAttemptDto {
   answers: QuizAttemptAnswerDto[];
 }
 
+export interface QuizAttemptResultDto {
+  id: number;
+  score: number;
+  isPassed: boolean;
+}
+
 export interface QuizOptionInput {
   text: string;
   isCorrect: boolean;
@@ -177,6 +183,10 @@ export interface QuizAttemptResponse extends ApiResponse {
 
 export interface QuizAttemptsResponse extends ApiResponse {
   data: QuizAttemptDto[];
+}
+
+export interface QuizAttemptResultResponse extends ApiResponse {
+  data: QuizAttemptResultDto;
 }
 
 export interface SubmitProgressRequest {

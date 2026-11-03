@@ -32,7 +32,6 @@ import { useUpdateUser } from "../hooks/useDashboard";
 import UserForm from "./UserForm";
 
 const UpdateUserForm = ({ user }: { user: UserDto }) => {
-  console.log("user from table", user);
   const { handleUpdateUser, isLoading, isError, error } = useUpdateUser();
 
   const onSubmit = (values: UpdateUserFormValues) => {

@@ -12,6 +12,7 @@ import {
   getLessonDetails,
   getLessonProgress,
   getLessonWatermark,
+  getQuizAttemptResult,
   getQuizAttempts,
   getQuizByLesson,
   getQuizManagement,
@@ -21,6 +22,7 @@ import type {
   LessonAccessResponse,
   LessonDetailsResponse,
   LessonProgressResponse,
+  QuizAttemptResultResponse,
   QuizAttemptsResponse,
   QuizManagementResponse,
   QuizResponse,
@@ -81,6 +83,15 @@ export const quizByLessonQueryOptions = (lessonId: number) =>
     enabled: Number.isFinite(lessonId) && lessonId > 0,
   });
 
+
+  export const quizAttemptResultQueryOptions = (lessonId: number) =>
+  queryOptions<QuizAttemptResultResponse, ApiErrorResponse>({
+    queryKey: QUIZ_QUERY_KEY.attempt(lessonId),
+    queryFn: () => getQuizAttemptResult(lessonId),
+    staleTime: 0,
+    gcTime: LESSONS_GC_TIME,
+    enabled: Number.isFinite(lessonId) && lessonId > 0,
+  })
 export const quizAttemptsQueryOptions = (lessonId: number) =>
   queryOptions<QuizAttemptsResponse, ApiErrorResponse>({
     queryKey: QUIZ_QUERY_KEY.attempts(lessonId),
